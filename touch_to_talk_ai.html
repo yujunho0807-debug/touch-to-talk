@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>말 대신 터치로 (Touch-to-Talk) — 생성형 AI 기반 의사소통 취약 환자 보드</title>
+<!-- 고대비 한글 및 컬러 이모지 웹폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<!-- WebGazer.js 시선 추적 라이브러리 -->
+<script src="https://webgazer.cs.brown.edu/webgazer.js" defer></script>
+<style>
+  :root {
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --navy: #0f2942;
+    --teal: #0d6e6e;
+    --teal-soft: #e6f4f4;
+    --teal-border: #99d5d5;
+    --text: #0f172a;
+    --muted: #475569;
+    --border: #cbd5e1;
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
+    --ok: #15803d;
+    --ok-bg: #dcfce7;
+    --warn: #b45309;
+    --warn-bg: #fef3c7;
+    --shadow: 0 4px 14px rgba(15, 41, 66, 0.08);
+    --radius: 16px;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Color Emoji', sans-serif;
+    line-height: 1.45;
+    overflow-x: hidden;
+  }
+
+  .emoji {
+    font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+    font-style: normal;
+    line-height: 1.1;
+  }
+
+  /* 상단 헤더 */
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .brand h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .brand .sub {
+    font-size: 0.78rem;
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .pill-btn {
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    padding: 8px 13px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 38px;
+  }
+
+  .pill-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .pill-btn.on {
+    background: #10b981;
+    border-color: #34d399;
+    color: #052e16;
+  }
+
+  .pill-btn.gaze-on {
+    background: #38bdf8;
+    border-color: #7dd3fc;
+    color: #082f49;
+  }
+
+  .nav-tabs {
+    display: flex;
+    background: rgba(0, 0, 0, 0.28);
+    padding: 4px;
+    border-radius: 999px;
+    gap: 4px;
+  }
+
+  .tab-btn {
+    border: none;
+    background: transparent;
+    color: #cbd5e1;
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    min-height: 36px;
+  }
+
+  .tab-btn.active {
+    background: #ffffff;
+    color: var(--navy);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  /* 메인 컨테이너 */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .view {
+    display: none;
+  }
+  .view.active {
+    display: block;
+  }
+
+  /* 긴급 경고 배너 */
+  #urgentBanner {
+    display: none;
+    background: var(--danger);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35);
+    animation: pulseUrgent 1.4s infinite;
+  }
+
+  #urgentBanner.show {
+    display: flex;
+  }
+
+  @keyframes pulseUrgent {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.006); }
+  }
+
+  /* 비긴급 호출 제한 안내 배너 */
+  #rateBanner {
+    display: none;
+    background: #eff6ff;
+    border: 2px solid #60a5fa;
+    color: #1e3a8a;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    font-weight: 700;
+    font-size: 0.94rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  #rateBanner.show {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* 언어 바 + 비긴급 호출 상태 배지 */
+  .lang-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    background: var(--card);
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .lang-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .lang-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+
+  .lang-chip {
+    border: 1px solid var(--border);
+    background: #f8fafc;
+    color: var(--text);
+    padding: 7px 13px;
+    border-radius: 999px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    min-height: 36px;
+  }
+
+  .lang-chip.active {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+  }
+
+  .rate-badge {
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    color: var(--navy);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .rate-badge.cooldown {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+
+  /* 빠른 응답 4대 버튼 */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .quick-btn {
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 16px 10px;
+    font-size: 1.18rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.1s, opacity 0.15s;
+    min-height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .quick-btn:active { transform: scale(0.97); }
+  .quick-btn.rate-locked {
+    opacity: 0.55;
+  }
+  .q-yes { background: #dcfce7; color: #14532d; border-color: #86efac; }
+  .q-no { background: #fee2e2; color: #7f1d1d; border-color: #fca5a5; }
+  .q-wait { background: #fef9c3; color: #713f12; border-color: #fde047; }
+  .q-help { background: #dc2626; color: #ffffff; border-color: #991b1b; }
+
+  /* 선택 바구니 + 자유 입력 + 문장 만들기 */
+  .tray-box {
+    background: var(--card);
+    border: 2px solid var(--teal-border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .tray-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.84rem;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 38px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .sel-chip {
+    background: var(--teal-soft);
+    border: 1.5px solid var(--teal);
+    color: var(--navy);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .sel-chip.sub {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    color: #78350f;
+  }
+
+  .tray-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .free-input {
+    flex: 1;
+    min-width: 220px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 11px 14px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+  }
+
+  .free-input:focus {
+    border-color: var(--teal);
+  }
+
+  .btn {
+    border: none;
+    border-radius: 12px;
+    padding: 11px 18px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 48px;
+    transition: all 0.12s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--teal); color: #fff; }
+  .btn-primary:hover { background: #0a5858; }
+  .btn-ghost { background: #e2e8f0; color: var(--text); }
+  .btn-ok { background: var(--ok); color: #fff; padding: 10px 20px; font-size: 1rem; }
+  .btn-danger { background: var(--danger); color: #fff; }
+
+  /* 생성 문장 후보 확인 패널 */
+  #candSection {
+    display: none;
+    background: #fffbeb;
+    border: 2px solid #f59e0b;
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  #candSection.show { display: block; }
+
+  .cand-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #92400e;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cand-card {
+    background: #ffffff;
+    border: 1.5px solid #fcd34d;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cand-card.urgent-cand {
+    border-color: #ef4444;
+    background: #fef2f2;
+  }
+
+  .cand-texts {
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .cand-pt {
+    font-size: 1.22rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .cand-ko {
+    font-size: 0.92rem;
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  /* 카테고리 + 그림 보드 레이아웃 */
+  .board-layout {
+    display: grid;
+    grid-template-columns: 185px 1fr;
+    gap: 14px;
+  }
+
+  .cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cat-btn {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 12px;
+    text-align: left;
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.12s;
+    min-height: 54px;
+  }
+
+  .cat-btn.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: #ffffff;
+    box-shadow: var(--shadow);
+  }
+
+  /* 2단계 세부 분기(Drill-down) 패널 */
+  #subPanel {
+    display: none;
+    background: #f0fdfa;
+    border: 2px solid var(--teal);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  #subPanel.show { display: block; }
+
+  .sub-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 800;
+    color: var(--teal);
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+  }
+
+  .sub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+  }
+
+  .sub-item {
+    background: #ffffff;
+    border: 1.5px solid var(--teal-border);
+    border-radius: 12px;
+    padding: 11px 12px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.12s;
+    min-height: 50px;
+  }
+
+  .sub-item.selected {
+    background: var(--teal);
+    color: #fff;
+    border-color: var(--teal);
+  }
+
+  .sub-item.urgent-sub {
+    border-color: #fca5a5;
+  }
+
+  /* 그림 카드 그리드 */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
+    gap: 10px;
+  }
+
+  .pic-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    transition: all 0.12s;
+    min-height: 116px;
+    position: relative;
+  }
+
+  .pic-card:hover {
+    border-color: var(--teal);
+    transform: translateY(-2px);
+  }
+
+  .pic-card.selected {
+    background: var(--teal-soft);
+    border-color: var(--teal);
+    box-shadow: 0 0 0 2px var(--teal);
+  }
+
+  .pic-card.urgent-card {
+    border-color: #fca5a5;
+  }
+
+  .pic-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: 0.68rem;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 2px 6px;
+    border-radius: 999px;
+    font-weight: 800;
+  }
+
+  .pic-emoji {
+    font-size: 2.25rem;
+    margin-bottom: 6px;
+  }
+
+  .pic-label {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--text);
+    word-break: keep-all;
+  }
+
+  .pic-sub-lang {
+    font-size: 0.74rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* 간호사 모드 */
+  .nurse-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .panel h2 {
+    margin: 0 0 12px 0;
+    font-size: 1.08rem;
+    color: var(--navy);
+  }
+
+  textarea.nurse-in {
+    width: 100%;
+    min-height: 104px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 10px;
+  }
+
+  .preset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .preset-btn {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .preset-btn:hover {
+    background: var(--teal-soft);
+    border-color: var(--teal);
+  }
+
+  .nurse-out-box {
+    background: #f8fafc;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    min-height: 180px;
+    margin-bottom: 12px;
+  }
+
+  .out-emojis {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+
+  .out-simple {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .out-trans {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--teal);
+    background: #ffffff;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--teal-border);
+    margin-bottom: 6px;
+  }
+
+  .out-back {
+    font-size: 0.83rem;
+    color: var(--muted);
+  }
+
+  .rate-cfg-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .rate-cfg-row select {
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    font-weight: 700;
+    font-size: 0.88rem;
+  }
+
+  /* 기록 및 Focus DAR 모드 */
+  .log-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 16px;
+  }
+
+  .log-item {
+    border-left: 4px solid var(--teal);
+    background: #f8fafc;
+    padding: 11px 14px;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 10px;
+  }
+  .log-item.nurse { border-left-color: var(--navy); }
+  .log-item.urgent { border-left-color: var(--danger); background: #fef2f2; }
+
+  .log-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+
+  .badge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+  .b-pt { background: var(--teal-soft); color: var(--teal); }
+  .b-nr { background: #e2e8f0; color: var(--navy); }
+  .b-ur { background: var(--danger); color: #fff; }
+
+  .dar-box {
+    width: 100%;
+    min-height: 210px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 10px;
+    background: #f8fafc;
+  }
+
+  /* 모달 공통 */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.68);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-backdrop.show { display: flex; }
+
+  .modal-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 22px;
+    max-width: 540px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  }
+
+  .modal-card h3 {
+    margin: 0 0 10px 0;
+    color: var(--navy);
+  }
+
+  .field {
+    margin-bottom: 12px;
+  }
+  .field label {
+    display: block;
+    font-size: 0.84rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--muted);
+  }
+  .field input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+
+  .cmd-box {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 0.88rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+  }
+
+  /* 크게 보여주기 전체화면 모달 */
+  .big-modal-card {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 24px;
+    padding: 36px 28px;
+    max-width: 820px;
+    width: 100%;
+    text-align: center;
+  }
+  .big-emoji { font-size: 4.5rem; margin-bottom: 16px; }
+  .big-text { font-size: 2.3rem; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .big-sub { font-size: 1.5rem; color: #7dd3fc; margin-bottom: 24px; }
+
+  /* 시선 추적(Eye-Tracking) 오버레이 & 원형 응시 프로그레스 */
+  #gazeCursor {
+    display: none;
+    position: fixed;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    justify-content: center;
+  }
+  #gazeCursor.show { display: flex; }
+
+  #gazeDot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #0284c7;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 8px rgba(2, 132, 199, 0.8);
+  }
+
+  #gazeSvg {
+    position: absolute;
+    inset: 0;
+    width: 44px;
+    height: 44px;
+    transform: rotate(-90deg);
+  }
+
+  #calibOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.9);
+    color: #fff;
+    z-index: 9000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+  #calibOverlay.show { display: flex; }
+
+  .calib-dot {
+    position: fixed;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ef4444;
+    border: 4px solid #ffffff;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 0 22px rgba(239, 68, 68, 0.85);
+    transform: translate(-50%, -50%);
+  }
+  .calib-dot.done {
+    background: #10b981;
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.85);
+  }
+
+  /* 토스트 알림 */
+  #toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    z-index: 9500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+    max-width: 92vw;
+    text-align: center;
+  }
+  #toast.show { opacity: 1; }
+
+  /* WebGazer 비디오 미리보기 위치 정돈 */
+  #webgazerVideoContainer {
+    top: auto !important;
+    bottom: 12px !important;
+    right: 12px !important;
+    left: auto !important;
+    width: 150px !important;
+    height: 112px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    border: 2px solid #38bdf8 !important;
+    z-index: 80 !important;
+  }
+
+  @media (max-width: 860px) {
+    .board-layout { grid-template-columns: 1fr; }
+    .cat-list { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
+    .cat-btn { white-space: nowrap; }
+    .nurse-grid, .log-grid { grid-template-columns: 1fr; }
+    .quick-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1><span class="emoji">🗣️</span> 말 대신 터치로</h1>
+    <span class="sub">가상 사례 · 60대 남성 · 개심술/갑상선 수술 후 발성 제한</span>
+  </div>
+  <div class="top-actions">
+    <button id="gazeBtn" class="pill-btn gaze-target" type="button"><span class="emoji">👁️</span> 시선 추적 OFF</button>
+    <button id="recalibBtn" class="pill-btn gaze-target" type="button" style="display:none;"><span class="emoji">🎯</span> 재보정</button>
+    <button id="aiState" class="pill-btn gaze-target" type="button">기본 문장 모드 · AI 연결하기</button>
+    <nav class="nav-tabs" aria-label="화면 전환">
+      <button class="tab-btn gaze-target active" data-tab="ptView" type="button">환자</button>
+      <button class="tab-btn gaze-target" data-tab="nrView" type="button">간호사</button>
+      <button class="tab-btn gaze-target" data-tab="logView" type="button">기록</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- 긴급 경고 배너 (제한 우회 즉시 발동) -->
+  <div id="urgentBanner" role="alert">
+    <div><span class="emoji">🚨</span> <span id="urgentText">긴급 의사표현이 감지되었습니다 — 간호사 즉시 확인이 필요합니다!</span></div>
+    <button id="urgentClose" class="btn gaze-target" style="background:#fff;color:#dc2626;padding:6px 14px;min-height:38px;" type="button">확인 완료</button>
+  </div>
+
+  <!-- 비긴급 연속 호출 대기 안내 배너 -->
+  <div id="rateBanner" role="status">
+    <div><span class="emoji">⏳</span> <span id="rateBannerText">방금 간호사에게 전달했어요. 확인 중이니 잠시 뒤에 다시 보낼 수 있어요.</span></div>
+    <span style="font-size:0.8rem;color:#1d4ed8;">(급한 용무는 빨간 [🚨 도와주세요] 또는 긴급 증상을 선택하면 즉시 전달됩니다)</span>
+  </div>
+
+  <!-- 1. 환자 화면 -->
+  <section id="ptView" class="view active">
+    <div class="lang-bar">
+      <div class="lang-group">
+        <span class="lang-label">언어 / Language:</span>
+        <button class="lang-chip gaze-target active" data-lang="ko" type="button">한국어</button>
+        <button class="lang-chip gaze-target" data-lang="en" type="button">English</button>
+        <button class="lang-chip gaze-target" data-lang="zh" type="button">中文</button>
+        <button class="lang-chip gaze-target" data-lang="vi" type="button">Tiếng Việt</button>
+        <button class="lang-chip gaze-target" data-lang="ru" type="button">Русский</button>
+        <button class="lang-chip gaze-target" data-lang="ja" type="button">日本語</button>
+      </div>
+      <div id="rateBadge" class="rate-badge" title="비긴급 연속 호출 제한 상태">
+        <span class="emoji">🔔</span> <span id="rateBadgeText">일반 호출 0/3회 · 15초 간격</span>
+      </div>
+    </div>
+
+    <div class="quick-grid">
+      <button class="quick-btn q-yes gaze-target" data-quick="네" type="button">네</button>
+      <button class="quick-btn q-no gaze-target" data-quick="아니요" type="button">아니요</button>
+      <button class="quick-btn q-wait gaze-target" data-quick="잠깐만요" type="button">잠깐만요</button>
+      <button class="quick-btn q-help gaze-target" data-quick="도와주세요" type="button"><span class="emoji">🚨</span> 도와주세요</button>
+    </div>
+
+    <div class="tray-box">
+      <div class="tray-head">
+        <span id="trayGuide">그림을 누르거나(최대 8개) 아래에 직접 적어 주세요.</span>
+        <span id="selCount">0 / 8개 선택됨</span>
+      </div>
+      <div id="chipsWrap" class="chips-wrap">
+        <span style="color:#94a3b8;font-size:0.88rem;">아래에서 그림 카드를 눌러 주세요</span>
+      </div>
+      <div class="tray-controls">
+        <input id="ptFreeIn" class="free-input" type="text" placeholder="그림과 함께 쓰거나, 없는 말을 직접 적어 주세요 (예: 기침할 때 더 심해요)" />
+        <button id="clearBtn" class="btn btn-ghost gaze-target" type="button">지우기</button>
+        <button id="makeBtn" class="btn btn-primary gaze-target" type="button"><span class="emoji">✨</span> 문장 만들기</button>
+      </div>
+    </div>
+
+    <!-- 생성 문장 후보 확인 패널 -->
+    <div id="candSection">
+      <div class="cand-title">
+        <span><span class="emoji">💬</span> 이 말이 맞나요? 맞으면 [✓ OK]를 눌러 간호사에게 전달하세요.</span>
+        <button id="retryBtn" class="btn btn-ghost gaze-target" style="padding:6px 12px;min-height:36px;font-size:0.82rem;" type="button">다시 고르기</button>
+      </div>
+      <div id="candList"></div>
+    </div>
+
+    <div class="board-layout">
+      <aside id="catList" class="cat-list"></aside>
+      <div>
+        <!-- 2단계 임상 세부 분기 패널 -->
+        <div id="subPanel">
+          <div class="sub-head">
+            <span id="subTitle">세부 상태를 선택해 주세요</span>
+            <button id="subClose" class="btn btn-ghost gaze-target" style="padding:4px 10px;min-height:34px;font-size:0.8rem;" type="button">닫기</button>
+          </div>
+          <div id="subGrid" class="sub-grid"></div>
+        </div>
+        <div id="cardsGrid" class="cards-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 간호사 화면 -->
+  <section id="nrView" class="view">
+    <div class="nurse-grid">
+      <div class="panel">
+        <h2><span class="emoji">🩺</span> 환자에게 할 말 입력</h2>
+        <textarea id="nrInput" class="nurse-in" placeholder="예: 지금 가래를 뽑아 드릴 건데 잠깐 기침이 나고 불편하실 수 있어요."></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <select id="nrLang" style="padding:10px 12px;border-radius:12px;border:1.5px solid var(--border);font-weight:700;font-size:0.9rem;">
+            <option value="ko">한국어 (쉬운 말)</option>
+            <option value="en">English (영어)</option>
+            <option value="zh">中文 (중국어)</option>
+            <option value="vi">Tiếng Việt (베트남어)</option>
+            <option value="ru">Русский (러시아어)</option>
+            <option value="ja">日本語 (일본어)</option>
+          </select>
+          <button id="nrConvBtn" class="btn btn-primary" type="button">쉽게 바꾸기 · 번역</button>
+        </div>
+        <div class="preset-list">
+          <div style="font-size:0.8rem;font-weight:700;color:var(--muted);margin-top:6px;">자주 쓰는 임상 안내 문구 (클릭 시 입력):</div>
+          <button class="preset-btn" type="button">진통제를 드릴게요. 30분 뒤에 다시 통증을 물어볼게요.</button>
+          <button class="preset-btn" type="button">지금 가래를 뽑아 드릴게요. 잠깐 기침이 나고 불편할 수 있어요.</button>
+          <button class="preset-btn" type="button">갑상선 수술 직후라 목을 무리해서 말하지 마시고 화면을 눌러 주세요.</button>
+          <button class="preset-btn" type="button">방귀(가스)가 나오거나 소변을 보시면 꼭 알려주세요.</button>
+          <button class="preset-btn" type="button">튜브는 숨 쉬는 걸 돕고 있어서 손으로 빼시면 안 돼요.</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel" style="margin-bottom:16px;">
+          <h2><span class="emoji">📱</span> 환자에게 보여 줄 문장</h2>
+          <div class="nurse-out-box">
+            <div id="nrOutEmoji" class="out-emojis emoji">💬</div>
+            <div id="nrOutSimple" class="out-simple">왼쪽에 할 말을 쓰고 ‘쉽게 바꾸기 · 번역’을 눌러 주세요.</div>
+            <div id="nrOutTrans" class="out-trans" style="display:none;"></div>
+            <div id="nrOutBack" class="out-back"></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button id="nrBigBtn" class="btn btn-primary" type="button"><span class="emoji">🔍</span> 크게 보여 주기</button>
+            <button id="nrSpeakBtn" class="btn btn-ghost" type="button"><span class="emoji">🔊</span> 소리로 읽기</button>
+          </div>
+        </div>
+
+        <!-- 비긴급 연속 호출 간격 및 횟수 제한 설정 카드 -->
+        <div class="panel">
+          <h2><span class="emoji">⏱️</span> 비긴급 연속 호출 제한 설정 (경보 피로 방지)</h2>
+          <p style="font-size:0.83rem;color:var(--muted);margin:0 0 8px 0;">
+            환자가 일반 응답(네/아니요/잠깐만요 및 일반 문장)을 연속 반복 호출할 때의 최소 간격과 5분당 최대 횟수를 조절합니다.
+            <strong>긴급 호출(🚨 도와주세요, 호흡곤란, 흉통, 객혈, 수술부위 출혈, 통증 8점 이상)은 항상 즉시 전달됩니다.</strong>
+          </p>
+          <div class="rate-cfg-row">
+            <label style="font-size:0.84rem;font-weight:700;">호출 간격:
+              <select id="cfgInterval">
+                <option value="10">10초 간격</option>
+                <option value="15" selected>15초 간격 (기본)</option>
+                <option value="30">30초 간격</option>
+              </select>
+            </label>
+            <label style="font-size:0.84rem;font-weight:700;">5분 최대 횟수:
+              <select id="cfgMaxCount">
+                <option value="3" selected>5분 내 3회 (기본)</option>
+                <option value="5">5분 내 5회</option>
+              </select>
+            </label>
+            <button id="cfgResetBtn" class="btn btn-ghost" style="min-height:40px;padding:8px 14px;font-size:0.85rem;" type="button">제한 초기화</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 기록 및 Focus DAR 화면 -->
+  <section id="logView" class="view">
+    <div class="log-grid">
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h2 style="margin:0;"><span class="emoji">📋</span> 의사소통 기록 (시간순)</h2>
+          <button id="clearLogBtn" class="btn btn-ghost" style="padding:6px 12px;min-height:36px;font-size:0.82rem;" type="button">기록 초기화</button>
+        </div>
+        <div id="logList"></div>
+      </div>
+
+      <div>
+        <div class="panel" style="margin-bottom:16px;">
+          <h2><span class="emoji">📈</span> 통증 점수 변화 (0–10)</h2>
+          <svg id="painChart" viewBox="0 0 360 110" style="width:100%;height:110px;background:#f8fafc;border-radius:12px;border:1px solid var(--border);"></svg>
+        </div>
+
+        <div class="panel">
+          <h2><span class="emoji">📝</span> 간호기록 초안 (Focus DAR)</h2>
+          <textarea id="darOut" class="dar-box" placeholder="‘초안 만들기’를 누르면 왼쪽 의사소통 기록을 바탕으로 Focus DAR 간호기록 초안을 생성합니다. 반드시 간호사가 검토·수정한 뒤 사용하세요."></textarea>
+          <div style="display:flex;gap:8px;">
+            <button id="makeDarBtn" class="btn btn-primary" type="button">초안 만들기</button>
+            <button id="copyDarBtn" class="btn btn-ghost" type="button">복사하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- AI API 키 연결 모달 -->
+<div id="keyDlg" class="modal-backdrop">
+  <div class="modal-card">
+    <h3><span class="emoji">🤖</span> 생성형 AI (Gemini) 동적 모델 연결</h3>
+    <p style="font-size:0.85rem;color:var(--muted);margin-top:0;">
+      Google AI Studio API 키를 입력하면 <code>ListModels</code>로 현재 계정에서 사용 가능한 최신 Flash/Hydrogen 모델을 자동 조회·검증하여 연결합니다.<br/>
+      (서버 과부하 시 자동 재시도·전환하며, 미연결 시에도 오프라인 규칙 모드로 100% 작동합니다.)
+    </p>
+    <div class="field">
+      <label for="keyIn">Gemini API 키 (AIzaSy...)</label>
+      <input id="keyIn" type="password" placeholder="AIzaSy..." />
+    </div>
+    <div class="field">
+      <label for="modelIn">선호 모델명 (자동 탐색·폴백 지원)</label>
+      <input id="modelIn" type="text" value="gemini-3.5-flash-lite" />
+    </div>
+    <div id="keyMsg" style="font-size:0.84rem;font-weight:700;color:var(--teal);min-height:22px;margin-bottom:10px;word-break:break-word;"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
+      <button id="keyOff" class="btn btn-ghost" type="button">연결 끊기</button>
+      <button id="keyClose" class="btn btn-ghost" type="button">닫기</button>
+      <button id="keySave" class="btn btn-primary" type="button">연결 확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 크게 보여주기 전체화면 모달 -->
+<div id="bigDlg" class="modal-backdrop">
+  <div class="big-modal-card">
+    <div id="bigEmoji" class="big-emoji emoji">💬</div>
+    <div id="bigText" class="big-text"></div>
+    <div id="bigSub" class="big-sub"></div>
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button id="bigSpeak" class="btn btn-ok" type="button"><span class="emoji">🔊</span> 다시 읽어주기</button>
+      <button id="bigClose" class="btn btn-ghost" type="button">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 시선 추적 로컬 서버 안내 모달 -->
+<div id="httpsDlg" class="modal-backdrop">
+  <div class="modal-card">
+    <h3><span class="emoji">👁️</span> 시선 추적 카메라 보안 안내</h3>
+    <p style="font-size:0.88rem;color:var(--text);margin-bottom:8px;">
+      현재 파일을 직접 더블클릭(<code>file://</code>)으로 열어 브라우저 보안 정책상 웹캠 접근이 차단되었습니다.<br/>
+      <strong>로컬 서버(<code>http://localhost:8000</code>) 또는 HTTPS 사이트</strong>로 열면 웹캠과 시선 추적이 즉시 작동합니다.
+    </p>
+    <div style="font-size:0.82rem;color:var(--muted);">1) 파일이 저장된 폴더 주소창에 <code>cmd</code> 입력 후 아래 명령어 실행:</div>
+    <div class="cmd-box">
+      <span id="srvCmdText">python -m http.server 8000</span>
+      <button id="copyCmdBtn" class="btn btn-primary" style="min-height:32px;padding:4px 10px;font-size:0.78rem;" type="button">명령어 복사</button>
+    </div>
+    <div style="font-size:0.82rem;color:var(--muted);margin-bottom:12px;">
+      2) 크롬 주소창에 <code>http://localhost:8000</code> 입력 후 접속하여 <strong>시선 추적 OFF</strong> 버튼 클릭
+    </div>
+    <div style="text-align:right;">
+      <button id="httpsClose" class="btn btn-primary" type="button">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 시선 추적 5점 보정 오버레이 -->
+<div id="calibOverlay">
+  <h2 style="margin-bottom:6px;"><span class="emoji">🎯</span> 시선 추적 5점 보정</h2>
+  <p style="color:#cbd5e1;max-width:480px;margin-bottom:16px;">
+    화면 모서리와 중앙에 나타나는 <strong>빨간 점 5개를 눈으로 바라보면서 각각 2번씩 클릭(또는 터치)</strong>해 주세요.<br/>
+    보정이 끝나면 원하는 버튼을 <strong>1.5초간 바라보기만 해도 원형 게이지가 차오르며 자동 선택</strong>됩니다.
+  </p>
+  <button id="calibCancel" class="btn btn-ghost" type="button">보정 취소</button>
+</div>
+
+<!-- 실시간 시선 포인터 + 1.5초 원형 응시 게이지 -->
+<div id="gazeCursor">
+  <svg id="gazeSvg" viewBox="0 0 44 44">
+    <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(2,132,199,0.22)" stroke-width="4" />
+    <circle id="gazeProgressCircle" cx="22" cy="22" r="18" fill="none" stroke="#10b981" stroke-width="4"
+      stroke-dasharray="113.1" stroke-dashoffset="113.1" stroke-linecap="round" />
+  </svg>
+  <div id="gazeDot"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ---------- 다국어 사전 ----------
+const LANGS = {
+  ko: { name: "한국어", tts: "ko-KR", quick: { "네": "네", "아니요": "아니요", "잠깐만요": "잠깐만요", "도와주세요": "도와주세요" } },
+  en: { name: "English", tts: "en-US", quick: { "네": "Yes", "아니요": "No", "잠깐만요": "Wait a moment", "도와주세요": "Help me" } },
+  zh: { name: "中文", tts: "zh-CN", quick: { "네": "是的", "아니요": "不是", "잠깐만요": "请等一下", "도와주세요": "请帮帮我" } },
+  vi: { name: "Tiếng Việt", tts: "vi-VN", quick: { "네": "Vâng", "아니요": "Không", "잠깐만요": "Chờ một chút", "도와주세요": "Giúp tôi với" } },
+  ru: { name: "Русский", tts: "ru-RU", quick: { "네": "Да", "아니요": "Нет", "잠깐만요": "Подождите", "도와주세요": "Помогите" } },
+  ja: { name: "日本語", tts: "ja-JP", quick: { "네": "はい", "아니요": "いいえ", "잠깐만요": "少し待ってください", "도와주세요": "助けてください" } }
+};
+
+// ---------- 6개 카테고리 그림 카드 및 2단계 임상 세부 분기 데이터 ----------
+const DATA = {
+  "아픔·불편": [
+    { id: "pain", label: "아파요", emoji: "😣", en: "Pain / Hurts" },
+    { id: "dyspnea", label: "숨이 차요", emoji: "😮‍💨", en: "Short of breath", urgent: true },
+    { id: "stuffy", label: "답답해요", emoji: "😫", en: "Stuffy / Tight", urgent: true },
+    {
+      id: "sputum", label: "가래가 있어요", emoji: "🫁", en: "Phlegm / Sputum",
+      subs: [
+        { label: "가래가 많고 묽어요", ko: "가래가 많고 묽게 나와요", en: "Sputum is abundant and thin" },
+        { label: "끈적해서 뱉기 힘들어요", ko: "가래가 끈적해서 뱉기 힘들어요", en: "Sputum is thick and hard to cough up" },
+        { label: "피가 섞여 나와요 (객혈)", ko: "가래에 피가 섞여 나와요", en: "There is blood in my sputum", urgent: true }
+      ]
+    },
+    {
+      id: "tube", label: "튜브가 불편해요", emoji: "🩺", en: "Tube discomfort", urgent: true,
+      subs: [
+        { label: "튜브 때문에 목이 조이고 아파요", ko: "튜브 때문에 목이 조이고 아파요", en: "The tube feels tight and hurts my throat", urgent: true },
+        { label: "튜브가 빠질 것 같아 불안해요", ko: "튜브가 빠질 것 같아 불안해요", en: "I feel like the tube is slipping out", urgent: true },
+        { label: "튜브 닿는 입안·입술이 헐었어요", ko: "튜브가 닿는 입안과 입술이 헐었어요", en: "My mouth and lips are sore from the tube" }
+      ]
+    },
+    {
+      id: "dry", label: "입이 말라요", emoji: "👄", en: "Dry mouth",
+      subs: [
+        { label: "입안이 바짝 말라요", ko: "입안이 바짝 말라요", en: "The inside of my mouth is very dry" },
+        { label: "입술이 갈라지고 아파요", ko: "입술이 갈라지고 아파요", en: "My lips are chapped and painful" },
+        { label: "가글이나 물 적시기가 필요해요", ko: "가글이나 물로 입술 적시기가 필요해요", en: "I need mouth rinsing or lip moistening" }
+      ]
+    },
+    {
+      id: "cold", label: "추워요", emoji: "🥶", en: "Cold",
+      subs: [
+        { label: "몸이 으슬으슬 춥고 떨려요", ko: "몸이 으슬으슬 춥고 떨려요", en: "I feel chilly and shivering" },
+        { label: "발이 시려워요", ko: "발이 많이 시려워요", en: "My feet are very cold" },
+        { label: "이불을 하나 더 덮고 싶어요", ko: "이불을 하나 더 덮고 싶어요", en: "I would like an extra blanket" }
+      ]
+    },
+    {
+      id: "hot", label: "더워요", emoji: "🥵", en: "Hot",
+      subs: [
+        { label: "열이 나는 것 같고 더워요", ko: "열이 나는 것 같고 더워요", en: "I feel feverish and hot" },
+        { label: "땀이 많이 나요", ko: "땀이 많이 나요", en: "I am sweating a lot" },
+        { label: "이불을 조금 걷어주세요", ko: "더워서 이불을 조금 걷어주세요", en: "Please uncover the blanket a little" }
+      ]
+    },
+    { id: "nausea", label: "속이 메스꺼워요", emoji: "🤢", en: "Nauseous" },
+    { id: "itch", label: "가려워요", emoji: "🖐️", en: "Itchy" },
+    { id: "insomnia", label: "잠이 안 와요", emoji: "😴", en: "Can't sleep" },
+    { id: "bleeding", label: "피가 나요", emoji: "🩸", en: "Bleeding", urgent: true }
+  ],
+  "몸 부위": [
+    { id: "head", label: "머리", emoji: "🧠", en: "Head" },
+    {
+      id: "neck_tube", label: "목·기관삽관부위", emoji: "🧣", en: "Neck / Intubation site",
+      subs: [
+        { label: "목 안쪽이 따갑고 아파요", ko: "목 안쪽이 따갑고 아파요", en: "The inside of my throat is sore" },
+        { label: "목 수술/삽관 부위가 붓거나 조여요", ko: "목 수술 및 삽관 부위가 붓고 조이는 느낌이 들어요", en: "My neck surgery/tube site feels swollen and tight", urgent: true },
+        { label: "가래 때문에 목이 그렁거려요", ko: "가래 때문에 목이 그렁거려요", en: "My throat rattles with phlegm" }
+      ]
+    },
+    { id: "chest", label: "가슴", emoji: "🫀", en: "Chest" },
+    { id: "abdomen", label: "배", emoji: "🤰", en: "Abdomen" },
+    {
+      id: "op_site", label: "수술 부위", emoji: "🩹", en: "Surgery site",
+      subs: [
+        { label: "수술 부위가 욱신거려요", ko: "수술 부위가 욱신거리고 아파요", en: "My surgery site is throbbing and hurts" },
+        { label: "당기고 뻐근해요", ko: "수술 부위가 당기고 뻐근해요", en: "My surgery site feels tight and stiff" },
+        { label: "거즈가 젖었거나 피가 배어 나와요", ko: "수술 부위 거즈가 젖었거나 피가 배어 나오는 것 같아요", en: "The surgical gauze feels wet or bleeding", urgent: true }
+      ]
+    },
+    { id: "back", label: "등·허리", emoji: "🔙", en: "Back / Waist" },
+    { id: "limbs", label: "팔·다리", emoji: "💪", en: "Arms / Legs" },
+    { id: "foley_site", label: "소변줄 부위", emoji: "🩺", en: "Catheter site" }
+  ],
+  "해 주세요": [
+    {
+      id: "excretion", label: "배설·대소변", emoji: "🚻", en: "Bathroom / Excretion",
+      subs: [
+        { label: "소변 보고 싶어요", ko: "소변을 보고 싶어요", en: "I need to urinate" },
+        { label: "대변 보고 싶어요", ko: "대변을 보고 싶어요", en: "I need to have a bowel movement" },
+        { label: "방금 소변을 봤어요 (I/O·기저귀 확인)", ko: "방금 소변을 봤어요. 배설량과 패드를 확인해 주세요", en: "I just urinated, please check output/pad" },
+        { label: "방금 대변을 봤어요", ko: "방금 대변을 봤어요. 기저귀나 패드를 갈아주세요", en: "I just had a bowel movement, please clean/change" },
+        { label: "소변줄(도뇨관)이 아프거나 새요", ko: "소변줄 주변이 아프고 소변이 새는 것 같아요", en: "My urinary catheter hurts or is leaking", urgent: true },
+        { label: "가스가 나왔어요 (방귀)", ko: "방금 방귀(가스)가 나왔어요", en: "I just passed gas" }
+      ]
+    },
+    {
+      id: "position", label: "자세 바꿔주세요", emoji: "🛏️", en: "Change position",
+      subs: [
+        { label: "옆으로 돌아눕고 싶어요", ko: "옆으로 자세를 돌려주세요", en: "Please help me turn onto my side" },
+        { label: "침대 머리를 좀 올려주세요", ko: "침대 머리를 조금 올려주세요", en: "Please raise the head of the bed" },
+        { label: "베개 위치를 고쳐주세요", ko: "목이 불편해서 베개 위치를 고쳐주세요", en: "Please adjust my pillow" }
+      ]
+    },
+    { id: "suction", label: "가래 뽑아주세요", emoji: "🫧", en: "Suction sputum" },
+    { id: "water", label: "물·입술 적셔주세요", emoji: "💧", en: "Moisten lips / Water" },
+    { id: "analgesic", label: "진통제 주세요", emoji: "💊", en: "Pain medication" },
+    { id: "temp_ctrl", label: "온도 조절해 주세요", emoji: "🌡️", en: "Adjust temperature" },
+    { id: "bed_up", label: "침대 올려주세요", emoji: "⬆️", en: "Raise bed" },
+    { id: "light_off", label: "불 꺼주세요", emoji: "🌙", en: "Turn off lights" }
+  ],
+  "마음": [
+    { id: "anxious", label: "불안해요", emoji: "😰", en: "Anxious" },
+    { id: "scared", label: "무서워요", emoji: "😨", en: "Scared" },
+    { id: "frustrated", label: "답답하고 힘들어요", emoji: "😤", en: "Frustrated" },
+    { id: "thanks", label: "고마워요", emoji: "🙏", en: "Thank you" },
+    { id: "okay", label: "괜찮아요", emoji: "🙂", en: "I'm okay" }
+  ],
+  "사람·질문": [
+    { id: "family", label: "가족 보고 싶어요", emoji: "👨‍👩‍👧", en: "Miss / Call family" },
+    { id: "call_nurse", label: "간호사 불러주세요", emoji: "👩‍⚕️", en: "Call nurse" },
+    { id: "doctor", label: "의사 선생님 면담", emoji: "👨‍⚕️", en: "Speak with doctor" },
+    { id: "what_time", label: "지금 몇 시예요?", emoji: "⏰", en: "What time is it?" },
+    { id: "transfer", label: "언제 퇴원/이동해요?", emoji: "🏥", en: "When do I transfer/discharge?" },
+    { id: "test_res", label: "검사 결과 궁금해요", emoji: "📋", en: "How are test results?" }
+  ],
+  "통증 점수": [
+    { id: "p0", label: "0점 (통증 없음)", emoji: "😊", en: "0 - No pain", pain: 0 },
+    { id: "p1", label: "1점 (매우 약함)", emoji: "🙂", en: "1 - Very mild", pain: 1 },
+    { id: "p2", label: "2점 (조금 아픔)", emoji: "🙂", en: "2 - Mild pain", pain: 2 },
+    { id: "p3", label: "3점 (약간 불편)", emoji: "😐", en: "3 - Mild-moderate", pain: 3 },
+    { id: "p4", label: "4점 (보통 아픔)", emoji: "😐", en: "4 - Moderate pain", pain: 4 },
+    { id: "p5", label: "5점 (꽤 아픔)", emoji: "😕", en: "5 - Moderate+", pain: 5 },
+    { id: "p6", label: "6점 (많이 아픔)", emoji: "😟", en: "6 - Severe pain", pain: 6 },
+    { id: "p7", label: "7점 (상당히 아픔)", emoji: "😣", en: "7 - Strong pain", pain: 7 },
+    { id: "p8", label: "8점 (매우 심함)", emoji: "😫", en: "8 - Very severe", pain: 8, urgent: true },
+    { id: "p9", label: "9점 (극심함)", emoji: "😩", en: "9 - Intense pain", pain: 9, urgent: true },
+    { id: "p10", label: "10점 (최악의 통증)", emoji: "😭", en: "10 - Worst pain", pain: 10, urgent: true }
+  ]
+};
+
+// ---------- 상태 변수 ----------
+let curLang = "ko";
+let curCat = "아픔·불편";
+let sel = [];          // 선택된 카드 객체 배열 (최대 8개)
+let subSel = {};       // { cardId: subOptionObj }
+let painSel = null;    // 선택된 통증 점수 (0~10)
+let logs = [
+  { time: "09:12", who: "환자", text: "가래가 끈적해서 뱉기 힘들어요.", urgent: false, pain: null },
+  { time: "09:15", who: "간호사", text: "지금 가래를 뽑아 드릴게요. 잠깐 기침이 나고 불편할 수 있어요.", urgent: false, pain: null },
+  { time: "10:05", who: "환자", text: "수술 부위가 욱신거리고 아파요. 통증 점수는 10점 중 6점이에요.", urgent: false, pain: 6 }
+];
+
+// ---------- 비긴급 연속 호출 간격 및 횟수 제한기 (Urgent Bypass 지원) ----------
+const rateConfig = {
+  cooldownSec: 15,
+  maxCount: 3,
+  windowMs: 5 * 60 * 1000
+};
+let nonUrgentTimestamps = [];
+let lastNonUrgentAt = 0;
+
+function pruneNonUrgent() {
+  const cutoff = Date.now() - rateConfig.windowMs;
+  nonUrgentTimestamps = nonUrgentTimestamps.filter(ts => ts > cutoff);
+}
+
+function checkNonUrgentStatus() {
+  const now = Date.now();
+  pruneNonUrgent();
+
+  if (lastNonUrgentAt > 0) {
+    const elapsedSec = Math.floor((now - lastNonUrgentAt) / 1000);
+    if (elapsedSec < rateConfig.cooldownSec) {
+      return {
+        allowed: false,
+        reason: "cooldown",
+        waitSec: rateConfig.cooldownSec - elapsedSec
+      };
+    }
+  }
+
+  if (nonUrgentTimestamps.length >= rateConfig.maxCount) {
+    const oldest = nonUrgentTimestamps[0];
+    const waitSec = Math.max(1, Math.ceil((oldest + rateConfig.windowMs - now) / 1000));
+    return {
+      allowed: false,
+      reason: "cap",
+      waitSec
+    };
+  }
+
+  return { allowed: true };
+}
+
+function recordNonUrgentCall() {
+  const now = Date.now();
+  pruneNonUrgent();
+  nonUrgentTimestamps.push(now);
+  lastNonUrgentAt = now;
+  updateRateUI();
+}
+
+function formatSec(sec) {
+  if (sec < 60) return `${sec}초`;
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return s > 0 ? `${m}분 ${s}초` : `${m}분`;
+}
+
+function updateRateUI() {
+  const st = checkNonUrgentStatus();
+  const badge = $("rateBadge");
+  const badgeText = $("rateBadgeText");
+  const banner = $("rateBanner");
+  const bannerText = $("rateBannerText");
+  const quickNonUrgentBtns = document.querySelectorAll('.quick-btn[data-quick="네"], .quick-btn[data-quick="아니요"], .quick-btn[data-quick="잠깐만요"]');
+
+  badgeText.textContent = `일반 호출 ${nonUrgentTimestamps.length}/${rateConfig.maxCount}회 · ${rateConfig.cooldownSec}초 간격`;
+
+  if (!st.allowed) {
+    badge.classList.add("cooldown");
+    banner.classList.add("show");
+    quickNonUrgentBtns.forEach(b => b.classList.add("rate-locked"));
+    if (st.reason === "cooldown") {
+      bannerText.textContent = `방금 간호사에게 전달했어요. 확인 중이니 ${st.waitSec}초 뒤에 다시 보낼 수 있어요.`;
+    } else {
+      bannerText.textContent = `5분 내 일반 호출(${rateConfig.maxCount}회)을 모두 사용했어요. ${formatSec(st.waitSec)} 뒤에 일반 호출이 다시 열립니다.`;
+    }
+  } else {
+    badge.classList.remove("cooldown");
+    banner.classList.remove("show");
+    quickNonUrgentBtns.forEach(b => b.classList.remove("rate-locked"));
+  }
+}
+
+setInterval(updateRateUI, 500);
+
+$("cfgInterval").onchange = e => {
+  rateConfig.cooldownSec = Number(e.target.value) || 15;
+  updateRateUI();
+  toast(`비긴급 호출 최소 간격이 ${rateConfig.cooldownSec}초로 설정되었습니다.`);
+};
+
+$("cfgMaxCount").onchange = e => {
+  rateConfig.maxCount = Number(e.target.value) || 3;
+  updateRateUI();
+  toast(`5분당 비긴급 최대 호출 횟수가 ${rateConfig.maxCount}회로 설정되었습니다.`);
+};
+
+$("cfgResetBtn").onclick = () => {
+  nonUrgentTimestamps = [];
+  lastNonUrgentAt = 0;
+  updateRateUI();
+  toast("비긴급 호출 제한 카운트와 대기 시간이 초기화되었습니다.");
+};
+
+// ---------- 유틸리티 ----------
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+function nowTime() {
+  const d = new Date();
+  return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+}
+
+function speak(text, langCode = "ko-KR") {
+  if (!("speechSynthesis" in window) || !text) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = langCode;
+    u.rate = 0.95;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
+function josa(word, a, b) {
+  if (!word) return a;
+  const c = word.charCodeAt(word.length - 1);
+  if (c < 0xac00 || c > 0xd7a3) return a;
+  return (c - 0xac00) % 28 > 0 ? a : b;
+}
+
+// ---------- 탭 전환 ----------
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    btn.classList.add("active");
+    $(btn.dataset.tab).classList.add("active");
+    if (btn.dataset.tab === "logView") renderLogs();
+  };
+});
+
+// ---------- 언어 선택 ----------
+document.querySelectorAll(".lang-chip").forEach(chip => {
+  chip.onclick = () => {
+    document.querySelectorAll(".lang-chip").forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    curLang = chip.dataset.lang;
+    document.querySelectorAll(".quick-btn").forEach(qb => {
+      const k = qb.dataset.quick;
+      const label = LANGS[curLang].quick[k] || k;
+      if (k === "도와주세요") {
+        qb.innerHTML = `<span class="emoji">🚨</span> ${label}`;
+      } else {
+        qb.textContent = label;
+      }
+    });
+    renderCards();
+    toast(`${LANGS[curLang].name} 모드로 전환되었습니다.`);
+  };
+});
+
+// ---------- 빠른 응답 버튼 (비긴급 제한 + 긴급 우회 적용) ----------
+document.querySelectorAll(".quick-btn").forEach(btn => {
+  btn.onclick = () => {
+    const koText = btn.dataset.quick;
+    const isUrgent = koText === "도와주세요";
+
+    if (!isUrgent) {
+      const st = checkNonUrgentStatus();
+      if (!st.allowed) {
+        updateRateUI();
+        toast(
+          st.reason === "cooldown"
+            ? `잠시만요! ${st.waitSec}초 뒤에 다시 보낼 수 있어요. (급하면 🚨 도와주세요)`
+            : `5분 내 일반 호출 한도(${rateConfig.maxCount}회)를 초과했어요. (${formatSec(st.waitSec)} 후 가능)`
+        );
+        return;
+      }
+      recordNonUrgentCall();
+    }
+
+    speak(koText, "ko-KR");
+    addLog("환자", koText, isUrgent, null);
+    if (isUrgent) {
+      showUrgent("환자가 [🚨 도와주세요] 긴급 호출을 눌렀습니다! (제한 우회 즉시 전달)");
+    }
+    toast(`간호사에게 전달됨: "${koText}"`);
+  };
+});
+
+function showUrgent(msg) {
+  $("urgentText").textContent = msg;
+  $("urgentBanner").classList.add("show");
+}
+$("urgentClose").onclick = () => $("urgentBanner").classList.remove("show");
+
+// ---------- 카테고리 & 카드 렌더링 ----------
+function renderCats() {
+  const box = $("catList");
+  box.innerHTML = "";
+  Object.keys(DATA).forEach(cat => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "cat-btn gaze-target" + (cat === curCat ? " active" : "");
+    b.textContent = cat;
+    b.onclick = () => {
+      curCat = cat;
+      $("subPanel").classList.remove("show");
+      renderCats();
+      renderCards();
+    };
+    box.appendChild(b);
+  });
+}
+
+function renderCards() {
+  const grid = $("cardsGrid");
+  grid.innerHTML = "";
+  (DATA[curCat] || []).forEach(item => {
+    const isSel = sel.some(s => s.id === item.id);
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "pic-card gaze-target" + (isSel ? " selected" : "") + (item.urgent ? " urgent-card" : "");
+    card.innerHTML = `
+      ${item.subs ? '<span class="pic-badge">세부 선택</span>' : ""}
+      <div class="pic-emoji emoji">${item.emoji}</div>
+      <div class="pic-label">${item.label}</div>
+      ${curLang !== "ko" ? `<div class="pic-sub-lang">${item.en}</div>` : ""}
+    `;
+    card.onclick = () => toggleCard(item);
+    grid.appendChild(card);
+  });
+}
+
+function toggleCard(item) {
+  const idx = sel.findIndex(s => s.id === item.id);
+  if (idx >= 0) {
+    sel.splice(idx, 1);
+    delete subSel[item.id];
+    if (item.pain !== undefined) painSel = null;
+    $("subPanel").classList.remove("show");
+  } else {
+    if (sel.length >= 8) {
+      toast("그림 카드는 최대 8개까지 선택할 수 있어요.");
+      return;
+    }
+    if (item.pain !== undefined) {
+      sel = sel.filter(s => s.pain === undefined);
+      painSel = item.pain;
+    }
+    sel.push(item);
+    if (item.subs) openSubPanel(item);
+    else $("subPanel").classList.remove("show");
+  }
+  renderTray();
+  renderCards();
+}
+
+function openSubPanel(item) {
+  $("subTitle").textContent = `[${item.label}] 구체적인 상태를 선택하세요`;
+  const grid = $("subGrid");
+  grid.innerHTML = "";
+  item.subs.forEach(sub => {
+    const b = document.createElement("button");
+    b.type = "button";
+    const active = subSel[item.id] && subSel[item.id].label === sub.label;
+    b.className = "sub-item gaze-target" + (active ? " selected" : "") + (sub.urgent ? " urgent-sub" : "");
+    b.textContent = sub.label;
+    b.onclick = () => {
+      if (active) delete subSel[item.id];
+      else subSel[item.id] = sub;
+      openSubPanel(item);
+      renderTray();
+    };
+    grid.appendChild(b);
+  });
+  $("subPanel").classList.add("show");
+}
+$("subClose").onclick = () => $("subPanel").classList.remove("show");
+
+function renderTray() {
+  const wrap = $("chipsWrap");
+  $("selCount").textContent = `${sel.length} / 8개 선택됨`;
+  if (!sel.length) {
+    wrap.innerHTML = '<span style="color:#94a3b8;font-size:0.88rem;">아래에서 그림 카드를 눌러 주세요</span>';
+    return;
+  }
+  wrap.innerHTML = "";
+  sel.forEach(item => {
+    const chip = document.createElement("span");
+    chip.className = "sel-chip gaze-target";
+    chip.innerHTML = `<span class="emoji">${item.emoji}</span> ${item.label} ×`;
+    chip.onclick = () => toggleCard(item);
+    wrap.appendChild(chip);
+
+    if (subSel[item.id]) {
+      const sc = document.createElement("span");
+      sc.className = "sel-chip sub gaze-target";
+      sc.textContent = "↳ " + subSel[item.id].label + " ×";
+      sc.onclick = () => {
+        delete subSel[item.id];
+        renderTray();
+        if ($("subPanel").classList.contains("show")) openSubPanel(item);
+      };
+      wrap.appendChild(sc);
+    }
+  });
+}
+
+$("clearBtn").onclick = () => {
+  sel = [];
+  subSel = {};
+  painSel = null;
+  $("ptFreeIn").value = "";
+  $("subPanel").classList.remove("show");
+  $("candSection").classList.remove("show");
+  renderTray();
+  renderCards();
+};
+
+// ---------- 규칙 기반 문장 생성기 (오프라인·환각 차단 모드) ----------
+function localSentence() {
+  const free = $("ptFreeIn").value.trim();
+  const parts = [];
+  const enParts = [];
+  let urgent = false;
+
+  const bodyParts = sel.filter(s => DATA["몸 부위"].some(b => b.id === s.id) && !subSel[s.id]);
+  const hasPainCard = sel.some(s => s.id === "pain");
+
+  sel.forEach(item => {
+    if (item.urgent) urgent = true;
+    if (subSel[item.id]) {
+      parts.push(subSel[item.id].ko);
+      enParts.push(subSel[item.id].en);
+      if (subSel[item.id].urgent) urgent = true;
+      return;
+    }
+    if (item.pain !== undefined) {
+      parts.push(`통증 점수는 10점 중 ${item.pain}점이에요`);
+      enParts.push(`Pain score is ${item.pain} out of 10`);
+      if (item.pain >= 8) urgent = true;
+      return;
+    }
+    if (item.id === "pain" && bodyParts.length) {
+      const names = bodyParts.map(b => b.label).join(", ");
+      const last = bodyParts[bodyParts.length - 1].label;
+      parts.push(`${names}${josa(last, "이", "가")} 아파요`);
+      enParts.push(`My ${bodyParts.map(b => b.en.toLowerCase()).join(", ")} hurts`);
+      if (bodyParts.some(b => b.id === "chest")) urgent = true;
+      return;
+    }
+    if (hasPainCard && bodyParts.some(b => b.id === item.id)) return;
+    parts.push(item.label);
+    enParts.push(item.en);
+  });
+
+  if (free) {
+    parts.push(free);
+    enParts.push(free);
+    if (/숨|가슴|흉통|튜브|피|출혈|어지|실신/.test(free)) urgent = true;
+  }
+
+  let koSent = parts.join(". ").replace(/\.\./g, ".");
+  if (koSent && !/[.?!]$/.test(koSent)) koSent += ".";
+  let ptSent = curLang === "ko" ? koSent : enParts.join(". ") + (enParts.length ? "." : "");
+
+  const cands = [{ ko: koSent, pt: ptSent }];
+  if (sel.length === 2 && sel.some(s => s.id === "water")) {
+    cands.push({
+      ko: "물은 마시지 않고 입술만 적셔주세요.",
+      pt: curLang === "ko" ? "물은 마시지 않고 입술만 적셔주세요." : "I don't want to drink water, just moisten my lips."
+    });
+  }
+  return { candidates: cands, urgent };
+}
+
+// ---------- Dynamic Gemini API Auto-Discovery & Fallback ----------
+const DEFAULT_FALLBACK_MODELS = [
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite",
+  "gemini-4-hydrogen",
+  "gemini-3.6-flash",
+  "gemini-2.5-flash"
+];
+
+let KEY = "";
+let MODEL = "gemini-3.5-flash-lite";
+let VERIFIED_MODELS = [];
+
+try {
+  KEY = sessionStorage.getItem("ttt-key") || "";
+  MODEL = sessionStorage.getItem("ttt-model") || MODEL;
+  VERIFIED_MODELS = JSON.parse(sessionStorage.getItem("ttt-verified-models") || "[]");
+} catch (e) {}
+
+function setAI() {
+  const e = $("aiState");
+  if (KEY) {
+    e.textContent = `AI 연결됨 (${MODEL})`;
+    e.classList.add("on");
+  } else {
+    e.textContent = "기본 문장 모드 · AI 연결하기";
+    e.classList.remove("on");
+  }
+}
+
+async function discoverModels(apiKey, preferredModel) {
+  const candidates = [];
+  if (preferredModel) candidates.push(preferredModel.trim());
+
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
+    if (res.ok) {
+      const data = await res.json();
+      const discovered = (data.models || [])
+        .filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
+        .map(m => (m.name || "").replace(/^models\//, ""))
+        .filter(name => {
+          const low = name.toLowerCase();
+          const isTargetFamily = low.includes("flash") || low.includes("hydrogen");
+          const isExcluded = ["audio", "image", "tts", "embedding", "aqa", "vision"].some(ex => low.includes(ex));
+          return isTargetFamily && !isExcluded;
+        });
+      candidates.push(...discovered);
+    }
+  } catch (e) {}
+
+  candidates.push(...DEFAULT_FALLBACK_MODELS);
+  return [...new Set(candidates.filter(Boolean))];
+}
+
+async function callGeminiOnce(modelName, prompt, json) {
+  const ctl = new AbortController();
+  const to = setTimeout(() => ctl.abort(), 22000);
+  try {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modelName)}:generateContent?key=${encodeURIComponent(KEY)}`,
+      {
+        method: "POST",
+        signal: ctl.signal,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: json
+            ? { responseMimeType: "application/json", temperature: 0.2 }
+            : { temperature: 0.2 }
+        })
+      }
+    );
+    const d = await r.json();
+    if (!r.ok) {
+      const msg = (d.error && d.error.message) || ("HTTP " + r.status);
+      const err = new Error(msg);
+      err.status = r.status;
+      throw err;
+    }
+    return (d.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
+  } finally {
+    clearTimeout(to);
+  }
+}
+
+async function gemini(prompt, json) {
+  if (!KEY) throw new Error("no ai");
+  const modelList = [...new Set([MODEL, ...VERIFIED_MODELS, ...DEFAULT_FALLBACK_MODELS].filter(Boolean))];
+  let lastErr = null;
+
+  for (const m of modelList) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await callGeminiOnce(m, prompt, json);
+        if (m !== MODEL) {
+          MODEL = m;
+          try { sessionStorage.setItem("ttt-model", m); } catch (e) {}
+          setAI();
+        }
+        return res;
+      } catch (e) {
+        lastErr = e;
+        if (e.status === 400 || e.status === 403) throw e;
+        if (e.status === 404) break; // 존재하지 않는 모델이면 즉시 다음 모델로 이동
+        await new Promise(r => setTimeout(r, 1100)); // 503/429 일시 과부하 시 1.1초 대기 후 재시도
+      }
+    }
+  }
+  throw lastErr || new Error("연결 실패");
+}
+
+async function askJSON(prompt) {
+  const t = await gemini(prompt, true);
+  const m = t.match(/\{[\s\S]*\}/);
+  if (!m) throw new Error("format");
+  return JSON.parse(m[0]);
+}
+
+$("aiState").onclick = () => {
+  $("keyIn").value = KEY;
+  $("modelIn").value = MODEL;
+  $("keyMsg").textContent = "";
+  $("keyDlg").classList.add("show");
+  $("keyIn").focus();
+};
+$("keyClose").onclick = () => $("keyDlg").classList.remove("show");
+$("keyOff").onclick = () => {
+  KEY = "";
+  VERIFIED_MODELS = [];
+  try {
+    sessionStorage.removeItem("ttt-key");
+    sessionStorage.removeItem("ttt-verified-models");
+  } catch (e) {}
+  setAI();
+  $("keyMsg").textContent = "연결을 끊었어요. 기본 문장 모드로 작동해요.";
+};
+
+$("keySave").onclick = async () => {
+  const k = $("keyIn").value.trim();
+  const preferred = $("modelIn").value.trim() || "gemini-3.5-flash-lite";
+  if (!k) {
+    $("keyMsg").textContent = "API 키를 붙여 넣어 주세요.";
+    return;
+  }
+  const oldK = KEY, oldM = MODEL, oldV = [...VERIFIED_MODELS];
+  KEY = k;
+  $("keyMsg").textContent = "ListModels 조회 및 사용 가능한 모델 검증 중…";
+
+  try {
+    const candidateModels = await discoverModels(KEY, preferred);
+    const working = [];
+    let lastErr = null;
+
+    for (const m of candidateModels) {
+      $("keyMsg").textContent = `모델 연결 테스트 중: ${m} …`;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          await callGeminiOnce(m, "'확인'이라고만 답해.", false);
+          working.push(m);
+          break;
+        } catch (e) {
+          lastErr = e;
+          if (e.status === 400 || e.status === 403) throw e;
+          if (e.status === 404) break;
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+      if (working.length >= 2) break; // 주 모델 + 예비 1개 검증 완료 시 신속 종료
+    }
+
+    if (!working.length) {
+      throw lastErr || new Error("사용 가능한 모델을 찾지 못했습니다.");
+    }
+
+    MODEL = working[0];
+    VERIFIED_MODELS = working;
+    $("modelIn").value = MODEL;
+
+    try {
+      sessionStorage.setItem("ttt-key", KEY);
+      sessionStorage.setItem("ttt-model", MODEL);
+      sessionStorage.setItem("ttt-verified-models", JSON.stringify(VERIFIED_MODELS));
+    } catch (e) {}
+
+    setAI();
+    $("keyMsg").textContent = `연결 성공! (적용 모델: ${MODEL})`;
+    setTimeout(() => $("keyDlg").classList.remove("show"), 900);
+  } catch (e) {
+    KEY = oldK;
+    MODEL = oldM;
+    VERIFIED_MODELS = oldV;
+    setAI();
+    $("keyMsg").textContent = "연결 실패: " + e.message;
+  }
+};
+setAI();
+
+// ---------- 문장 만들기 실행 ----------
+$("makeBtn").onclick = async () => {
+  const free = $("ptFreeIn").value.trim();
+  if (!sel.length && !free) {
+    toast("그림 카드를 누르거나 말을 먼저 적어 주세요.");
+    return;
+  }
+
+  $("makeBtn").disabled = true;
+  $("makeBtn").textContent = "문장 생성 중…";
+
+  let result = null;
+  if (KEY) {
+    const picked = sel.map(s => subSel[s.id] ? `${s.label}(세부: ${subSel[s.id].ko})` : s.label);
+    const prompt = `너는 중환자실 및 병동에서 기관삽관, 기관절개, 갑상선·두경부 수술 후 발성 제한 등으로 말하기 어려운 환자의 의사소통을 돕는 보조 AI다.
+환자 입력:
+- 선택한 항목: ${picked.join(", ") || "없음"}
+- 자유 입력 텍스트: ${free || "없음"}
+- 환자 확인 언어: ${LANGS[curLang].name}
+
+규칙:
+1. 선택한 항목과 입력 텍스트의 의미만 사용하고 새로운 증상이나 의학적 진단을 임의로 추가하지 않는다.
+2. 세부 옵션이 있는 경우 상위 카테고리명을 중복 나열하지 말고 구체적 세부 상태 중심으로 자연스러운 1~2개의 해요체 한국어 문장(ko)을 만든다.
+3. 환자 확인용 문장(pt)은 ${LANGS[curLang].name}로 임상 문맥과 동음이의어를 정확히 의역한다.
+4. 해석이 모호하면 문장 후보를 최대 3개 제시한다.
+5. 호흡곤란, 가슴 통증, 튜브 불편·이탈, 객혈(피 섞인 가래), 수술 부위 출혈 의심, 소변줄 통증/누출, 통증 8점 이상이면 urgent를 true로 표시한다.
+6. 반드시 JSON만 출력한다: {"candidates":[{"ko":"한국어 문장","pt":"환자 언어 문장"}],"urgent":false}`;
+
+    try {
+      result = await askJSON(prompt);
+    } catch (e) {
+      toast("AI 응답 지연으로 오프라인 안전 문장 모드로 전환했어요.");
+      result = localSentence();
+    }
+  } else {
+    result = localSentence();
+  }
+
+  $("makeBtn").disabled = false;
+  $("makeBtn").innerHTML = '<span class="emoji">✨</span> 문장 만들기';
+
+  renderCandidates(result);
+};
+
+function renderCandidates(res) {
+  const list = $("candList");
+  list.innerHTML = "";
+  const isUrgent = !!res.urgent;
+
+  if (isUrgent) {
+    showUrgent("긴급 임상 징후가 포함된 의사표현입니다 — [✓ OK] 시 제한 없이 즉시 전달됩니다!");
+  }
+
+  (res.candidates || []).forEach(c => {
+    const card = document.createElement("div");
+    card.className = "cand-card" + (isUrgent ? " urgent-cand" : "");
+    card.innerHTML = `
+      <div class="cand-texts">
+        <div class="cand-pt">${isUrgent ? '<span class="emoji">🚨</span> ' : ""}${c.pt || c.ko}</div>
+        ${curLang !== "ko" ? `<div class="cand-ko">간호사 전달 한국어: ${c.ko}</div>` : ""}
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ok gaze-target" type="button">✓ OK</button>
+      </div>
+    `;
+    card.querySelector(".btn-ok").onclick = () => {
+      if (!isUrgent) {
+        const st = checkNonUrgentStatus();
+        if (!st.allowed) {
+          updateRateUI();
+          toast(
+            st.reason === "cooldown"
+              ? `잠시만요! ${st.waitSec}초 뒤에 다시 보낼 수 있어요. (긴급 증상은 즉시 전달됩니다)`
+              : `5분 내 일반 호출 한도(${rateConfig.maxCount}회)를 초과했어요. (${formatSec(st.waitSec)} 후 가능)`
+          );
+          return;
+        }
+        recordNonUrgentCall();
+      }
+
+      speak(c.ko, "ko-KR");
+      addLog("환자", c.ko, isUrgent, painSel);
+      if (isUrgent) {
+        showUrgent(`🚨 긴급 환자 호소: "${c.ko}" (제한 우회 즉시 전달됨)`);
+      }
+
+      $("candSection").classList.remove("show");
+      sel = [];
+      subSel = {};
+      painSel = null;
+      $("ptFreeIn").value = "";
+      $("subPanel").classList.remove("show");
+      renderTray();
+      renderCards();
+      toast(isUrgent ? "긴급 의사표현이 즉시 간호사에게 전달되었어요!" : "간호사에게 전달되고 기록에 저장되었어요.");
+    };
+    list.appendChild(card);
+  });
+  $("candSection").classList.add("show");
+}
+
+$("retryBtn").onclick = () => $("candSection").classList.remove("show");
+
+// ---------- 간호사 모드 ----------
+document.querySelectorAll(".preset-btn").forEach(b => {
+  b.onclick = () => { $("nrInput").value = b.textContent; };
+});
+
+$("nrConvBtn").onclick = async () => {
+  const raw = $("nrInput").value.trim();
+  const target = $("nrLang").value;
+  if (!raw) {
+    toast("환자에게 전달할 말을 먼저 입력해 주세요.");
+    return;
+  }
+
+  $("nrConvBtn").disabled = true;
+  $("nrConvBtn").textContent = "변환 중…";
+
+  let out = null;
+  if (KEY) {
+    const prompt = `너는 중환자실·병동에서 말하기 어려운 환자에게 간호사의 설명을 쉽게 전달하는 의료 통역·소통 보조자다.
+원문: "${raw}"
+목표 언어: ${LANGS[target].name}
+규칙:
+1. 어려운 의료 용어를 쉬운 일상 표현(해요체)으로 바꾼다(simple).
+2. 관련 직관적 이모지 1~2개를 고른다(emoji).
+3. 한국어 동음이의어('눈이 부시다' 등)를 임상 문맥에 맞게 의역해 목표 언어로 번역한다(translation).
+4. 간호사가 의미를 재확인할 수 있도록 translation을 다시 한국어로 역번역한다(back).
+JSON 출력: {"simple":"쉬운 한국어","emoji":["💊"],"translation":"번역문","back":"한국어 역번역"}`;
+    try {
+      out = await askJSON(prompt);
+    } catch (e) {}
+  }
+
+  if (!out) {
+    const dict = {
+      en: "We will take good care of you right away. Please stay comfortable.",
+      zh: "我们会马上为您妥善处理，请安心休息。",
+      vi: "Chúng tôi sẽ chăm sóc cho bạn ngay. Xin hãy yên tâm.",
+      ru: "Мы сейчас всё сделаем. Пожалуйста, не волнуйтесь.",
+      ja: "すぐに対応いたしますので、楽にしていてくださいね。"
+    };
+    out = {
+      simple: raw,
+      emoji: ["🩺", "💬"],
+      translation: target === "ko" ? "" : (dict[target] || raw),
+      back: target === "ko" ? "한국어 쉬운 문장 모드입니다." : `역번역 확인: ${raw}`
+    };
+  }
+
+  $("nrConvBtn").disabled = false;
+  $("nrConvBtn").textContent = "쉽게 바꾸기 · 번역";
+
+  $("nrOutEmoji").textContent = (out.emoji || ["💬"]).join(" ");
+  $("nrOutSimple").textContent = out.simple;
+  if (target !== "ko" && out.translation) {
+    $("nrOutTrans").style.display = "block";
+    $("nrOutTrans").textContent = out.translation;
+    $("nrOutBack").textContent = out.back || "";
+  } else {
+    $("nrOutTrans").style.display = "none";
+    $("nrOutBack").textContent = "환자가 한눈에 읽기 쉽도록 정리된 문장입니다.";
+  }
+
+  addLog("간호사", out.simple, false, null);
+  toast("변환 완료 및 기록에 저장되었습니다.");
+};
+
+$("nrSpeakBtn").onclick = () => {
+  const target = $("nrLang").value;
+  const txt = target !== "ko" && $("nrOutTrans").style.display !== "none"
+    ? $("nrOutTrans").textContent
+    : $("nrOutSimple").textContent;
+  speak(txt, LANGS[target].tts);
+};
+
+$("nrBigBtn").onclick = () => {
+  $("bigEmoji").textContent = $("nrOutEmoji").textContent;
+  $("bigText").textContent = $("nrOutSimple").textContent;
+  $("bigSub").textContent = $("nrOutTrans").style.display !== "none" ? $("nrOutTrans").textContent : "";
+  $("bigDlg").classList.add("show");
+};
+$("bigClose").onclick = () => $("bigDlg").classList.remove("show");
+$("bigSpeak").onclick = () => $("nrSpeakBtn").click();
+
+// ---------- 기록, 통증 그래프 및 Focus DAR 초안 ----------
+function addLog(who, text, urgent = false, pain = null) {
+  logs.push({ time: nowTime(), who, text, urgent, pain });
+  if ($("logView").classList.contains("active")) renderLogs();
+}
+
+function renderLogs() {
+  const list = $("logList");
+  list.innerHTML = "";
+  logs.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "log-item" + (item.who === "간호사" ? " nurse" : "") + (item.urgent ? " urgent" : "");
+    div.innerHTML = `
+      <div class="log-meta">
+        <span>${item.time}</span>
+        <span class="badge ${item.who === "간호사" ? "b-nr" : "b-pt"}">${item.who}</span>
+        ${item.urgent ? '<span class="badge b-ur">긴급</span>' : ""}
+      </div>
+      <div style="font-weight:700;font-size:0.94rem;">${item.text}</div>
+    `;
+    list.appendChild(div);
+  });
+  renderPainChart();
+}
+
+function renderPainChart() {
+  const svg = $("painChart");
+  const pts = logs.filter(l => typeof l.pain === "number");
+  if (!pts.length) {
+    svg.innerHTML = '<text x="180" y="60" text-anchor="middle" fill="#64748b" font-size="13">기록된 통증 점수가 없습니다</text>';
+    return;
+  }
+  const w = 360, h = 110, pad = 28;
+  const coords = pts.map((p, i) => {
+    const x = pts.length === 1 ? w / 2 : pad + (i * (w - pad * 2)) / (pts.length - 1);
+    const y = h - pad - (p.pain / 10) * (h - pad * 2);
+    return { x, y, v: p.pain, t: p.time };
+  });
+  const poly = coords.map(c => `${c.x},${c.y}`).join(" ");
+  svg.innerHTML = `
+    <line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" stroke="#cbd5e1" />
+    <polyline fill="none" stroke="#0d6e6e" stroke-width="3" points="${poly}" />
+    ${coords.map(c => `
+      <circle cx="${c.x}" cy="${c.y}" r="5" fill="${c.v >= 8 ? "#dc2626" : "#0d6e6e"}" />
+      <text x="${c.x}" y="${c.y - 9}" text-anchor="middle" font-size="11" font-weight="bold" fill="#0f172a">${c.v}점</text>
+      <text x="${c.x}" y="${h - 8}" text-anchor="middle" font-size="10" fill="#64748b">${c.t}</text>
+    `).join("")}
+  `;
+}
+
+$("clearLogBtn").onclick = () => {
+  logs = [];
+  $("darOut").value = "";
+  renderLogs();
+  toast("의사소통 기록이 초기화되었습니다.");
+};
+
+$("makeDarBtn").onclick = async () => {
+  if (!logs.length) {
+    toast("작성할 의사소통 기록이 없습니다.");
+    return;
+  }
+  $("makeDarBtn").disabled = true;
+  $("makeDarBtn").textContent = "초안 생성 중…";
+
+  const summary = logs.map(l => `[${l.time}] ${l.who}: ${l.text}${l.urgent ? " (긴급)" : ""}`).join("\n");
+  let dar = "";
+
+  if (KEY) {
+    const prompt = `너는 임상 간호기록 작성을 보조하는 AI다. 아래 의사소통 보드 기록만을 근거로 Focus DAR 형식 간호기록 초안을 작성하라.
+기록에 없는 활력징후, 검사 수치, 시행하지 않은 중재를 임의로 지어내지 말고, 확인이 필요한 부분은 [간호사 확인 필요]로 표기하라.
+기록:
+${summary}
+
+형식:
+[Focus]: 주요 간호 초점
+[Data]: 환자가 의사소통 보드로 표현한 주관적 증상 및 요구
+[Action]: 간호사가 제공한 설명 및 중재 [간호사 확인 필요]
+[Response]: 중재 후 환자 반응 및 통증/상태 변화 [간호사 확인 필요]`;
+    try {
+      dar = await gemini(prompt, false);
+    } catch (e) {}
+  }
+
+  if (!dar) {
+    const ptLines = logs.filter(l => l.who === "환자").map(l => `- (${l.time}) "${l.text}"`).join("\n") || "- 특이 표현 없음";
+    const nrLines = logs.filter(l => l.who === "간호사").map(l => `- (${l.time}) ${l.text}`).join("\n") || "- [간호사 확인 필요]";
+    dar = `[Focus]: 의사소통 제한 환자의 증상 호소 및 요구 사정\n` +
+          `[Data]: 환자가 의사소통 보드를 통해 다음과 같이 표현함.\n${ptLines}\n` +
+          `[Action]: 환자 요구 확인 및 의사소통 보드 기반 안내 시행.\n${nrLines}\n` +
+          `[Response]: 환자 의사 전달 완료 및 안심 반응 관찰됨. 추가 증상 변화 [간호사 확인 필요].`;
+  }
+
+  $("darOut").value = dar;
+  $("makeDarBtn").disabled = false;
+  $("makeDarBtn").textContent = "초안 만들기";
+  toast("Focus DAR 간호기록 초안이 생성되었습니다.");
+};
+
+$("copyDarBtn").onclick = () => {
+  const ta = $("darOut");
+  if (!ta.value.trim()) return;
+  ta.select();
+  document.execCommand("copy");
+  toast("간호기록 초안이 클립보드에 복사되었습니다.");
+};
+
+// ---------- 시선 추적 (WebGazer.js + 5점 보정 + 1.5초 원형 프로그레스 응시 클릭) ----------
+let gazeActive = false;
+let dwellTarget = null;
+let dwellStart = 0;
+let smoothX = null;
+let smoothY = null;
+const DWELL_MS = 1500;
+const CIRCUMFERENCE = 113.1; // 2 * PI * 18
+
+$("httpsClose").onclick = () => $("httpsDlg").classList.remove("show");
+$("copyCmdBtn").onclick = () => {
+  const tmp = document.createElement("textarea");
+  tmp.value = $("srvCmdText").textContent;
+  document.body.appendChild(tmp);
+  tmp.select();
+  document.execCommand("copy");
+  document.body.removeChild(tmp);
+  toast("명령어가 복사되었습니다: python -m http.server 8000");
+};
+
+$("gazeBtn").onclick = async () => {
+  if (location.protocol === "file:") {
+    $("httpsDlg").classList.add("show");
+    return;
+  }
+  if (!gazeActive) {
+    await startGaze();
+  } else {
+    stopGaze();
+  }
+};
+
+$("recalibBtn").onclick = () => {
+  if (gazeActive) openCalibration();
+};
+
+async function startGaze() {
+  if (typeof webgazer === "undefined") {
+    toast("시선 추적 엔진을 불러오는 중입니다. 잠시 후 다시 눌러 주세요.");
+    return;
+  }
+  try {
+    $("gazeBtn").innerHTML = '<span class="emoji">👁️</span> 카메라 연결 중…';
+    await webgazer
+      .setGazeListener((data) => {
+        if (!data || !gazeActive) return;
+        handleGazePoint(data.x, data.y);
+      })
+      .begin();
+
+    webgazer.showVideoPreview(true).showPredictionPoints(false);
+    gazeActive = true;
+    smoothX = null;
+    smoothY = null;
+    $("gazeBtn").innerHTML = '<span class="emoji">👁️</span> 시선 추적 ON';
+    $("gazeBtn").classList.add("gaze-on");
+    $("recalibBtn").style.display = "inline-flex";
+    $("gazeCursor").classList.add("show");
+    openCalibration();
+  } catch (e) {
+    $("gazeBtn").innerHTML = '<span class="emoji">👁️</span> 시선 추적 OFF';
+    toast("카메라 권한이 거부되었거나 웹캠을 찾을 수 없습니다.");
+  }
+}
+
+function stopGaze() {
+  gazeActive = false;
+  try { webgazer.end(); } catch (e) {}
+  $("gazeBtn").innerHTML = '<span class="emoji">👁️</span> 시선 추적 OFF';
+  $("gazeBtn").classList.remove("gaze-on");
+  $("recalibBtn").style.display = "none";
+  $("gazeCursor").classList.remove("show");
+  $("calibOverlay").classList.remove("show");
+  resetGazeRing();
+  toast("시선 추적이 종료되었습니다.");
+}
+
+function openCalibration() {
+  const ov = $("calibOverlay");
+  ov.querySelectorAll(".calib-dot").forEach(d => d.remove());
+  const points = [
+    { x: "50%", y: "50%" },
+    { x: "12%", y: "16%" },
+    { x: "88%", y: "16%" },
+    { x: "12%", y: "84%" },
+    { x: "88%", y: "84%" }
+  ];
+  let doneCount = 0;
+
+  points.forEach(pt => {
+    let clicks = 0;
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "calib-dot";
+    dot.style.left = pt.x;
+    dot.style.top = pt.y;
+    dot.textContent = "0/2";
+    dot.onclick = ev => {
+      clicks++;
+      try { webgazer.recordScreenPosition(ev.clientX, ev.clientY, "click"); } catch (e) {}
+      if (clicks >= 2 && !dot.classList.contains("done")) {
+        dot.classList.add("done");
+        dot.textContent = "✓";
+        doneCount++;
+        if (doneCount >= points.length) {
+          setTimeout(() => {
+            ov.classList.remove("show");
+            toast("시선 보정 완료! 원하는 버튼을 1.5초간 바라보면 자동 선택됩니다.");
+          }, 350);
+        }
+      } else if (clicks < 2) {
+        dot.textContent = `${clicks}/2`;
+      }
+    };
+    ov.appendChild(dot);
+  });
+
+  ov.classList.add("show");
+}
+
+$("calibCancel").onclick = () => $("calibOverlay").classList.remove("show");
+
+function resetGazeRing() {
+  dwellTarget = null;
+  const circle = $("gazeProgressCircle");
+  if (circle) circle.style.strokeDashoffset = String(CIRCUMFERENCE);
+}
+
+function handleGazePoint(rawX, rawY) {
+  if (smoothX === null) {
+    smoothX = rawX;
+    smoothY = rawY;
+  } else {
+    smoothX = smoothX * 0.65 + rawX * 0.35;
+    smoothY = smoothY * 0.65 + rawY * 0.35;
+  }
+
+  const cur = $("gazeCursor");
+  const circle = $("gazeProgressCircle");
+  cur.style.left = smoothX + "px";
+  cur.style.top = smoothY + "px";
+
+  if ($("calibOverlay").classList.contains("show")) return;
+
+  const el = document.elementFromPoint(smoothX, smoothY);
+  const clickable = el ? el.closest(".gaze-target, button") : null;
+
+  if (clickable && !clickable.disabled && !clickable.classList.contains("calib-dot")) {
+    if (dwellTarget !== clickable) {
+      dwellTarget = clickable;
+      dwellStart = performance.now();
+    } else {
+      const elapsed = performance.now() - dwellStart;
+      const ratio = Math.min(1, elapsed / DWELL_MS);
+      circle.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - ratio));
+      if (elapsed >= DWELL_MS) {
+        resetGazeRing();
+        clickable.click();
+      }
+    }
+  } else {
+    resetGazeRing();
+  }
+}
+
+// 초기 렌더링
+renderCats();
+renderCards();
+renderLogs();
+updateRateUI();
+</script>
+</body>
+</html>
