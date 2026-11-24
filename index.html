@@ -1065,7 +1065,7 @@
     <span class="sub">가상 사례 · 60대 남성 · 개심술/갑상선 수술 후 발성 제한</span>
   </div>
   <div class="top-actions">
-    <button id="gazeBtn" class="pill-btn gaze-target" data-gaze="true" type="button"><span class="emoji">👁️</span> 시선 추적</button>
+    <button id="gazeBtn" class="pill-btn gaze-target" data-gaze="true" type="button"><span class="emoji">👁️</span> 시선 추적 OFF</button>
     <button id="recalibBtn" class="pill-btn gaze-target" data-gaze="true" type="button" style="display:none;"><span class="emoji">🎯</span> 재보정</button>
     <button id="gazeStopBtn" class="pill-btn gaze-target" data-gaze="true" type="button" style="display:none;border-color:#fca5a5;color:#fecaca;"><span class="emoji">⏹️</span> 끄기</button>
     <button id="aiState" class="pill-btn gaze-target" data-gaze="true" type="button">기본 문장 모드 · AI 연결하기</button>
@@ -1121,13 +1121,13 @@
     <!-- 생성 문장 후보 확인 패널 -->
     <div id="candSection">
       <div class="cand-title">
-        <span id="candTitleText"><span class="emoji">💬</span> 이 말이 맞나요? 맞으면 [✓ OK (맞아요)]를 눌러 간호사에게 전달하세요.</span>
-        <button id="retryBtn" class="btn btn-ghost gaze-target" data-gaze="true" style="padding:6px 12px;min-height:36px;font-size:0.84rem;" type="button"><span class="emoji">🔄</span> 재선택</button>
+        <span id="candTitleText"><span class="emoji">💬</span> 이 말이 맞나요? 맞으면 [✓ OK]를 눌러 간호사에게 전달하세요.</span>
+        <button id="retryBtn" class="btn btn-ghost gaze-target" data-gaze="true" style="padding:6px 12px;min-height:36px;font-size:0.84rem;" type="button"><span class="emoji">🔄</span> 다시 선택</button>
       </div>
       <div id="candList"></div>
     </div>
 
-    <!-- 하단 6개 카테고리 탭 및 73개 그림 단어 카드 그리드 -->
+    <!-- 하단 6개 카테고리 탭 및 74개 그림 단어 카드 그리드 -->
     <div class="board-layout">
       <aside id="catList" class="cat-list"></aside>
       <div>
@@ -1143,7 +1143,7 @@
         <strong style="color:var(--navy);font-size:0.95rem;"><span class="emoji">📥</span> 최근 환자 수신 메시지</strong>
         <span id="nrIncomingTime" style="font-size:0.8rem;color:var(--muted);font-weight:700;">10:05 수신</span>
       </div>
-      <div id="nrIncomingKo" style="font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:4px;">수술 부위가 욱신거리고 아파요. 통증 점수는 10점 중 6점이에요.</div>
+      <div id="nrIncomingKo" style="font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:4px;">수술 부위가 욱신거리고 아파요. 통증은 10점 중 6점이에요.</div>
       <div id="nrIncomingPt" style="font-size:0.88rem;color:var(--teal);font-weight:700;margin-bottom:8px;"></div>
       <button id="nrIncomingSpeak" class="btn btn-primary" style="min-height:38px;padding:6px 14px;font-size:0.85rem;" type="button"><span class="emoji">🔊</span> 환자 메시지 음성 듣기</button>
     </div>
@@ -1259,7 +1259,7 @@
   </section>
 </main>
 
-<!-- 시선 추적 2가지 모드 허브 모달 (마우스 응시 시뮬레이션 제거됨) -->
+<!-- 시선 추적 2가지 모드 허브 모달 -->
 <div id="gazeHubDlg" class="modal-backdrop">
   <div class="modal-card">
     <h3><span class="emoji">👁️</span> 시선 추적 및 무접촉 입력 설정</h3>
@@ -1275,9 +1275,9 @@
     </button>
 
     <button id="modeExtBtn" class="gaze-mode-card" type="button">
-      <span class="gaze-mode-title"><span class="emoji">📱</span> (B) 외부 기기 OS 눈 추적 연동 (iPadOS 18+ · Windows 11 · Tobii)</span>
+      <span class="gaze-mode-title"><span class="emoji">📱</span> (B) 외부 기기 OS 눈 추적 연동 안내 (iPadOS 18+ · Windows 11 · Tobii)</span>
       <span class="gaze-mode-desc">
-        iPadOS 18+ 눈 추적, Windows 11 눈 제어, Tobii 전용 아이트래커와 충돌하지 않도록 웹캠 점유를 끄고, 화면 전체 버튼을 고대비·대형 응시 타겟으로 확장합니다.
+        iPadOS 18+ 눈 추적, Windows 11 시선 제어, Tobii 아이트래커와 충돌하지 않도록 웹캠 점유를 끄고, 화면 전체 버튼을 고대비·대형 응시 타겟으로 확장합니다.
       </span>
     </button>
 
@@ -1286,7 +1286,7 @@
     <div id="extGuideSection" class="os-guide-box" style="display:none;">
       <strong><span class="emoji">📘</span> 외부 / OS 기본 눈 추적기 연동 안내:</strong><br/>
       • <strong>iPadOS 18 이상 (아이패드 프로/에어):</strong> [설정] → [손쉬운 사용] → [눈 추적(Eye Tracking)] 켜기 → 드웰 제어(Dwell Control) 1.5초 설정 후 본 웹앱 사용<br/>
-      • <strong>Windows 11 / Tobii Eye Tracker:</strong> [설정] → [접근성] → [눈 제어(Eye Control)] 또는 Tobii Gaze Viewer 실행 후 본 웹앱 버튼 응시 클릭<br/>
+      • <strong>Windows 11 / Tobii Eye Tracker:</strong> [설정] → [접근성] → [시선 제어(Eye Control)] 또는 Tobii Gaze Viewer 실행 후 본 웹앱 버튼 응시 클릭<br/>
       • <strong>Android 태블릿:</strong> Google [Look to Speak] 또는 [접근성 → 카메라 스위치] 활성화 후 본 웹앱 사용
     </div>
 
@@ -1537,7 +1537,7 @@ function playToneChime(urgent = false) {
 // ---------- 초기 가상 사례 의사소통 기록 ----------
 const INITIAL_LOGS = [
   { time: "09:40", who: "간호사", text: "말씀하시기 어려우니 화면을 눌러 주세요", urgent: false, pain: null },
-  { time: "09:42", who: "환자", text: "목에 걸려 안 뱉어져요. 가래 흡인(석션).", urgent: false, pain: null },
+  { time: "09:42", who: "환자", text: "끈적해서 안 뱉어져요. 가래 뽑아 주세요.", urgent: false, pain: null },
   { time: "09:45", who: "간호사", text: "가래를 뽑겠습니다(석션). 잠시 불편할 수 있습니다", urgent: false, pain: null },
   { time: "10:05", who: "환자", text: "수술 부위가 욱신거리고 아파요. 통증은 10점 중 6점이에요.", urgent: false, pain: 6 },
   { time: "10:07", who: "간호사", text: "진통제를 투여하겠습니다", urgent: false, pain: null }
@@ -1604,7 +1604,7 @@ const UI_I18N = {
   clearBtn: { ko: "지우기", en: "Clear", zh: "清除", vi: "Xóa", ru: "Очистить", ja: "消去" },
   makeBtn:  { ko: "문장 만들기", en: "Create Sentence", zh: "生成句子", vi: "Tạo câu", ru: "Составить фразу", ja: "文章を作成" },
   candTitle: {
-    ko: "이 말이 맞나요? 맞으면 [✓ OK (맞아요)]를 눌러 간호사에게 전달하세요.",
+    ko: "이 말이 맞나요? 맞으면 [✓ OK]를 눌러 간호사에게 전달하세요.",
     en: "Is this what you mean? Tap [✓ OK] to send to the nurse.",
     zh: "您是这个意思吗？确认请按 [✓ OK] 发送给护士。",
     vi: "Có đúng ý bạn không? Nhấn [✓ OK] để gửi cho điều dưỡng.",
@@ -1612,8 +1612,8 @@ const UI_I18N = {
     ja: "この内容で合っていますか？[✓ OK] を押して看護師に伝えてください。"
   },
   readBtn:  { ko: "읽기", en: "Listen", zh: "朗读", vi: "Nghe", ru: "Озвучить", ja: "読み上げ" },
-  okBtn:    { ko: "✓ OK (맞아요)", en: "✓ OK (Confirm)", zh: "✓ OK (正确)", vi: "✓ OK (Đúng)", ru: "✓ OK (Верно)", ja: "✓ OK (はい)" },
-  retryBtn: { ko: "재선택", en: "Re-select", zh: "重新选择", vi: "Chọn lại", ru: "Выбрать заново", ja: "選び直す" },
+  okBtn:    { ko: "✓ OK", en: "✓ OK", zh: "✓ OK", vi: "✓ OK", ru: "✓ OK", ja: "✓ OK" },
+  retryBtn: { ko: "다시 선택", en: "Re-select", zh: "重新选择", vi: "Chọn lại", ru: "Выбрать заново", ja: "選び直す" },
   nrLabel: {
     ko: "간호사 전달 한국어:",
     en: "Korean for Nurse:",
@@ -1687,7 +1687,7 @@ const NURSE_PHRASES = [
       ru: "Здравствуйте.",
       ja: "こんにちは。"
     },
-    back: { en: "안녕하세요.", zh: "안녕하세요.", vi: "안녕하세요.", ru: "안녕하세요.", ja: "안녕하세요." }
+    back: { en: "안녕하세요", zh: "안녕하세요", vi: "안녕하세요", ru: "안녕하세요", ja: "안녕하세요" }
   },
   {
     cat: "greet", emoji: ["🩺", "💬"],
@@ -2200,11 +2200,11 @@ const NURSE_PHRASES = [
       ru: "Не вставайте самостоятельно, обязательно позовите нас, если захотите в туалет.",
       ja: "一人で起き上がらず、トイレに行くときは必ず呼んでください。"
     },
-    back: { en: "혼자 일어나지 마시고 화장실 가실 때 꼭 불러주세요.", zh: "혼자 일어나지 마시고 화장실 갈 때 꼭 불러주세요.", vi: "혼자 일어나지 마시고 화장실 갈 때 불러주세요.", ru: "혼자 일어나지 마시고 화장실 갈 때 불러주세요.", ja: "혼자 일어나지 마시고 화장실 갈 때는 반드시 불러주세요." }
+    back: { en: "혼자 일어나지 마시고 화장실 갈 때 꼭 불러주세요.", zh: "혼자 일어나지 마시고 화장실 갈 때 꼭 불러주세요.", vi: "혼자 일어나지 마시고 화장실 갈 때 불러주세요.", ru: "혼자 일어나지 마시고 화장실 갈 때 불러주세요.", ja: "혼자 일어나지 마시고 화장실 갈 때는 반드시 불러주세요." }
   }
 ];
 
-// ---------- 6개 카테고리, 73개 임상 그림 카드 & 2단계 세부 분기 (6개국어 완전 번역) ----------
+// ---------- 6개 카테고리, 74개 임상 그림 카드 & 2단계 세부 분기 (6개국어 완전 번역) ----------
 const DATA = {
   // 1. 아픔·불편 (18 cards)
   pain: [
@@ -2231,75 +2231,24 @@ const DATA = {
       id: "p_sputum", emoji: "🫁",
       labels: { ko: "가래가 있어요", en: "Phlegm / Sputum", zh: "有痰", vi: "Có đờm", ru: "Мокрота", ja: "痰があります" },
       subs: [
-        { labels: { ko: "목에 걸려 안 뱉어져요", en: "Stuck in throat, can't spit out", zh: "卡在喉咙里咳不出来", vi: "Vướng ở cổ không khạc ra được", ru: "Застряла в горле, не откашливается", ja: "喉に絡んで出せません" } },
-        { labels: { ko: "양이 많고 끈적해요", en: "Thick and excessive phlegm", zh: "痰多且粘稠", vi: "Đờm nhiều và đặc quánh", ru: "Много густой мокроты", ja: "量が多くて粘り気があります" } },
-        { urgent: true, labels: { ko: "피가 섞여 나와요(객혈)", en: "Blood in sputum (Hemoptysis)", zh: "痰中带血（咯血）", vi: "Đờm có lẫn máu (Ho ra máu)", ru: "Кровь в мокроте (кровохарканье)", ja: "痰に血が混じっています（喀血）" } },
-        { labels: { ko: "노랗고 진해요", en: "Thick yellow phlegm", zh: "痰液发黄浓稠", vi: "Đờm đặc màu vàng", ru: "Густая желтая мокрота", ja: "黄色くて濃いです" } }
+        { labels: { ko: "일반 가래가 있어요", en: "Regular phlegm / sputum", zh: "普通痰液", vi: "Có đờm thông thường", ru: "Обычная мокрота", ja: "普通の痰があります" } },
+        { labels: { ko: "끈적해서 안 뱉어져요", en: "Thick and sticky, can't cough out", zh: "痰很粘稠咳不出来", vi: "Đờm đặc quánh không khạc ra được", ru: "Густая мокрота, не откашливается", ja: "粘り気が強くて出せません" } },
+        { urgent: true, labels: { ko: "피가 섞여 나와요", en: "Blood in sputum (Hemoptysis)", zh: "痰中带血（咯血）", vi: "Đờm có lẫn máu (Ho ra máu)", ru: "Кровь в мокроте (кровохарканье)", ja: "痰に血が混じっています" } }
       ]
     },
     {
       id: "p_tube", emoji: "🩺", urgent: true,
-      labels: { ko: "튜브·배액관 불편", en: "Tube / Drain discomfort", zh: "插管 / 引流管不适", vi: "Khó chịu ống thở / dẫn lưu", ru: "Дискомфорт от трубки / дренажа", ja: "チューブ・排液管が不快です" },
+      labels: { ko: "튜브가 불편해요", en: "Tube discomfort", zh: "插管不适", vi: "Khó chịu ống thở / ống thông", ru: "Дискомфорт от трубки", ja: "チューブが不快です" },
       subs: [
-        { urgent: true, labels: { ko: "목 기관 튜브가 불편해요", en: "Tracheal / airway tube is uncomfortable", zh: "气管插管很不舒服", vi: "Ống nội khí quản ở cổ rất khó chịu", ru: "Трубка в горле доставляет дискомфорт", ja: "喉の気管チューブが不快です" } },
-        { labels: { ko: "코줄(L-tube)이 아파요", en: "Nasal feeding tube (L-tube) hurts", zh: "鼻胃管疼痛", vi: "Ống thông mũi dạ dày (L-tube) bị đau", ru: "Назогастральный зонд причиняет боль", ja: "鼻の管（胃管）が痛いです" } },
-        { labels: { ko: "피주머니(JP/배액관)가 당겨요", en: "Surgical drain (JP) tube is pulling", zh: "引流管(JP)被拉扯", vi: "Ống dẫn lưu (JP) bị căng kéo", ru: "Дренажная трубка (JP) тянет", ja: "排液管（JPドレーン）が引っ張られます" } },
-        { labels: { ko: "산소줄이 빠지거나 불편해요", en: "Oxygen tube slipped off or uncomfortable", zh: "氧气管脱落或不舒服", vi: "Dây oxy bị tuột hoặc khó chịu", ru: "Кислородная трубка слетела или мешает", ja: "酸素チューブが外れたか不快です" } }
-      ]
-    },
-    {
-      id: "p_iv", emoji: "💉",
-      labels: { ko: "주사 부위가 불편해요", en: "IV / Injection site issue", zh: "输液 / 针口部位不适", vi: "Khó chịu chỗ tiêm truyền", ru: "Дискомфорт в месте укола", ja: "点滴・注射部位が不快です" },
-      subs: [
-        { labels: { ko: "주사 부위가 붓고 딱딱해요(침윤 의심)", en: "IV site is swollen and hard (Infiltration)", zh: "针口部位肿胀发硬（疑似渗液）", vi: "Chỗ tiêm sưng và cứng (Nghi thoát mạch)", ru: "Место укола опухло и затвердело (инфильтрация)", ja: "点滴部位が腫れて硬いです（漏れ・浸潤の疑い）" } },
-        { labels: { ko: "바늘 부위가 찌르듯이 아파요", en: "Sharp stinging pain at needle site", zh: "针头部位有刺痛感", vi: "Đau nhói như kim châm tại chỗ tiêm", ru: "Острая колющая боль в месте иглы", ja: "針の刺さっている所がチクチク痛みます" } },
-        { labels: { ko: "빨갛고 열감이 있어요(정맥염 의심)", en: "Red and warm around IV (Phlebitis)", zh: "针口发红发热（疑似静脉炎）", vi: "Đỏ và nóng quanh chỗ truyền (Nghi viêm tĩnh mạch)", ru: "Покраснение и жар у вены (флебит)", ja: "赤くなって熱を持っています（静脈炎の疑い）" } },
-        { labels: { ko: "수액이 안 들어가고 피가 역류해요", en: "IV stopped dripping / blood backing up", zh: "输液不滴且管内有回血", vi: "Dịch truyền không chảy và máu trào ngược", ru: "Капельница не капает, кровь идет в трубку", ja: "点滴が落ちずチューブに血が逆流しています" } },
-        { labels: { ko: "고정 테이프가 떨어지거나 가려워요", en: "IV tape is loose or itchy", zh: "固定胶布脱落或发痒", vi: "Băng dính cố định bị bong hoặc ngứa", ru: "Пластырь отклеился или чешется", ja: "固定テープが剥がれたか、かゆいです" } }
-      ]
-    },
-    {
-      id: "p_elim", emoji: "🚻",
-      labels: { ko: "배설·대소변", en: "Elimination / Bathroom", zh: "排泄 / 大小便", vi: "Bài tiết / Đại tiểu tiện", ru: "Туалет / Выделения", ja: "排泄・大小便" },
-      subs: [
-        { labels: { ko: "소변 보고 싶어요", en: "I want to urinate", zh: "我想小便", vi: "Tôi muốn đi tiểu", ru: "Хочу помочиться", ja: "おしっこがしたいです" } },
-        { labels: { ko: "대변 보고 싶어요", en: "I want to have a bowel movement", zh: "我想大便", vi: "Tôi muốn đi đại tiện", ru: "Хочу в туалет по-большому", ja: "便がしたいです" } },
-        { labels: { ko: "방금 소변을 봤어요(I/O 확인)", en: "I just urinated (Check I/O)", zh: "刚解完小便（请核对尿量）", vi: "Tôi vừa đi tiểu xong (Kiểm tra I/O)", ru: "Только что помочился (учет диуреза)", ja: "先ほど尿が出ました（尿量確認）" } },
-        { labels: { ko: "방금 대변을 봤어요(패드 교체)", en: "I just had a bowel movement (Change pad)", zh: "刚解完大便（请更换护理垫）", vi: "Tôi vừa đi đại tiện xong (Thay miếng lót)", ru: "Был стул (замена пеленки)", ja: "先ほど便が出ました（パッド交換）" } },
-        { urgent: true, labels: { ko: "소변줄(도뇨관) 주변이 아프거나 새요", en: "Urinary catheter hurts or is leaking", zh: "导尿管周围疼痛或漏尿", vi: "Ống thông tiểu bị đau hoặc rò rỉ", ru: "Мочевой катетер болит или подтекает", ja: "尿道カテーテルの周りが痛むか漏れています" } },
-        { labels: { ko: "방귀(가스)가 나왔어요", en: "I passed gas", zh: "排气（放屁）了", vi: "Tôi đã xì hơi (trung tiện)", ru: "Отошли газы", ja: "ガス（おなら）が出ました" } }
-      ]
-    },
-    {
-      id: "p_dizzy", emoji: "💫", urgent: true,
-      labels: { ko: "어지러워요", en: "Dizzy / Lightheaded", zh: "头晕", vi: "Chóng mặt", ru: "Кружится голова", ja: "めまいがします" },
-      subs: [
-        { urgent: true, labels: { ko: "눈앞이 핑 돌고 쓰러질 것 같아요", en: "Room spinning, feel like fainting", zh: "眼前发黑旋转，快要晕倒", vi: "Hoa mắt chóng mặt, sắp ngất xỉu", ru: "Все кружится, сейчас упаду в обморок", ja: "目の前が回って倒れそうです" } },
-        { labels: { ko: "일어날 때 살짝 어지러워요", en: "Slightly dizzy when sitting up", zh: "坐起来时有点头晕", vi: "Hơi chóng mặt khi ngồi dậy", ru: "Легкое головокружение при подъеме", ja: "起き上がるときに少しめまいがします" } },
-        { labels: { ko: "머리가 멍하고 무거워요", en: "Head feels foggy and heavy", zh: "头脑发沉发蒙", vi: "Đầu óc choáng váng, nặng nề", ru: "Тяжелая и мутная голова", ja: "頭がぼーっとして重いです" } }
-      ]
-    },
-    {
-      id: "p_numb", emoji: "⚡",
-      labels: { ko: "저리고 감각이 이상해요", en: "Numbness / Tingling", zh: "发麻 / 感觉异常", vi: "Tê bì / Cảm giác bất thường", ru: "Онемение / Покалывание", ja: "しびれ・感覚の異常" },
-      subs: [
-        { labels: { ko: "입 주변·손끝이 저려요", en: "Tingling around lips or fingertips", zh: "嘴周或指尖发麻", vi: "Tê quanh môi hoặc đầu ngón tay", ru: "Покалывание вокруг губ или в кончиках пальцев", ja: "口の周りや指先がしびれます" } },
-        { urgent: true, labels: { ko: "팔·다리에 힘이 안 들어가요", en: "Weakness in arms or legs", zh: "手脚使不上力气", vi: "Tay chân yếu, không có sức", ru: "Слабость в руках или ногах", ja: "手足に力が入りません" } },
-        { labels: { ko: "수술 부위 감각이 먹먹해요", en: "Surgery area feels numb / dull", zh: "手术部位感觉麻木迟钝", vi: "Vùng mổ bị tê bì, mất cảm giác", ru: "Онемение в области операции", ja: "手術部位の感覚が鈍いです" } }
-      ]
-    },
-    {
-      id: "p_swell", emoji: "🎈",
-      labels: { ko: "부었어요", en: "Swelling", zh: "肿胀", vi: "Bị sưng", ru: "Отек / Опухлость", ja: "腫れています" },
-      subs: [
-        { urgent: true, labels: { ko: "목·얼굴이 갑자기 부었어요", en: "Sudden swelling in neck or face", zh: "脖子或脸部突然肿胀", vi: "Cổ hoặc mặt đột ngột sưng to", ru: "Внезапный отек шеи или лица", ja: "首や顔が急に腫れました" } },
-        { labels: { ko: "주사 맞은 팔·손등이 부었어요", en: "Arm or hand with IV is swollen", zh: "输液的手臂或手背肿了", vi: "Cánh tay hoặc mu bàn tay tiêm truyền bị sưng", ru: "Опухла рука или кисть с катетером", ja: "点滴をしている腕や手の甲が腫れています" } },
-        { labels: { ko: "다리·발이 부었어요", en: "Legs or feet are swollen", zh: "腿或脚肿了", vi: "Chân hoặc bàn chân bị sưng", ru: "Отекли ноги или ступни", ja: "脚や足がむくんで腫れています" } }
+        { labels: { ko: "목이 찌르듯 아파요", en: "Sharp stabbing pain in throat", zh: "喉咙像被刺一样疼", vi: "Đau nhói như đâm ở cổ họng", ru: "Острая колющая боль в горле", ja: "喉が刺すように痛みます" } },
+        { labels: { ko: "구역질이 나요", en: "Gagging / Retching", zh: "觉得恶心想吐（干呕）", vi: "Bị buồn nôn / nôn ọe", ru: "Рвотный рефлекс / тошнит", ja: "吐き気（えずき）がします" } },
+        { urgent: true, labels: { ko: "튜브가 빠진 느낌이에요", en: "Feels like the tube slipped out", zh: "感觉管子滑脱了", vi: "Cảm giác ống bị tuột ra", ru: "Кажется, трубка сместилась / выпала", ja: "チューブが抜けた感じがします" } },
+        { labels: { ko: "고정 테이프가 불편해요", en: "Securing tape is uncomfortable", zh: "固定胶布很不舒服", vi: "Băng dính cố định gây khó chịu", ru: "Фиксирующий пластырь мешает", ja: "固定テープが不快です" } }
       ]
     },
     {
       id: "p_thirsty", emoji: "👄",
-      labels: { ko: "입·목이 말라요", en: "Dry mouth / Thirsty", zh: "口干 / 喉咙干", vi: "Khô miệng / Khát nước", ru: "Сухость во рту / Жажда", ja: "口や喉が渇きます" }
+      labels: { ko: "입이 말라요", en: "Dry mouth", zh: "口干", vi: "Khô miệng", ru: "Сухость во рту", ja: "口が渇きます" }
     },
     {
       id: "p_cold", emoji: "🥶",
@@ -2311,40 +2260,89 @@ const DATA = {
     },
     {
       id: "p_nausea", emoji: "🤢",
-      labels: { ko: "속이 메스꺼워요", en: "Nauseous", zh: "恶心 / 想吐", vi: "Buồn nôn / Nôn nao", ru: "Тошнит", ja: "吐き気がします（ムカムカ）" }
+      labels: { ko: "속이 메스꺼워요", en: "Nauseous", zh: "恶心 / 想吐", vi: "Buồn nôn", ru: "Тошнит", ja: "吐き気がします" }
     },
     {
       id: "p_itch", emoji: "🖐️",
       labels: { ko: "가려워요", en: "Itchy", zh: "发痒", vi: "Ngứa", ru: "Чешется", ja: "かゆいです" }
     },
     {
-      id: "p_bloat", emoji: "🫃",
-      labels: { ko: "배가 더부룩해요", en: "Bloated / Gas", zh: "腹胀 / 胀气", vi: "Đầy bụng / Chướng hơi", ru: "Вздутие живота", ja: "お腹が張って苦しいです" }
-    },
-    {
-      id: "p_eyear", emoji: "👁️",
-      labels: { ko: "눈·귀가 불편해요", en: "Eye / Ear discomfort", zh: "眼睛 / 耳朵不舒服", vi: "Khó chịu ở mắt / tai", ru: "Дискомфорт в глазах / ушах", ja: "目や耳が不快です" }
-    },
-    {
       id: "p_insomnia", emoji: "😴",
       labels: { ko: "잠이 안 와요", en: "Can't sleep", zh: "睡不着", vi: "Không ngủ được", ru: "Не могу уснуть", ja: "眠れません" }
+    },
+    {
+      id: "p_dizzy", emoji: "💫", urgent: true,
+      labels: { ko: "어지러워요", en: "Dizzy / Lightheaded", zh: "头晕", vi: "Chóng mặt", ru: "Кружится голова", ja: "めまいがします" }
+    },
+    {
+      id: "p_cough", emoji: "🤧",
+      labels: { ko: "기침이 나요", en: "Coughing", zh: "咳嗽", vi: "Bị ho", ru: "Кашель", ja: "咳が出ます" }
+    },
+    {
+      id: "p_elim", emoji: "🚻",
+      labels: { ko: "소변·대변 불편", en: "Urination / Bowel discomfort", zh: "大小便不适", vi: "Khó chịu tiểu tiện / đại tiện", ru: "Дискомфорт с туалетом", ja: "排尿・排便の不快感" },
+      subs: [
+        { labels: { ko: "소변 보고 싶어요", en: "I want to urinate", zh: "我想小便", vi: "Tôi muốn đi tiểu", ru: "Хочу помочиться", ja: "おしっこがしたいです" } },
+        { labels: { ko: "대변 보고 싶어요", en: "I want to have a bowel movement", zh: "我想大便", vi: "Tôi muốn đi đại tiện", ru: "Хочу в туалет по-большому", ja: "便がしたいです" } },
+        { labels: { ko: "방금 소변 봤어요 (I/O)", en: "I just urinated (Check I/O)", zh: "刚解完小便（请记录尿量）", vi: "Tôi vừa đi tiểu xong (Kiểm tra I/O)", ru: "Только что помочился (учет I/O)", ja: "先ほど尿が出ました（尿量確認）" } },
+        { labels: { ko: "방금 대변 봤어요", en: "I just had a bowel movement", zh: "刚解完大便", vi: "Tôi vừa đi đại tiện xong", ru: "Только что был стул", ja: "先ほど便が出ました" } },
+        { urgent: true, labels: { ko: "도뇨관 통증·당김이 있어요", en: "Urinary catheter pain / pulling", zh: "导尿管疼痛或被拉扯", vi: "Đau hoặc căng tức ống thông tiểu", ru: "Боль или натяжение мочевого катетера", ja: "尿道カテーテルの痛み・引っ張り感があります" } },
+        { labels: { ko: "가스가 배출됐어요", en: "I passed gas", zh: "已排气（放屁）", vi: "Tôi đã xì hơi", ru: "Отошли газы", ja: "ガス（おなら）が出ました" } }
+      ]
+    },
+    {
+      id: "p_iv", emoji: "💉",
+      labels: { ko: "주사·수액 부위 이상", en: "IV / Injection site issue", zh: "输液 / 针口部位异常", vi: "Bất thường chỗ tiêm / truyền dịch", ru: "Проблема в месте катетера", ja: "点滴・注射部位の異常" },
+      subs: [
+        { labels: { ko: "붓고 딱딱해졌어요 (침윤)", en: "Swollen and hard (Infiltration)", zh: "肿胀发硬（渗液）", vi: "Sưng và cứng (Thoát mạch)", ru: "Опухло и затвердело (инфильтрация)", ja: "腫れて硬くなりました（浸潤）" } },
+        { labels: { ko: "바늘 부위가 따갑고 아파요", en: "Stinging pain at needle site", zh: "针头部位刺痛", vi: "Đau rát tại vị trí kim tiêm", ru: "Жгучая боль в месте иглы", ja: "針の部位がヒリヒリ痛みます" } },
+        { labels: { ko: "빨갛고 열감이 있어요 (정맥염)", en: "Red and warm (Phlebitis)", zh: "发红发热（静脉炎）", vi: "Đỏ và nóng (Viêm tĩnh mạch)", ru: "Покраснение и жар (флебит)", ja: "赤くなって熱感があります（静脈炎）" } },
+        { labels: { ko: "피가 역류해요", en: "Blood is backing up in tubing", zh: "输液管内有回血", vi: "Máu trào ngược trong dây truyền", ru: "Кровь пошла обратно в трубку", ja: "血が逆流しています" } },
+        { labels: { ko: "수액 알람이 울려요", en: "IV pump alarm is beeping", zh: "输液泵报警器响了", vi: "Máy truyền dịch đang báo động", ru: "Пищит сигнал капельницы", ja: "点滴のアラームが鳴っています" } }
+      ]
+    },
+    {
+      id: "p_drain", emoji: "🩸",
+      labels: { ko: "배액관 불편", en: "Surgical drain discomfort", zh: "引流管不适", vi: "Khó chịu ống dẫn lưu", ru: "Дискомфорт от дренажа", ja: "排液管（ドレーン）が不快です" },
+      subs: [
+        { labels: { ko: "배액관이 당기고 아파요", en: "Drain tube is pulling and painful", zh: "引流管被拉扯且疼痛", vi: "Ống dẫn lưu bị căng và đau", ru: "Дренаж тянет и болит", ja: "排液管が引っ張られて痛みます" } },
+        { urgent: true, labels: { ko: "배액관이 빠진 느낌이에요", en: "Feels like the drain slipped out", zh: "感觉引流管滑脱了", vi: "Cảm giác ống dẫn lưu bị tuột", ru: "Кажется, дренаж выпал", ja: "排液管が抜けた感じがします" } },
+        { labels: { ko: "배액 주머니가 가득 찼어요", en: "Drainage bag / bulb is full", zh: "引流袋（球）已满", vi: "Túi dẫn lưu đã đầy", ru: "Дренажный мешок заполнен", ja: "排液バッグがいっぱいです" } }
+      ]
+    },
+    {
+      id: "p_numb", emoji: "⚡",
+      labels: { ko: "저리고 감각이 이상해요", en: "Numbness / Tingling", zh: "发麻 / 感觉异常", vi: "Tê bì / Cảm giác bất thường", ru: "Онемение / Покалывание", ja: "しびれ・感覚の異常" }
+    },
+    {
+      id: "p_swell", emoji: "🎈",
+      labels: { ko: "몸이 부었어요", en: "Body swelling", zh: "身体肿胀", vi: "Cơ thể bị sưng phù", ru: "Отек тела", ja: "体がむくんでいます" }
     }
   ],
-
-  // 2. 몸 부위 (12 cards)
+  // 2. 몸 부위 (13 cards)
   body: [
     {
       id: "b_head", emoji: "🧠",
       labels: { ko: "머리", en: "Head", zh: "头 / 头部", vi: "Đầu", ru: "Голова", ja: "頭" }
     },
     {
-      id: "b_neckop", emoji: "🩹",
-      labels: { ko: "목·수술 부위", en: "Neck / Surgery site", zh: "颈部 / 手术部位", vi: "Cổ / Vị trí phẫu thuật", ru: "Шея / Область операции", ja: "首・手術部位" },
+      id: "b_neck", emoji: "🧣",
+      labels: { ko: "목", en: "Neck / Throat", zh: "脖子 / 喉咙", vi: "Cổ / Họng", ru: "Шея / Горло", ja: "首・のど" },
       subs: [
-        { labels: { ko: "수술 부위가 욱신거리고 아파요", en: "Surgery site is throbbing and painful", zh: "手术部位一跳一跳地疼", vi: "Vết mổ đau nhức nhối", ru: "Пульсирующая боль в области шва", ja: "手術部位がズキズキ痛みます" } },
-        { urgent: true, labels: { ko: "거즈가 젖었거나 피가 배어 나와요", en: "Gauze is wet or blood is oozing", zh: "纱布湿了或有血渗出", vi: "Gạc bị ướt hoặc thấm máu", ru: "Повязка промокла или сочится кровь", ja: "ガーゼが濡れているか血が滲んでいます" } },
+        { labels: { ko: "목 안이 따갑고 아파요", en: "My throat feels sore and painful", zh: "喉咙又干又痛", vi: "Họng tôi bị rát và đau", ru: "Горло першит и болит", ja: "のどがヒリヒリして痛いです" } },
+        { urgent: true, labels: { ko: "목이 붓고 조이는 느낌이에요", en: "My neck feels swollen and tight", zh: "脖子感觉发肿发紧", vi: "Cổ tôi cảm thấy sưng và căng tức", ru: "Шея отекшая и сдавленная", ja: "首が腫れて締め付けられる感じです" } },
         { labels: { ko: "목을 움직이기 힘들어요", en: "Hard to move my neck", zh: "脖子很难转动", vi: "Rất khó cử động cổ", ru: "Трудно двигать шеей", ja: "首を動かすのがつらいです" } },
         { labels: { ko: "삼킬 때 너무 아파요", en: "Hurts very much when swallowing", zh: "吞咽时非常疼", vi: "Rất đau khi nuốt", ru: "Очень больно глотать", ja: "飲み込むときにとても痛みます" } }
+      ]
+    },
+    {
+      id: "b_op", emoji: "🩹",
+      labels: { ko: "수술 부위", en: "Surgery site", zh: "手术部位", vi: "Vết mổ", ru: "Место операции", ja: "手術部位" },
+      subs: [
+        { labels: { ko: "수술 부위가 욱신거리고 아파요", en: "Surgery site is throbbing and painful", zh: "手术部位一跳一跳地疼", vi: "Vết mổ đau nhức nhối", ru: "Пульсирующая боль в области шва", ja: "手術部位がズキズキ痛みます" } },
+        { labels: { ko: "수술 부위가 당기고 뻐근해요", en: "Surgery site feels tight and stiff", zh: "手术部位发紧、酸痛", vi: "Vết mổ bị căng và nhức mỏi", ru: "Место операции тянет и ноет", ja: "手術部位が突っ張って重だるいです" } },
+        { urgent: true, labels: { ko: "거즈가 젖었거나 피가 배어 나와요", en: "Gauze is wet or blood is oozing", zh: "纱布湿了或有血渗出", vi: "Gạc bị ướt hoặc thấm máu", ru: "Повязка промокла или сочится кровь", ja: "ガーゼが濡れているか血が滲んでいます" } },
+        { labels: { ko: "수술 부위 드레싱을 확인해 주세요", en: "Please check the dressing on my surgery site", zh: "请帮我检查一下手术部位的敷料", vi: "Làm ơn kiểm tra băng vết mổ giúp tôi", ru: "Пожалуйста, проверьте повязку на месте операции", ja: "手術部位のドレッシングを確認してください" } }
       ]
     },
     {
@@ -2360,1646 +2358,12 @@ const DATA = {
       labels: { ko: "등·허리", en: "Back / Waist", zh: "背 / 腰部", vi: "Lưng / Thắt lưng", ru: "Спина / Поясница", ja: "背中・腰" }
     },
     {
-      id: "b_iv", emoji: "💉",
-      labels: { ko: "주사 부위(팔·손등)", en: "IV site (Arm / Hand)", zh: "输液部位（手臂/手背）", vi: "Vị trí tiêm (Tay / Mu bàn tay)", ru: "Место катетера (рука/кисть)", ja: "点滴部位（腕・手の甲）" },
-      subs: [
-        { labels: { ko: "오른팔 주사 부위", en: "Right arm IV site", zh: "右臂输液部位", vi: "Vị trí tiêm ở tay phải", ru: "Место укола на правой руке", ja: "右腕の点滴部位" } },
-        { labels: { ko: "왼팔 주사 부위", en: "Left arm IV site", zh: "左臂输液部位", vi: "Vị trí tiêm ở tay trái", ru: "Место укола на левой руке", ja: "左腕の点滴部位" } },
-        { labels: { ko: "손등·손목 주사 부위", en: "Back of hand or wrist IV site", zh: "手背或手腕输液部位", vi: "Vị trí tiêm ở mu bàn tay hoặc cổ tay", ru: "Место укола на кисти или запястье", ja: "手の甲・手首の点滴部位" } },
-        { labels: { ko: "목·쇄골 중심정맥관 부위", en: "Neck / collarbone central line site", zh: "颈部或锁骨中心静脉导管部位", vi: "Vị trí ống truyền trung tâm ở cổ / xương đòn", ru: "Центральный катетер на шее / ключице", ja: "首・鎖骨の中心静脈カテーテル部位" } }
-      ]
+      id: "b_arms", emoji: "💪",
+      labels: { ko: "팔·손", en: "Arms / Hands", zh: "手臂 / 手", vi: "Cánh tay / Bàn tay", ru: "Руки / Кисти", ja: "腕・手" }
     },
     {
-      id: "b_rarm", emoji: "💪",
-      labels: { ko: "오른팔", en: "Right arm", zh: "右臂", vi: "Cánh tay phải", ru: "Правая рука", ja: "右腕" }
-    },
-    {
-      id: "b_larm", emoji: "🦾",
-      labels: { ko: "왼팔", en: "Left arm", zh: "左臂", vi: "Cánh tay trái", ru: "Левая рука", ja: "左腕" }
-    },
-    {
-      id: "b_leg", emoji: "🦵",
+      id: "b_legs", emoji: "🦵",
       labels: { ko: "다리·발", en: "Legs / Feet", zh: "腿 / 脚", vi: "Chân / Bàn chân", ru: "Ноги / Ступни", ja: "脚・足" }
     },
     {
-      id: "b_mouth", emoji: "🗣️",
-      labels: { ko: "입·목구멍", en: "Mouth / Throat", zh: "口腔 / 喉咙", vi: "Miệng / Cổ họng", ru: "Рот / Горло", ja: "口・喉" }
-    },
-    {
-      id: "b_perineal", emoji: "🚻",
-      labels: { ko: "소변·항문 부위", en: "Urinary / Anal area", zh: "排尿 / 肛门部位", vi: "Vùng tiểu tiện / hậu môn", ru: "Область мочеиспускания / ануса", ja: "排尿・肛門の部位" }
-    },
-    {
-      id: "b_whole", emoji: "🧍",
-      labels: { ko: "전신", en: "Whole body", zh: "全身", vi: "Toàn thân", ru: "Все тело", ja: "全身" }
-    }
-  ],
-
-  // 3. 해 주세요 (14 cards)
-  care: [
-    {
-      id: "c_iv", emoji: "💧",
-      labels: { ko: "주사·수액 확인", en: "Check IV / Fluids", zh: "检查输液", vi: "Kiểm tra dịch truyền", ru: "Проверить капельницу", ja: "点滴・輸液の確認" },
-      subs: [
-        { labels: { ko: "수액이 다 떨어졌어요/알람이 울려요", en: "IV bag is empty / alarm is beeping", zh: "输液已滴完 / 报警器响了", vi: "Dịch truyền đã hết / máy báo động kêu", ru: "Капельница закончилась / пищит сигнал", ja: "点滴がなくなりました・アラームが鳴っています" } },
-        { labels: { ko: "주사 부위와 속도를 확인해 주세요", en: "Please check IV site and drip rate", zh: "请检查针口部位和滴注速度", vi: "Vui lòng kiểm tra chỗ tiêm và tốc độ chảy", ru: "Проверьте место укола и скорость капельницы", ja: "点滴の部位と落ちる速度を確認してください" } },
-        { labels: { ko: "수액 줄이 꼬이거나 당겨져요", en: "IV tubing is kinked or pulling", zh: "输液管打折或被拉扯", vi: "Dây truyền bị xoắn hoặc căng", ru: "Трубка капельницы перекрутилась или тянет", ja: "点滴のチューブがねじれているか引っ張られます" } },
-        { labels: { ko: "화장실 가게 수액 걸대를 정리해 주세요", en: "Arrange IV pole so I can go to bathroom", zh: "请整理输液架，我要去洗手间", vi: "Sắp xếp cây truyền dịch để tôi đi vệ sinh", ru: "Подготовьте стойку капельницы для похода в туалет", ja: "トイレに行けるよう点滴スタンドを整えてください" } }
-      ]
-    },
-    {
-      id: "c_suction", emoji: "🫧",
-      labels: { ko: "가래 흡인(석션)", en: "Suction phlegm", zh: "请帮我吸痰", vi: "Hút đờm giúp tôi", ru: "Отсосите мокроту", ja: "痰の吸引（サクション）" }
-    },
-    {
-      id: "c_pca", emoji: "💊",
-      labels: { ko: "진통제·PCA 버튼", en: "Pain med / PCA button", zh: "止痛药 / PCA镇痛泵按钮", vi: "Thuốc giảm đau / Nút PCA", ru: "Обезболивающее / Кнопка PCA", ja: "痛み止め・PCAボタン" }
-    },
-    {
-      id: "c_water", emoji: "🥤",
-      labels: { ko: "물·입 헹굼", en: "Water / Mouth rinse", zh: "喝水 / 漱口", vi: "Uống nước / Súc miệng", ru: "Вода / Полоскание рта", ja: "水・うがい" },
-      subs: [
-        { labels: { ko: "물 조금 마시고 싶어요(금식 확인)", en: "Want a sip of water (Check NPO)", zh: "想喝一点水（请确认是否禁食）", vi: "Muốn uống một chút nước (Kiểm tra nhịn ăn)", ru: "Хочу глоток воды (проверьте диету)", ja: "少し水を飲みたいです（絶食確認）" } },
-        { labels: { ko: "젖은 거즈로 입술을 적셔 주세요", en: "Moisten my lips with wet gauze", zh: "请用湿纱布润湿嘴唇", vi: "Làm ẩm môi bằng gạc ướt giúp tôi", ru: "Смочите губы влажной марлей", ja: "濡れたガーゼで唇を湿らせてください" } },
-        { labels: { ko: "물로 입안만 헹구고 싶어요", en: "Just want to rinse mouth with water", zh: "只想用水漱一下口", vi: "Chỉ muốn súc miệng bằng nước", ru: "Хочу просто прополоскать рот водой", ja: "水で口の中だけすすぎたいです" } }
-      ]
-    },
-    {
-      id: "c_reposition", emoji: "🛏️",
-      labels: { ko: "자세 변경", en: "Change position", zh: "调整姿势 / 翻身", vi: "Đổi tư thế nằm", ru: "Сменить позу", ja: "体位変換" }
-    },
-    {
-      id: "c_bed", emoji: "📐",
-      labels: { ko: "침대 올리기/내리기", en: "Raise / Lower bed", zh: "摇高 / 摇低床头", vi: "Nâng / Hạ đầu giường", ru: "Поднять / Опустить кровать", ja: "ベッドの上げ下げ" }
-    },
-    {
-      id: "c_restraint", emoji: "🧤",
-      labels: { ko: "억제대·장갑 확인", en: "Check restraints / mitts", zh: "检查约束带 / 保护手套", vi: "Kiểm tra dây cố định / găng tay", ru: "Проверить фиксаторы / варежки", ja: "抑制帯・保護ミトンの確認" }
-    },
-    {
-      id: "c_blanket", emoji: "🛌",
-      labels: { ko: "이불 덮어주세요", en: "Cover with blanket", zh: "请帮我盖上被子", vi: "Đắp chăn giúp tôi", ru: "Укройте одеялом", ja: "布団をかけてください" }
-    },
-    {
-      id: "c_cool", emoji: "❄️",
-      labels: { ko: "시원하게 해주세요", en: "Make it cooler", zh: "请调凉快一点", vi: "Làm mát giúp tôi", ru: "Сделайте прохладнее", ja: "涼しくしてください" }
-    },
-    {
-      id: "c_light", emoji: "💡",
-      labels: { ko: "불 꺼주세요/조명", en: "Dim / Turn off lights", zh: "请关灯 / 调暗灯光", vi: "Tắt đèn / Giảm ánh sáng", ru: "Выключите / Приглушите свет", ja: "電気を消してください・照明" }
-    },
-    {
-      id: "c_toilet", emoji: "🚽",
-      labels: { ko: "화장실·변기 도움", en: "Bathroom / Bedpan help", zh: "协助上厕所 / 便盆", vi: "Hỗ trợ đi vệ sinh / bô", ru: "Помощь с туалетом / судном", ja: "トイレ・便器の介助" }
-    },
-    {
-      id: "c_oxygen", emoji: "🌬️",
-      labels: { ko: "산소·호흡기 확인", en: "Check oxygen / ventilator", zh: "检查氧气 / 呼吸机", vi: "Kiểm tra oxy / máy thở", ru: "Проверить кислород / ИВЛ", ja: "酸素・呼吸器の確認" }
-    },
-    {
-      id: "c_pad", emoji: "🧷",
-      labels: { ko: "기저귀·패드 교체", en: "Change diaper / pad", zh: "更换纸尿裤 / 护理垫", vi: "Thay tã / miếng lót", ru: "Сменить подгузник / пеленку", ja: "おむつ・パッド交換" }
-    },
-    {
-      id: "c_rest", emoji: "🤫",
-      labels: { ko: "잠시 쉬고 싶어요", en: "Want to rest quietly", zh: "想安静地休息一会儿", vi: "Tôi muốn nghỉ ngơi một lát", ru: "Хочу немного отдохнуть", ja: "少し休みたいです" }
-    }
-  ],
-
-  // 4. 마음 (8 cards)
-  mood: [
-    {
-      id: "m_anxious", emoji: "😰",
-      labels: { ko: "불안해요", en: "Anxious", zh: "感到不安 / 焦虑", vi: "Lo lắng / Bất an", ru: "Тревожно", ja: "不安です" }
-    },
-    {
-      id: "m_scared", emoji: "😨",
-      labels: { ko: "무서워요", en: "Scared / Afraid", zh: "害怕", vi: "Sợ hãi", ru: "Страшно", ja: "怖いです" }
-    },
-    {
-      id: "m_tired", emoji: "😩",
-      labels: { ko: "답답하고 힘들어요", en: "Frustrated & exhausted", zh: "憋闷又疲惫", vi: "Bí bách và mệt mỏi", ru: "Подавлен и устал", ja: "もどかしくてつらいです" }
-    },
-    {
-      id: "m_thanks", emoji: "🙏",
-      labels: { ko: "고마워요", en: "Thank you", zh: "谢谢你们", vi: "Cảm ơn rất nhiều", ru: "Спасибо вам", ja: "ありがとうございます" }
-    },
-    {
-      id: "m_sorry", emoji: "🙇",
-      labels: { ko: "미안해요", en: "I'm sorry", zh: "不好意思 / 抱歉", vi: "Xin lỗi", ru: "Извините", ja: "すみません" }
-    },
-    {
-      id: "m_lonely", emoji: "🥺",
-      labels: { ko: "외로워요", en: "Lonely", zh: "感到孤单", vi: "Cô đơn", ru: "Одиноко", ja: "寂しいです" }
-    },
-    {
-      id: "m_angry", emoji: "😠",
-      labels: { ko: "화가 나요", en: "Frustrated / Angry", zh: "生气 / 烦躁", vi: "Tức giận / Bực bội", ru: "Злюсь / Раздражен", ja: "腹が立ちます" }
-    },
-    {
-      id: "m_relieved", emoji: "😌",
-      labels: { ko: "안심돼요", en: "Feel relieved", zh: "放心了", vi: "Thấy yên tâm rồi", ru: "Мне спокойнее", ja: "安心しました" }
-    }
-  ],
-
-  // 5. 사람·질문 (10 cards)
-  ask: [
-    {
-      id: "a_family", emoji: "👨‍👩‍👧",
-      labels: { ko: "가족 불러주세요", en: "Call my family", zh: "请叫我的家属", vi: "Gọi người nhà giúp tôi", ru: "Позовите родственников", ja: "家族を呼んでください" }
-    },
-    {
-      id: "a_doctor", emoji: "👨‍⚕️",
-      labels: { ko: "의사 선생님 면담", en: "Speak with doctor", zh: "想和医生面谈", vi: "Muốn gặp bác sĩ", ru: "Поговорить с врачом", ja: "医師の先生と面談したいです" }
-    },
-    {
-      id: "a_nurse", emoji: "👩‍⚕️",
-      labels: { ko: "간호사 선생님", en: "Nurse", zh: "护士老师", vi: "Điều dưỡng ơi", ru: "Медсестра", ja: "看護師さん" }
-    },
-    {
-      id: "a_time", emoji: "🕒",
-      labels: { ko: "지금 몇 시예요?", en: "What time is it?", zh: "现在几点了？", vi: "Bây giờ là mấy giờ?", ru: "Который сейчас час?", ja: "今何時ですか？" }
-    },
-    {
-      id: "a_water", emoji: "💧",
-      labels: { ko: "언제 물 마실 수 있어요?", en: "When can I drink water?", zh: "什么时候可以喝水？", vi: "Khi nào tôi được uống nước?", ru: "Когда мне можно пить воду?", ja: "いつ水を飲めますか？" }
-    },
-    {
-      id: "a_tubeout", emoji: "🩺",
-      labels: { ko: "언제 튜브·줄 뺄 수 있어요?", en: "When can tubes/lines be removed?", zh: "什么时候可以拔管？", vi: "Khi nào có thể rút ống?", ru: "Когда снимут трубки / катетеры?", ja: "いつチューブや管を抜けますか？" }
-    },
-    {
-      id: "a_eat", emoji: "🍚",
-      labels: { ko: "언제 식사할 수 있어요?", en: "When can I eat?", zh: "什么时候可以吃饭？", vi: "Khi nào tôi được ăn?", ru: "Когда мне можно есть?", ja: "いつ食事ができますか？" }
-    },
-    {
-      id: "a_result", emoji: "📋",
-      labels: { ko: "검사 결과가 궁금해요", en: "Curious about test results", zh: "想知道检查结果", vi: "Muốn biết kết quả xét nghiệm", ru: "Хочу узнать результаты анализов", ja: "検査結果が気になります" }
-    },
-    {
-      id: "a_sideeffect", emoji: "💊",
-      labels: { ko: "약 부작용인지 궁금해요", en: "Is this a medication side effect?", zh: "想知道是不是药物副作用", vi: "Có phải tác dụng phụ của thuốc không?", ru: "Это побочный эффект лекарства?", ja: "薬の副作用かどうか気になります" }
-    },
-    {
-      id: "a_interpreter", emoji: "🌐",
-      labels: { ko: "통역이 필요해요", en: "I need an interpreter", zh: "我需要翻译", vi: "Tôi cần phiên dịch viên", ru: "Мне нужен переводчик", ja: "通訳が必要です" }
-    }
-  ],
-
-  // 6. 통증 점수 0–10 (11 cards)
-  scale: [
-    { id: "s_0",  emoji: "😊", pain: 0,  labels: { ko: "0점 (통증 없음)", en: "0 (No pain)", zh: "0分 (无痛)", vi: "0 điểm (Không đau)", ru: "0 баллов (Нет боли)", ja: "0点 (痛みなし)" } },
-    { id: "s_1",  emoji: "🙂", pain: 1,  labels: { ko: "1점 (매우 약함)", en: "1 (Very mild)", zh: "1分 (极轻微)", vi: "1 điểm (Rất nhẹ)", ru: "1 балл (Очень слабая)", ja: "1点 (ごく軽い)" } },
-    { id: "s_2",  emoji: "🙂", pain: 2,  labels: { ko: "2점 (약함)", en: "2 (Mild)", zh: "2分 (轻微)", vi: "2 điểm (Nhẹ)", ru: "2 балла (Слабая)", ja: "2点 (軽い)" } },
-    { id: "s_3",  emoji: "😐", pain: 3,  labels: { ko: "3점 (조금 아픔)", en: "3 (Noticeable)", zh: "3分 (有点疼)", vi: "3 điểm (Hơi đau)", ru: "3 балла (Терпимая)", ja: "3点 (少し痛い)" } },
-    { id: "s_4",  emoji: "😕", pain: 4,  labels: { ko: "4점 (중간 정도)", en: "4 (Moderate)", zh: "4分 (中度疼痛)", vi: "4 điểm (Đau vừa)", ru: "4 балла (Умеренная)", ja: "4点 (中くらい)" } },
-    { id: "s_5",  emoji: "😟", pain: 5,  labels: { ko: "5점 (꽤 아픔)", en: "5 (Moderately strong)", zh: "5分 (比较疼)", vi: "5 điểm (Khá đau)", ru: "5 баллов (Довольно сильная)", ja: "5点 (かなり痛い)" } },
-    { id: "s_6",  emoji: "😣", pain: 6,  labels: { ko: "6점 (많이 아픔)", en: "6 (Strong pain)", zh: "6分 (很疼)", vi: "6 điểm (Đau nhiều)", ru: "6 баллов (Сильная боль)", ja: "6点 (だいぶ痛い)" } },
-    { id: "s_7",  emoji: "😖", pain: 7,  labels: { ko: "7점 (심하게 아픔)", en: "7 (Severe pain)", zh: "7分 (剧烈疼痛)", vi: "7 điểm (Đau dữ dội)", ru: "7 баллов (Очень сильная)", ja: "7点 (激しく痛い)" } },
-    { id: "s_8",  emoji: "😫", pain: 8,  urgent: true, labels: { ko: "8점 (매우 심함 · 긴급)", en: "8 (Very severe · Urgent)", zh: "8分 (非常剧烈 · 紧急)", vi: "8 điểm (Rất nặng · Khẩn cấp)", ru: "8 баллов (Нестерпимая · Срочно)", ja: "8点 (非常に激しい · 緊急)" } },
-    { id: "s_9",  emoji: "😭", pain: 9,  urgent: true, labels: { ko: "9점 (참기 어려움 · 긴급)", en: "9 (Excruciating · Urgent)", zh: "9分 (难以忍受 · 紧急)", vi: "9 điểm (Không chịu nổi · Khẩn cấp)", ru: "9 баллов (Мучительная · Срочно)", ja: "9点 (耐えられない · 緊急)" } },
-    { id: "s_10", emoji: "🚨", pain: 10, urgent: true, labels: { ko: "10점 (상상할 수 없는 통증)", en: "10 (Worst imaginable)", zh: "10分 (无法想象的剧痛)", vi: "10 điểm (Đau không thể tưởng tượng)", ru: "10 баллов (Невыносимая боль)", ja: "10点 (想像を絶する痛み)" } }
-  ]
-};
-
-// ---------- 언어 전환 UI 업데이트 ----------
-function applyLanguageUI() {
-  $("qYes").textContent = UI_I18N.quick.yes[curLang];
-  $("qNo").textContent = UI_I18N.quick.no[curLang];
-  $("qWait").textContent = UI_I18N.quick.wait[curLang];
-  $("qHelp").innerHTML = `<span class="emoji">🚨</span> ${UI_I18N.quick.help[curLang]}`;
-
-  $("trayGuide").textContent = UI_I18N.trayGuide[curLang];
-  $("ptFreeIn").placeholder = UI_I18N.freePlaceholder[curLang];
-  $("clearBtn").textContent = UI_I18N.clearBtn[curLang];
-  $("makeBtn").innerHTML = `<span class="emoji">✨</span> ${UI_I18N.makeBtn[curLang]}`;
-  $("candTitleText").innerHTML = `<span class="emoji">💬</span> ${UI_I18N.candTitle[curLang]}`;
-  $("retryBtn").innerHTML = `<span class="emoji">🔄</span> ${UI_I18N.retryBtn[curLang]}`;
-
-  renderCats();
-  renderCards();
-  renderTray();
-}
-
-document.querySelectorAll(".lang-chip").forEach(chip => {
-  chip.onclick = () => {
-    document.querySelectorAll(".lang-chip").forEach(c => c.classList.remove("active"));
-    chip.classList.add("active");
-    curLang = chip.dataset.lang;
-    applyLanguageUI();
-    toast(`${LANGS[curLang].name}`);
-  };
-});
-
-// ---------- 빠른 응답 4대 버튼 (비긴급 제한 + 긴급 우회 적용) ----------
-document.querySelectorAll(".quick-btn").forEach(btn => {
-  btn.onclick = () => {
-    const key = btn.dataset.quick;
-    const koText = UI_I18N.quick[key].ko;
-    const ptText = UI_I18N.quick[key][curLang];
-    const isUrgent = key === "help";
-
-    if (!isUrgent) {
-      const st = checkNonUrgentStatus();
-      if (!st.allowed) {
-        toast(
-          st.reason === "cooldown"
-            ? UI_I18N.cooldownToast[curLang](st.waitSec)
-            : UI_I18N.capToast[curLang](formatSec(st.waitSec))
-        );
-        return;
-      }
-      recordNonUrgentCall();
-    }
-
-    playToneChime(isUrgent);
-    speak(koText, "ko-KR");
-    addLog("환자", koText, isUrgent, null, curLang !== "ko" ? ptText : "");
-    if (isUrgent) {
-      showUrgent("환자가 [🚨 도와주세요] 긴급 호출을 눌렀습니다! (제한 우회 즉시 전달)");
-    }
-    toast(`${UI_I18N.sentToast[curLang]} (${ptText})`);
-  };
-});
-
-function showUrgent(msg) {
-  $("urgentText").textContent = msg;
-  $("urgentBanner").classList.add("show");
-}
-$("urgentClose").onclick = () => $("urgentBanner").classList.remove("show");
-
-// ---------- 좌측 6개 카테고리 렌더링 ----------
-function renderCats() {
-  const box = $("catList");
-  if (!box) return;
-  box.innerHTML = "";
-  Object.keys(DATA).forEach(catKey => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.dataset.gaze = "true";
-    b.className = "cat-btn gaze-target" + (catKey === curCat ? " active" : "");
-    const mainLabel = UI_I18N.cats[catKey][curLang];
-    const koLabel = UI_I18N.cats[catKey].ko;
-    b.innerHTML = `
-      <span>${mainLabel}</span>
-      ${curLang !== "ko" ? `<span class="cat-ko-sub">${koLabel}</span>` : ""}
-    `;
-    b.onclick = () => {
-      curCat = catKey;
-      renderCats();
-      renderCards();
-    };
-    box.appendChild(b);
-  });
-}
-
-// ---------- 73개 임상 그림 카드 렌더링 ----------
-function renderCards() {
-  const grid = $("cardsGrid");
-  if (!grid) return;
-  grid.innerHTML = "";
-  (DATA[curCat] || []).forEach(item => {
-    const isSel = sel.some(s => s.id === item.id);
-    const card = document.createElement("button");
-    card.type = "button";
-    card.dataset.gaze = "true";
-    card.className = "pic-card gaze-target" + (isSel ? " selected" : "") + (item.urgent ? " urgent-card" : "");
-    const mainLabel = getLabel(item, curLang);
-    const koLabel = getLabel(item, "ko");
-    card.innerHTML = `
-      ${item.subs ? `<span class="pic-badge">${UI_I18N.subBadge[curLang]}</span>` : ""}
-      <div class="pic-emoji emoji">${item.emoji}</div>
-      <div class="pic-label">${mainLabel}</div>
-      ${curLang !== "ko" ? `<div class="pic-sub-ko">${koLabel}</div>` : ""}
-    `;
-    card.onclick = () => handleCardClick(item);
-    grid.appendChild(card);
-  });
-}
-
-function handleCardClick(item) {
-  const idx = sel.findIndex(s => s.id === item.id);
-
-  if (item.subs) {
-    if (idx < 0) {
-      if (sel.length >= 8) {
-        toast("Max 8 cards / 최대 8개까지 선택할 수 있어요.");
-        return;
-      }
-      sel.push(item);
-    }
-    renderTray();
-    renderCards();
-    openSubModal(item);
-    return;
-  }
-
-  if (idx >= 0) {
-    sel.splice(idx, 1);
-    if (item.pain !== undefined) painSel = null;
-  } else {
-    if (sel.length >= 8) {
-      toast("Max 8 cards / 최대 8개까지 선택할 수 있어요.");
-      return;
-    }
-    if (item.pain !== undefined) {
-      sel = sel.filter(s => s.pain === undefined);
-      painSel = item.pain;
-    }
-    sel.push(item);
-  }
-  renderTray();
-  renderCards();
-}
-
-// ---------- 2단계 임상 세부 분기 모달 ----------
-function openSubModal(item) {
-  activeSubCard = item;
-  const mainTitle = getLabel(item, curLang);
-  const koTitle = getLabel(item, "ko");
-  $("subModalTitle").innerHTML = `<span class="emoji">${item.emoji}</span> ${mainTitle}${curLang !== "ko" ? ` (${koTitle})` : ""}`;
-  $("subModalSub").textContent = UI_I18N.subModalSub[curLang];
-  $("subRemoveCardBtn").textContent = UI_I18N.subRemove[curLang];
-  $("subCloseBtn").textContent = UI_I18N.subClose[curLang];
-
-  const list = $("subModalList");
-  list.innerHTML = "";
-  item.subs.forEach(sub => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.dataset.gaze = "true";
-    const active = subSel[item.id] && subSel[item.id].labels.ko === sub.labels.ko;
-    b.className = "sub-opt-btn gaze-target" + (active ? " selected" : "") + (sub.urgent ? " urgent-sub" : "");
-    const subMain = getLabel(sub, curLang);
-    const subKo = getLabel(sub, "ko");
-    b.innerHTML = `
-      <span class="sub-opt-main">${sub.urgent ? "🚨 " : ""}${subMain}</span>
-      ${curLang !== "ko" ? `<span class="sub-opt-ko">${subKo}</span>` : ""}
-    `;
-    b.onclick = () => {
-      subSel[item.id] = sub;
-      $("subDlg").classList.remove("show");
-      renderTray();
-      renderCards();
-    };
-    list.appendChild(b);
-  });
-
-  $("subDlg").classList.add("show");
-}
-
-$("subCloseBtn").onclick = () => $("subDlg").classList.remove("show");
-
-$("subRemoveCardBtn").onclick = () => {
-  if (activeSubCard) {
-    sel = sel.filter(s => s.id !== activeSubCard.id);
-    delete subSel[activeSubCard.id];
-    renderTray();
-    renderCards();
-  }
-  $("subDlg").classList.remove("show");
-};
-
-function renderTray() {
-  const wrap = $("chipsWrap");
-  if (!wrap) return;
-  $("selCount").textContent = UI_I18N.selCount[curLang](sel.length);
-  if (!sel.length) {
-    wrap.innerHTML = `<span style="color:#94a3b8;font-size:0.88rem;">${UI_I18N.trayEmpty[curLang]}</span>`;
-    return;
-  }
-  wrap.innerHTML = "";
-  sel.forEach(item => {
-    const chip = document.createElement("span");
-    chip.className = "sel-chip gaze-target";
-    chip.dataset.gaze = "true";
-    chip.innerHTML = `<span class="emoji">${item.emoji}</span> ${getLabel(item, curLang)} ×`;
-    chip.onclick = () => {
-      sel = sel.filter(s => s.id !== item.id);
-      delete subSel[item.id];
-      if (item.pain !== undefined) painSel = null;
-      renderTray();
-      renderCards();
-    };
-    wrap.appendChild(chip);
-
-    if (subSel[item.id]) {
-      const sc = document.createElement("span");
-      sc.className = "sel-chip sub gaze-target";
-      sc.dataset.gaze = "true";
-      sc.textContent = "↳ " + getLabel(subSel[item.id], curLang) + " ×";
-      sc.onclick = () => {
-        delete subSel[item.id];
-        renderTray();
-      };
-      wrap.appendChild(sc);
-    }
-  });
-}
-
-$("clearBtn").onclick = () => {
-  sel = [];
-  subSel = {};
-  painSel = null;
-  $("ptFreeIn").value = "";
-  $("subDlg").classList.remove("show");
-  $("candSection").classList.remove("show");
-  renderTray();
-  renderCards();
-};
-
-// ---------- 규칙 기반 문장 생성기 (상위 카테고리 중복 제거 + 6개국어 동시 합성) ----------
-function localSentence() {
-  const free = $("ptFreeIn").value.trim();
-  const koParts = [];
-  const ptParts = [];
-  let urgent = false;
-
-  const bodyCards = sel.filter(s => DATA.body.some(b => b.id === s.id));
-  const plainBody = bodyCards.filter(b => !subSel[b.id]);
-  const subBody = bodyCards.filter(b => subSel[b.id]);
-  const hasPainCard = sel.some(s => s.id === "p_pain");
-  const hasChest = bodyCards.some(b => b.id === "b_chest");
-  const hasTightness = sel.some(s => s.id === "p_stuffy");
-
-  if (hasChest && (hasPainCard || hasTightness)) {
-    urgent = true;
-  }
-
-  const painTemplates = {
-    ko: w => `${w}${josa(w, "이", "가")} 아파요`,
-    en: w => `Pain in: ${w}`,
-    zh: w => `${w}疼痛`,
-    vi: w => `Đau ở vùng: ${w}`,
-    ru: w => `Болит: ${w}`,
-    ja: w => `${w}が痛いです`
-  };
-
-  sel.forEach(item => {
-    const sub = subSel[item.id];
-    const itemUrgent = sub && typeof sub.urgent === "boolean" ? sub.urgent : !!item.urgent;
-    if (itemUrgent) urgent = true;
-
-    if (item.id === "p_pain") {
-      if (plainBody.length) {
-        const koNames = plainBody.map(b => cleanParens(getLabel(b, "ko"))).join(", ");
-        const lastKo = koNames.split(", ").pop();
-        const ptNames = plainBody.map(b => cleanParens(getLabel(b, curLang))).join(", ");
-
-        if (sub && sub.labels.ko) {
-          const mannerKo = cleanParens(getLabel(sub, "ko"));
-          const mannerPt = cleanParens(getLabel(sub, curLang));
-          koParts.push(`${koNames}${josa(lastKo, "이", "가")} ${mannerKo}`);
-          ptParts.push(`${ptNames}: ${mannerPt}`);
-        } else {
-          koParts.push(`${koNames}${josa(lastKo, "이", "가")} 아파요`);
-          ptParts.push(painTemplates[curLang](ptNames));
-        }
-        return;
-      }
-
-      if (subBody.length) {
-        subBody.forEach(sb => {
-          const sbTextKo = cleanParens(getLabel(subSel[sb.id], "ko"));
-          const sbTextPt = cleanParens(getLabel(subSel[sb.id], curLang));
-          if (/아파요|통증|hurts|pain|疼|đau|болит|痛/i.test(sbTextKo)) {
-            koParts.push(sbTextKo);
-            ptParts.push(sbTextPt);
-          } else {
-            koParts.push(`${sbTextKo}${josa(sbTextKo, "이", "가")} 아파요`);
-            ptParts.push(painTemplates[curLang](sbTextPt));
-          }
-        });
-        return;
-      }
-    }
-
-    if (hasPainCard && bodyCards.some(b => b.id === item.id)) return;
-
-    if (sub) {
-      koParts.push(cleanParens(getLabel(sub, "ko")));
-      ptParts.push(cleanParens(getLabel(sub, curLang)));
-      return;
-    }
-
-    if (item.pain !== undefined) {
-      koParts.push(`통증은 10점 중 ${item.pain}점이에요`);
-      ptParts.push(getLabel(item, curLang));
-      if (item.pain >= 8) urgent = true;
-      return;
-    }
-
-    koParts.push(cleanParens(getLabel(item, "ko")));
-    ptParts.push(cleanParens(getLabel(item, curLang)));
-  });
-
-  if (free) {
-    koParts.push(free);
-    ptParts.push(free);
-    if (/숨|가슴|흉통|튜브|피|출혈|어지|실신|두드러기|붓고|breath|chest|bleed|blood|tube|dizzy/i.test(free)) {
-      urgent = true;
-    }
-  }
-
-  let koSent = koParts.join(". ").replace(/\.\./g, ".");
-  if (koSent && !/[.?!]$/.test(koSent)) koSent += ".";
-
-  let ptSent = ptParts.join(". ").replace(/\.\./g, ".");
-  if (ptSent && !/[.?!。？！]$/.test(ptSent)) {
-    ptSent += (curLang === "zh" || curLang === "ja") ? "。" : ".";
-  }
-
-  return {
-    candidates: [{ ko: koSent, pt: curLang === "ko" ? koSent : ptSent }],
-    urgent
-  };
-}
-
-// ---------- Dynamic Gemini API Auto-Discovery & Fallback ----------
-const DEFAULT_FALLBACK_MODELS = [
-  "gemini-3.5-flash-lite",
-  "gemini-3.1-flash-lite",
-  "gemini-4-hydrogen",
-  "gemini-3.6-flash",
-  "gemini-2.5-flash"
-];
-
-let KEY = "";
-let MODEL = "gemini-3.5-flash-lite";
-let VERIFIED_MODELS = [];
-
-try {
-  KEY = sessionStorage.getItem("ttt-key") || "";
-  MODEL = sessionStorage.getItem("ttt-model") || MODEL;
-  VERIFIED_MODELS = JSON.parse(sessionStorage.getItem("ttt-verified-models") || "[]");
-} catch (e) {}
-
-function setAI() {
-  const e = $("aiState");
-  if (!e) return;
-  if (KEY) {
-    e.textContent = `AI 연결됨 (${MODEL})`;
-    e.classList.add("on");
-  } else {
-    e.textContent = "기본 문장 모드 · AI 연결하기";
-    e.classList.remove("on");
-  }
-}
-
-async function discoverModels(apiKey, preferredModel) {
-  const candidates = [];
-  if (preferredModel) candidates.push(preferredModel.trim());
-
-  try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
-    if (res.ok) {
-      const data = await res.json();
-      const discovered = (data.models || [])
-        .filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
-        .map(m => (m.name || "").replace(/^models\//, ""))
-        .filter(name => {
-          const low = name.toLowerCase();
-          const isTargetFamily = low.includes("flash") || low.includes("hydrogen");
-          const isExcluded = ["audio", "image", "tts", "embedding", "aqa", "vision"].some(ex => low.includes(ex));
-          return isTargetFamily && !isExcluded;
-        });
-      candidates.push(...discovered);
-    }
-  } catch (e) {}
-
-  candidates.push(...DEFAULT_FALLBACK_MODELS);
-  return [...new Set(candidates.filter(Boolean))];
-}
-
-async function callGeminiOnce(modelName, prompt, json) {
-  const ctl = new AbortController();
-  const to = setTimeout(() => ctl.abort(), 22000);
-  try {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modelName)}:generateContent?key=${encodeURIComponent(KEY)}`,
-      {
-        method: "POST",
-        signal: ctl.signal,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: prompt }] }],
-          generationConfig: json
-            ? { responseMimeType: "application/json", temperature: 0.15 }
-            : { temperature: 0.15 }
-        })
-      }
-    );
-    const d = await r.json();
-    if (!r.ok) {
-      const msg = (d.error && d.error.message) || ("HTTP " + r.status);
-      const err = new Error(msg);
-      err.status = r.status;
-      throw err;
-    }
-    return (d.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
-  } finally {
-    clearTimeout(to);
-  }
-}
-
-async function gemini(prompt, json) {
-  if (!KEY) throw new Error("no ai");
-  const modelList = [...new Set([MODEL, ...VERIFIED_MODELS, ...DEFAULT_FALLBACK_MODELS].filter(Boolean))];
-  let lastErr = null;
-
-  for (const m of modelList) {
-    for (let attempt = 0; attempt < 2; attempt++) {
-      try {
-        const res = await callGeminiOnce(m, prompt, json);
-        if (m !== MODEL) {
-          MODEL = m;
-          try { sessionStorage.setItem("ttt-model", m); } catch (e) {}
-          setAI();
-        }
-        return res;
-      } catch (e) {
-        lastErr = e;
-        if (e.status === 400 || e.status === 403) throw e;
-        if (e.status === 404) break;
-        await new Promise(r => setTimeout(r, 1100));
-      }
-    }
-  }
-  throw lastErr || new Error("연결 실패");
-}
-
-async function askJSON(prompt) {
-  const t = await gemini(prompt, true);
-  const m = t.match(/\{[\s\S]*\}/);
-  if (!m) throw new Error("format");
-  return JSON.parse(m[0]);
-}
-
-$("aiState").onclick = () => {
-  $("keyIn").value = KEY;
-  $("modelIn").value = MODEL;
-  $("keyMsg").textContent = "";
-  $("keyDlg").classList.add("show");
-  $("keyIn").focus();
-};
-$("keyClose").onclick = () => $("keyDlg").classList.remove("show");
-$("keyOff").onclick = () => {
-  KEY = "";
-  VERIFIED_MODELS = [];
-  try {
-    sessionStorage.removeItem("ttt-key");
-    sessionStorage.removeItem("ttt-verified-models");
-  } catch (e) {}
-  setAI();
-  $("keyMsg").textContent = "연결을 끊었어요. 기본 문장 모드로 작동해요.";
-};
-
-$("keySave").onclick = async () => {
-  const k = $("keyIn").value.trim();
-  const preferred = $("modelIn").value.trim() || "gemini-3.5-flash-lite";
-  if (!k) {
-    $("keyMsg").textContent = "API 키를 붙여 넣어 주세요.";
-    return;
-  }
-  const oldK = KEY, oldM = MODEL, oldV = [...VERIFIED_MODELS];
-  KEY = k;
-  $("keyMsg").textContent = "ListModels 조회 및 사용 가능한 모델 검증 중…";
-
-  try {
-    const candidateModels = await discoverModels(KEY, preferred);
-    const working = [];
-    let lastErr = null;
-
-    for (const m of candidateModels) {
-      $("keyMsg").textContent = `모델 연결 테스트 중: ${m} …`;
-      for (let attempt = 0; attempt < 2; attempt++) {
-        try {
-          await callGeminiOnce(m, "'확인'이라고만 답해.", false);
-          working.push(m);
-          break;
-        } catch (e) {
-          lastErr = e;
-          if (e.status === 400 || e.status === 403) throw e;
-          if (e.status === 404) break;
-          await new Promise(r => setTimeout(r, 1000));
-        }
-      }
-      if (working.length >= 2) break;
-    }
-
-    if (!working.length) {
-      throw lastErr || new Error("사용 가능한 모델을 찾지 못했습니다.");
-    }
-
-    MODEL = working[0];
-    VERIFIED_MODELS = working;
-    $("modelIn").value = MODEL;
-
-    try {
-      sessionStorage.setItem("ttt-key", KEY);
-      sessionStorage.setItem("ttt-model", MODEL);
-      sessionStorage.setItem("ttt-verified-models", JSON.stringify(VERIFIED_MODELS));
-    } catch (e) {}
-
-    setAI();
-    $("keyMsg").textContent = `연결 성공! (적용 모델: ${MODEL})`;
-    setTimeout(() => $("keyDlg").classList.remove("show"), 900);
-  } catch (e) {
-    KEY = oldK;
-    MODEL = oldM;
-    VERIFIED_MODELS = oldV;
-    setAI();
-    $("keyMsg").textContent = "연결 실패: " + e.message;
-  }
-};
-setAI();
-
-// ---------- 환자 문장 만들기 실행 ----------
-$("makeBtn").onclick = async () => {
-  const free = $("ptFreeIn").value.trim();
-  if (!sel.length && !free) {
-    toast(UI_I18N.trayEmpty[curLang]);
-    return;
-  }
-
-  $("makeBtn").disabled = true;
-  $("makeBtn").textContent = "…";
-
-  let result = null;
-  if (KEY) {
-    const picked = sel.map(s => subSel[s.id] ? `${s.labels.ko}(세부: ${subSel[s.id].labels.ko})` : s.labels.ko);
-    const prompt = `너는 중환자실 및 병동에서 기관삽관, 기관절개, 갑상선·두경부 수술 후 발성 제한 등으로 말하기 어려운 환자의 의사소통을 돕는 보조 AI다.
-환자 입력:
-- 선택한 항목: ${picked.join(", ") || "없음"}
-- 자유 입력 텍스트: ${free || "없음"}
-- 환자 확인 언어: ${LANGS[curLang].name}
-
-규칙:
-1. 선택한 항목과 입력 텍스트의 의미만 사용하고 새로운 증상이나 의학적 진단을 임의로 추가하지 않는다.
-2. 세부 옵션이 있는 경우 상위 카테고리명을 중복 나열하지 말고 구체적 세부 상태 중심으로 자연스러운 1~2개의 해요체 한국어 문장(ko)을 만든다.
-3. 환자 확인용 문장(pt)은 ${LANGS[curLang].name}로 임상 문맥과 동음이의어를 정확히 의역한다.
-4. 해석이 모호하면 문장 후보를 최대 3개 제시한다.
-5. 호흡곤란, 가슴 통증·답답함, 튜브 불편·이탈, 객혈(피 섞인 가래), 수술 부위·코·입 출혈, 소변줄 통증/누출, 어지러움, 사지 힘 빠짐·급성 안면/목 부종, 통증 8점 이상이면 urgent를 true로 표시한다.
-6. 반드시 JSON만 출력한다: {"candidates":[{"ko":"한국어 문장","pt":"환자 언어 문장"}],"urgent":false}`;
-
-    try {
-      result = await askJSON(prompt);
-    } catch (e) {
-      result = localSentence();
-    }
-  } else {
-    result = localSentence();
-  }
-
-  $("makeBtn").disabled = false;
-  $("makeBtn").innerHTML = `<span class="emoji">✨</span> ${UI_I18N.makeBtn[curLang]}`;
-
-  renderCandidates(result);
-};
-
-function renderCandidates(res) {
-  const list = $("candList");
-  list.innerHTML = "";
-  const isUrgent = !!res.urgent;
-
-  if (isUrgent) {
-    showUrgent("긴급 임상 징후가 포함된 의사표현입니다 — [✓ OK] 시 제한 없이 즉시 전달됩니다!");
-  }
-
-  (res.candidates || []).forEach(c => {
-    const card = document.createElement("div");
-    card.className = "cand-card" + (isUrgent ? " urgent-cand" : "");
-    const ptText = c.pt || c.ko;
-    card.innerHTML = `
-      <div class="cand-texts">
-        <div class="cand-pt">${isUrgent ? '<span class="emoji">🚨</span> ' : ""}${ptText}</div>
-        ${curLang !== "ko" ? `<div class="cand-ko">${UI_I18N.nrLabel[curLang]} ${c.ko}</div>` : ""}
-      </div>
-      <div class="cand-actions">
-        <button class="btn btn-ghost btn-read gaze-target" data-gaze="true" type="button"><span class="emoji">🔊</span> ${UI_I18N.readBtn[curLang]}</button>
-        <button class="btn btn-ok gaze-target" data-gaze="true" type="button">${UI_I18N.okBtn[curLang]}</button>
-      </div>
-    `;
-
-    card.querySelector(".btn-read").onclick = () => {
-      speak(ptText, LANGS[curLang].tts);
-    };
-
-    card.querySelector(".btn-ok").onclick = () => {
-      if (!isUrgent) {
-        const st = checkNonUrgentStatus();
-        if (!st.allowed) {
-          toast(
-            st.reason === "cooldown"
-              ? UI_I18N.cooldownToast[curLang](st.waitSec)
-              : UI_I18N.capToast[curLang](formatSec(st.waitSec))
-          );
-          return;
-        }
-        recordNonUrgentCall();
-      }
-
-      playToneChime(isUrgent);
-      speak(c.ko, "ko-KR");
-      addLog("환자", c.ko, isUrgent, painSel, curLang !== "ko" ? ptText : "");
-      if (isUrgent) {
-        showUrgent(`🚨 긴급 환자 호소: "${c.ko}" (제한 우회 즉시 전달됨)`);
-      }
-
-      $("candSection").classList.remove("show");
-      sel = [];
-      subSel = {};
-      painSel = null;
-      $("ptFreeIn").value = "";
-      renderTray();
-      renderCards();
-      toast(UI_I18N.sentToast[curLang]);
-    };
-    list.appendChild(card);
-  });
-  $("candSection").classList.add("show");
-}
-
-$("retryBtn").onclick = () => $("candSection").classList.remove("show");
-
-// ---------- 간호사 모드: 음성 입력, 40종 표준 임상 문구 & 안전 번역 ----------
-let curNrCat = "all";
-
-$("nrVoiceBtn").onclick = () => {
-  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRec) {
-    toast("현재 브라우저에서는 음성 인식이 지원되지 않습니다. 텍스트로 직접 입력하거나 아래 표준 문구를 선택해 주세요.");
-    return;
-  }
-  try {
-    const rec = new SpeechRec();
-    rec.lang = "ko-KR";
-    rec.interimResults = false;
-    rec.maxAlternatives = 1;
-    $("nrVoiceBtn").innerHTML = '<span class="emoji">🎙️</span> 듣는 중…';
-    rec.onresult = e => {
-      const transcript = e.results?.[0]?.[0]?.transcript || "";
-      if (transcript) {
-        $("nrInput").value = transcript;
-        toast(`음성 인식 완료: "${transcript}"`);
-      }
-    };
-    rec.onerror = () => {
-      toast("음성 인식에 실패했습니다. 마이크 권한을 확인하거나 직접 입력해 주세요.");
-    };
-    rec.onend = () => {
-      $("nrVoiceBtn").innerHTML = '<span class="emoji">🎤</span> 말로 입력';
-    };
-    rec.start();
-  } catch (e) {
-    $("nrVoiceBtn").innerHTML = '<span class="emoji">🎤</span> 말로 입력';
-    toast("음성 입력을 시작할 수 없습니다.");
-  }
-};
-
-function renderNursePresets() {
-  const wrap = $("nrPresetChips");
-  if (!wrap) return;
-  wrap.innerHTML = "";
-  const list = curNrCat === "all" ? NURSE_PHRASES : NURSE_PHRASES.filter(p => p.cat === curNrCat);
-  list.forEach(item => {
-    const chip = document.createElement("button");
-    chip.type = "button";
-    chip.className = "preset-chip";
-    chip.innerHTML = `<span class="emoji">${item.emoji[0]}</span> ${item.ko}`;
-    chip.onclick = () => {
-      $("nrInput").value = item.ko;
-      $("nrConvBtn").click();
-    };
-    wrap.appendChild(chip);
-  });
-}
-
-document.querySelectorAll(".nr-cat-tab").forEach(tab => {
-  tab.onclick = () => {
-    document.querySelectorAll(".nr-cat-tab").forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-    curNrCat = tab.dataset.nrcat;
-    renderNursePresets();
-  };
-});
-
-function normalizeKo(str) {
-  return (str || "")
-    .toLowerCase()
-    .replace(/[\s.,?!~'"()·\-]/g, "");
-}
-
-function matchVerifiedNursePhrase(raw) {
-  const norm = normalizeKo(raw);
-  if (!norm) return null;
-
-  for (const item of NURSE_PHRASES) {
-    if (normalizeKo(item.ko) === norm) return item;
-    if (item.aliases && item.aliases.some(a => normalizeKo(a) === norm)) return item;
-  }
-  return null;
-}
-
-$("nrIncomingSpeak").onclick = () => {
-  speak($("nrIncomingKo").textContent, "ko-KR");
-};
-
-$("nrConvBtn").onclick = async () => {
-  const raw = $("nrInput").value.trim();
-  const target = $("nrLang").value;
-  if (!raw) {
-    toast("환자에게 전달할 말을 먼저 입력하거나 표준 임상 문구를 눌러 주세요.");
-    return;
-  }
-
-  $("nrOfflineWarn").classList.remove("show");
-  $("nrConvBtn").disabled = true;
-  $("nrConvBtn").textContent = "변환 중…";
-
-  const matched = matchVerifiedNursePhrase(raw);
-  let out = null;
-  let unverifiedOffline = false;
-
-  if (KEY) {
-    const prompt = `너는 중환자실·병동에서 말하기 어려운 환자에게 간호사의 말을 정확히 전달하는 의료 통역·소통 보조자다.
-원문: "${raw}"
-목표 언어: ${LANGS[target].name}
-
-절대 규칙:
-1. 원문의 의미만 정확하고 공손하게 전달하라. 원문에 없는 약속(예: "즉시 처리해 드리겠습니다", "안심하십시오" 등)이나 추가 문장을 절대 임의로 지어내지 마라.
-2. 'simple'에는 원문의 의미를 유지한 쉽고 명확한 한국어 문장을 작성하라(원문이 이미 짧은 인사나 명확한 문장이면 그대로 유지).
-3. 'emoji'에는 원문 내용과 직접 관련된 이모지 1~2개를 넣어라.
-4. 'translation'에는 목표 언어(${LANGS[target].name})로 원문의 정확한 뜻만 번역하라. 목표 언어가 한국어(ko)이면 빈 문자열("")로 두어라.
-5. 'back'에는 간호사가 오역을 확인할 수 있도록 translation을 다시 한국어로 직역·역번역한 문장을 적어라.
-6. 반드시 JSON만 출력하라: {"simple":"한국어 문장","emoji":["👋"],"translation":"목표 언어 번역","back":"한국어 역번역"}`;
-    try {
-      out = await askJSON(prompt);
-    } catch (e) {
-      out = null;
-    }
-  }
-
-  if (!out) {
-    if (matched) {
-      out = {
-        simple: matched.ko,
-        emoji: matched.emoji,
-        translation: target === "ko" ? "" : matched.trans[target],
-        back: target === "ko" ? "검증된 한국어 표준 임상 문구입니다." : `역번역 확인: ${matched.back[target]}`
-      };
-    } else if (target === "ko") {
-      out = {
-        simple: raw,
-        emoji: ["💬"],
-        translation: "",
-        back: "한국어 원문 그대로 환자에게 크게 표시됩니다."
-      };
-    } else {
-      unverifiedOffline = true;
-      out = {
-        simple: raw,
-        emoji: ["⚠️"],
-        translation: "",
-        back: ""
-      };
-    }
-  }
-
-  $("nrConvBtn").disabled = false;
-  $("nrConvBtn").textContent = "쉽게 바꾸기 & 번역";
-
-  $("nrOutEmoji").textContent = (out.emoji || ["💬"]).join(" ");
-  $("nrOutSimple").textContent = out.simple;
-
-  if (unverifiedOffline) {
-    $("nrOutTrans").style.display = "none";
-    $("nrOutBack").textContent = "";
-    $("nrOfflineWarn").classList.add("show");
-    toast("오프라인 모드에서는 등록된 40종 임상 문구만 번역됩니다.");
-    return;
-  }
-
-  if (target !== "ko" && out.translation) {
-    $("nrOutTrans").style.display = "block";
-    $("nrOutTrans").textContent = out.translation;
-    $("nrOutBack").textContent = out.back || "";
-  } else {
-    $("nrOutTrans").style.display = "none";
-    $("nrOutBack").textContent = out.back || "환자가 한눈에 읽기 쉽도록 정리된 문장입니다.";
-  }
-
-  addLog("간호사", out.simple, false, null);
-  toast("변환 완료 및 의사소통 기록에 저장되었습니다.");
-};
-
-$("nrSpeakBtn").onclick = () => {
-  const target = $("nrLang").value;
-  const txt = target !== "ko" && $("nrOutTrans").style.display !== "none"
-    ? $("nrOutTrans").textContent
-    : $("nrOutSimple").textContent;
-  speak(txt, LANGS[target].tts);
-};
-
-$("nrBigBtn").onclick = () => {
-  $("bigEmoji").textContent = $("nrOutEmoji").textContent;
-  $("bigText").textContent = $("nrOutSimple").textContent;
-  $("bigSub").textContent = $("nrOutTrans").style.display !== "none" ? $("nrOutTrans").textContent : "";
-  $("bigDlg").classList.add("show");
-};
-$("bigClose").onclick = () => $("bigDlg").classList.remove("show");
-$("bigSpeak").onclick = () => $("nrSpeakBtn").click();
-
-// ---------- 기록, SVG 통증 점수 변화 그래프 및 Focus DAR 초안 ----------
-function addLog(who, text, urgent = false, pain = null, ptOriginal = "") {
-  const t = nowTime();
-  logs.push({ time: t, who, text, urgent, pain, ptOriginal });
-
-  if (who === "환자") {
-    const box = $("nrIncomingBox");
-    box.classList.toggle("urgent", !!urgent);
-    $("nrIncomingTime").textContent = `${t} 수신${urgent ? " · 🚨 긴급" : ""}`;
-    $("nrIncomingKo").textContent = text;
-    $("nrIncomingPt").textContent = ptOriginal ? `환자 화면 원문: ${ptOriginal}` : "";
-  }
-
-  if ($("logView").classList.contains("active")) {
-    renderLogs();
-    renderPainSvg();
-  }
-}
-
-function renderLogs() {
-  const list = $("logList");
-  if (!list) return;
-  list.innerHTML = "";
-  if (!logs.length) {
-    list.innerHTML = `<div style="color:#64748b;font-size:0.9rem;padding:24px;text-align:center;">기록된 의사소통 내역이 없습니다.</div>`;
-    return;
-  }
-  logs.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "log-item" + (item.who === "간호사" ? " nurse" : "") + (item.urgent ? " urgent" : "");
-    div.innerHTML = `
-      <div class="log-meta">
-        <span>${item.time}</span>
-        <span class="badge ${item.who === "간호사" ? "b-nr" : "b-pt"}">${item.who}</span>
-        ${item.urgent ? '<span class="badge b-ur">긴급</span>' : ""}
-        ${typeof item.pain === "number" ? `<span class="badge" style="background:#fef3c7;color:#92400e;">통증 ${item.pain}점</span>` : ""}
-      </div>
-      <div style="font-weight:700;font-size:0.94rem;">${item.text}</div>
-    `;
-    list.appendChild(div);
-  });
-}
-
-function renderPainSvg() {
-  const wrap = $("painSvgWrap");
-  if (!wrap) return;
-
-  const pts = logs.filter(l => typeof l.pain === "number");
-  if (!pts.length) {
-    wrap.innerHTML = `<span style="color:#64748b;font-size:0.86rem;font-weight:600;">기록된 통증 점수가 없습니다 (통증 점수 선택 후 확인 시 자동 표시)</span>`;
-    return;
-  }
-
-  const w = 440, h = 155;
-  const padL = 34, padR = 28, padT = 26, padB = 28;
-  const plotW = w - padL - padR;
-  const plotH = h - padT - padB;
-
-  const gridLines = [0, 5, 10].map(val => {
-    const y = (padT + plotH - (val / 10) * plotH).toFixed(1);
-    return `
-      <line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="#e2e8f0" stroke-width="1" />
-      <text x="${padL - 7}" y="${Number(y) + 3.5}" fill="#64748b" font-size="10" font-weight="600" text-anchor="end">${val}</text>
-    `;
-  }).join("");
-
-  const coords = pts.map((p, i) => {
-    const x = pts.length === 1 ? padL + plotW / 2 : padL + (i * plotW) / (pts.length - 1);
-    const y = padT + plotH - (p.pain / 10) * plotH;
-    return { x, y, v: p.pain, t: p.time };
-  });
-
-  const polylinePts = coords.map(c => `${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(" ");
-  const polyHtml = coords.length > 1
-    ? `<polyline fill="none" stroke="#0d6e6e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${polylinePts}" />`
-    : "";
-
-  const nodesHtml = coords.map(c => {
-    const color = c.v >= 8 ? "#dc2626" : "#0d6e6e";
-    return `
-      <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="5.5" fill="${color}" stroke="#ffffff" stroke-width="1.5" />
-      <text x="${c.x.toFixed(1)}" y="${(c.y - 9).toFixed(1)}" fill="#0f172a" font-size="11" font-weight="800" text-anchor="middle">${c.v}점</text>
-      <text x="${c.x.toFixed(1)}" y="${h - 8}" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">${c.t}</text>
-    `;
-  }).join("");
-
-  wrap.innerHTML = `
-    <svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="통증 점수 변화 그래프">
-      ${gridLines}
-      ${polyHtml}
-      ${nodesHtml}
-    </svg>
-  `;
-}
-
-$("clearLogBtn").onclick = () => {
-  logs = [];
-  $("darOut").value = "";
-  renderLogs();
-  renderPainSvg();
-  toast("의사소통 기록이 초기화되었습니다.");
-};
-
-$("resetSampleLogBtn").onclick = () => {
-  logs = JSON.parse(JSON.stringify(INITIAL_LOGS));
-  renderLogs();
-  renderPainSvg();
-  toast("가상 사례 기본 기록이 복원되었습니다.");
-};
-
-$("makeDarBtn").onclick = async () => {
-  if (!logs.length) {
-    toast("작성할 의사소통 기록이 없습니다.");
-    return;
-  }
-  $("makeDarBtn").disabled = true;
-  $("makeDarBtn").textContent = "초안 생성 중…";
-
-  const summary = logs.map(l => `[${l.time}] ${l.who}: ${l.text}${l.urgent ? " (긴급)" : ""}`).join("\n");
-  let dar = "";
-
-  if (KEY) {
-    const prompt = `너는 임상 간호기록 작성을 보조하는 AI다. 아래 의사소통 보드 기록만을 근거로 Focus DAR 형식 간호기록 초안을 작성하라.
-기록에 없는 활력징후, 검사 수치, 시행하지 않은 중재를 임의로 지어내지 말고, 확인이 필요한 부분은 [간호사 확인 필요]로 표기하라.
-기록:
-${summary}
-
-형식:
-[Focus]: 주요 간호 초점
-[Data]: 환자가 의사소통 보드로 표현한 주관적 증상 및 요구
-[Action]: 간호사가 제공한 설명 및 중재 [간호사 확인 필요]
-[Response]: 중재 후 환자 반응 및 통증/상태 변화 [간호사 확인 필요]`;
-    try {
-      dar = await gemini(prompt, false);
-    } catch (e) {}
-  }
-
-  if (!dar) {
-    const ptLines = logs.filter(l => l.who === "환자").map(l => `- (${l.time}) "${l.text}"`).join("\n") || "- 특이 표현 없음";
-    const nrLines = logs.filter(l => l.who === "간호사").map(l => `- (${l.time}) ${l.text}`).join("\n") || "- [간호사 확인 필요]";
-    dar = `[Focus]: 구어 의사소통 제한 환자의 증상 호소 및 간호 요구 사정\n` +
-          `[Data]: 환자가 의사소통 보드를 통해 다음과 같이 표현함.\n${ptLines}\n` +
-          `[Action]: 환자 요구 확인 및 의사소통 보드 기반 설명·처치 시행.\n${nrLines}\n` +
-          `[Response]: 환자 의사 전달 완료 및 안심 반응 관찰됨. 추가 증상 및 통증 변화 [간호사 확인 필요].`;
-  }
-
-  $("darOut").value = dar;
-  $("makeDarBtn").disabled = false;
-  $("makeDarBtn").textContent = "초안 만들기";
-  toast("Focus DAR 간호기록 초안이 생성되었습니다.");
-};
-
-$("copyDarBtn").onclick = () => {
-  const ta = $("darOut");
-  if (!ta.value.trim()) return;
-  ta.select();
-  document.execCommand("copy");
-  toast("간호기록 초안이 클립보드에 복사되었습니다.");
-};
-
-// ---------- 2모드 시선 추적 허브 (WebGazer.js 순차 5점 보정 + 마우스 리스너 해제 + EMA/데드존/자석 스냅) ----------
-let gazeMode = "off"; // "off" | "webcam" | "external"
-let dwellTarget = null;
-let dwellStart = 0;
-let smoothX = null;
-let smoothY = null;
-let stableX = null;
-let stableY = null;
-const DWELL_MS = 1500;
-const CIRCUMFERENCE = 131.95; // 2 * PI * 21
-const DEADZONE_PX = 6;
-const MAGNET_RADIUS_PX = 14;
-
-function loadWebGazerScript() {
-  const urls = [
-    "https://cdn.jsdelivr.net/npm/webgazer@3.1.0/dist/webgazer.min.js",
-    "https://webgazer.cs.brown.edu/webgazer.js"
-  ];
-
-  return new Promise((resolve, reject) => {
-    if (typeof window.webgazer !== "undefined") {
-      resolve(window.webgazer);
-      return;
-    }
-
-    let idx = 0;
-    function tryNext() {
-      if (idx >= urls.length) {
-        reject(new Error("WebGazer 스크립트를 불러오지 못했습니다."));
-        return;
-      }
-      const s = document.createElement("script");
-      s.src = urls[idx++];
-      s.async = true;
-      s.onload = () => {
-        if (typeof window.webgazer !== "undefined") resolve(window.webgazer);
-        else tryNext();
-      };
-      s.onerror = () => tryNext();
-      document.head.appendChild(s);
-    }
-    tryNext();
-  });
-}
-
-function updateGazeHeaderUI() {
-  const btn = $("gazeBtn");
-  const recal = $("recalibBtn");
-  const stopBtn = $("gazeStopBtn");
-  btn.classList.remove("gaze-on");
-  recal.style.display = "none";
-  stopBtn.style.display = "none";
-
-  if (gazeMode === "off") {
-    btn.innerHTML = '<span class="emoji">👁️</span> 시선 추적';
-  } else if (gazeMode === "webcam") {
-    btn.innerHTML = '<span class="emoji">👁️</span> 시선 추적 ON';
-    btn.classList.add("gaze-on");
-    recal.style.display = "inline-flex";
-    stopBtn.style.display = "inline-flex";
-  } else if (gazeMode === "external") {
-    btn.innerHTML = '<span class="emoji">📱</span> 외부 눈 추적 ON';
-    btn.classList.add("gaze-on");
-    stopBtn.style.display = "inline-flex";
-  }
-}
-
-$("gazeBtn").onclick = () => {
-  if (gazeMode !== "off") {
-    stopAllGazeModes();
-    return;
-  }
-  $("webcamHardwareWarn").style.display = "none";
-  $("extGuideSection").style.display = "none";
-  $("gazeHubDlg").classList.add("show");
-};
-
-$("gazeStopBtn").onclick = () => {
-  stopAllGazeModes();
-};
-
-$("gazeHubClose").onclick = () => $("gazeHubDlg").classList.remove("show");
-
-$("modeWebcamBtn").onclick = async () => {
-  $("gazeHubDlg").classList.remove("show");
-  await startWebcamGaze();
-};
-
-$("modeExtBtn").onclick = () => {
-  stopAllGazeModes(true);
-  gazeMode = "external";
-  document.body.classList.add("external-gaze-mode");
-  updateGazeHeaderUI();
-  $("extGuideSection").style.display = "block";
-  toast("외부 기기 OS 눈 추적 연동 모드가 켜졌습니다. 모든 버튼이 대형 응시 타겟으로 확장됩니다.");
-};
-
-$("recalibBtn").onclick = () => {
-  if (gazeMode === "webcam") {
-    startSequentialCalibration();
-  }
-};
-
-async function startWebcamGaze() {
-  const warnBox = $("webcamHardwareWarn");
-  warnBox.style.display = "none";
-  warnBox.innerHTML = "";
-
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    const msg = "현재 주소(file://) 또는 브라우저에서는 웹캠 접근이 제한됩니다. HTTPS 주소로 접속하거나 아래 (B) 외부 기기 OS 눈 추적 연동을 이용해 주세요.";
-    warnBox.innerHTML = `⚠️ <strong>카메라 접근 제한:</strong> ${msg}`;
-    warnBox.style.display = "block";
-    toast(msg);
-    $("gazeHubDlg").classList.add("show");
-    return;
-  }
-
-  // 1) 물리적 videoinput 장치 존재 여부 사전 확인 (enumerateDevices)
-  try {
-    if (typeof navigator.mediaDevices.enumerateDevices === "function") {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoInputs = devices.filter(d => d.kind === "videoinput");
-      if (videoInputs.length === 0) {
-        const msg = "이 PC/모니터에서 물리적 웹캠(카메라) 장치가 감지되지 않았습니다. 전면 카메라가 있는 태블릿·노트북을 사용하거나, 아래 (B) 외부 기기 OS 눈 추적 연동을 선택해 주세요.";
-        warnBox.innerHTML = `📷 <strong>연결된 웹캠 없음:</strong> ${msg}`;
-        warnBox.style.display = "block";
-        $("extGuideSection").style.display = "block";
-        toast("연결된 웹캠이 감지되지 않았습니다.");
-        $("gazeHubDlg").classList.add("show");
-        return;
-      }
-    }
-  } catch (enumErr) {}
-
-  $("gazeBtn").innerHTML = '<span class="emoji">👁️</span> 카메라 연결 중…';
-
-  // 2) 범용 제약 조건({ video: true })으로 카메라 권한 프로브 후 즉시 모든 트랙을 stop()하여 점유 충돌 방지
-  let probeStream = null;
-  try {
-    probeStream = await navigator.mediaDevices.getUserMedia({ video: true });
-  } catch (err) {
-    updateGazeHeaderUI();
-    const name = err && err.name ? err.name : "";
-    let detailMsg = "";
-    if (name === "NotFoundError" || name === "DevicesNotFoundError") {
-      detailMsg = "연결된 웹캠(카메라)을 찾을 수 없습니다. USB 웹캠 연결 상태를 확인하거나, 카메라가 없는 PC에서는 아래 (B) 외부 기기 OS 눈 추적 연동을 사용해 주세요.";
-      $("extGuideSection").style.display = "block";
-    } else if (name === "NotAllowedError" || name === "PermissionDeniedError") {
-      detailMsg = "카메라 권한이 거부되었습니다. 브라우저 주소창 자물쇠 아이콘 및 OS 개인정보 설정에서 카메라를 '허용'으로 변경해 주세요.";
-    } else if (name === "NotReadableError" || name === "TrackStartError") {
-      detailMsg = "카메라가 다른 프로그램(Zoom, 카카오톡, 기본 카메라 앱 등)에서 이미 사용 중입니다. 해당 프로그램을 종료한 뒤 다시 시도해 주세요.";
-    } else {
-      detailMsg = `카메라 연결 실패 (${name || err.message}). 연결 상태와 권한을 확인해 주세요.`;
-    }
-    warnBox.innerHTML = `⚠️ <strong>웹캠 시작 불가:</strong> ${detailMsg}`;
-    warnBox.style.display = "block";
-    toast(detailMsg);
-    $("gazeHubDlg").classList.add("show");
-    return;
-  } finally {
-    if (probeStream) {
-      probeStream.getTracks().forEach(t => t.stop());
-    }
-  }
-
-  // 3) WebGazer 초기화 및 시작 (범용 비디오 제약 조건 강제 적용)
-  try {
-    const wg = await loadWebGazerScript();
-    wg.params = wg.params || {};
-    wg.params.camConstraints = { video: true };
-    if (typeof wg.setCameraConstraints === "function") {
-      wg.setCameraConstraints({ video: true });
-    }
-
-    wg.saveDataAcrossSessions(false)
-      .showVideoPreview(false)
-      .showPredictionPoints(false)
-      .setGazeListener(data => {
-        if (!data || gazeMode !== "webcam") return;
-        handleGazePoint(data.x, data.y);
-      });
-
-    await wg.begin();
-    if (typeof wg.removeMouseEventListeners === "function") {
-      wg.removeMouseEventListeners();
-    }
-
-    gazeMode = "webcam";
-    smoothX = null;
-    smoothY = null;
-    stableX = null;
-    stableY = null;
-    updateGazeHeaderUI();
-    $("gazeCursor").classList.add("show");
-    startSequentialCalibration();
-  } catch (err) {
-    gazeMode = "off";
-    updateGazeHeaderUI();
-    const msg = `시선 추적 엔진 시작 실패: ${err.message || err}`;
-    warnBox.innerHTML = `⚠️ ${msg}`;
-    warnBox.style.display = "block";
-    toast(msg);
-    $("gazeHubDlg").classList.add("show");
-  }
-}
-
-function stopAllGazeModes(silent = false) {
-  const prev = gazeMode;
-  gazeMode = "off";
-  document.body.classList.remove("external-gaze-mode");
-  try {
-    if (typeof window.webgazer !== "undefined") {
-      if (typeof window.webgazer.removeMouseEventListeners === "function") {
-        window.webgazer.removeMouseEventListeners();
-      }
-      window.webgazer.end();
-    }
-  } catch (e) {}
-
-  $("gazeCursor").classList.remove("show");
-  $("calibOverlay").classList.remove("show");
-  $("calibOverlay").querySelectorAll(".calib-dot").forEach(d => d.remove());
-  resetGazeRing();
-  updateGazeHeaderUI();
-
-  if (!silent && prev !== "off") {
-    toast("시선 추적 모드가 종료되었습니다.");
-  }
-}
-
-// 순차적 5점 고정 응시 보정 (0/3 -> 3/3 진행 후 다음 점으로 이동, 완료 시 마우스 리스너 완전 제거)
-function startSequentialCalibration() {
-  const ov = $("calibOverlay");
-  ov.querySelectorAll(".calib-dot").forEach(d => d.remove());
-
-  const points = [
-    { name: "중앙", xPct: 50, yPct: 50 },
-    { name: "왼쪽 위", xPct: 14, yPct: 18 },
-    { name: "오른쪽 위", xPct: 86, yPct: 18 },
-    { name: "왼쪽 아래", xPct: 14, yPct: 82 },
-    { name: "오른쪽 아래", xPct: 86, yPct: 82 }
-  ];
-
-  let stepIdx = 0;
-
-  function renderStep() {
-    ov.querySelectorAll(".calib-dot").forEach(d => d.remove());
-    if (stepIdx >= points.length) {
-      if (gazeMode === "webcam" && typeof window.webgazer !== "undefined") {
-        try {
-          if (typeof window.webgazer.removeMouseEventListeners === "function") {
-            window.webgazer.removeMouseEventListeners();
-          }
-        } catch (e) {}
-      }
-      smoothX = null;
-      smoothY = null;
-      stableX = null;
-      stableY = null;
-      ov.classList.remove("show");
-      toast("5점 시선 보정 완료! 원하는 버튼을 1.5초간 바라보면 자동 선택됩니다.");
-      return;
-    }
-
-    const pt = points[stepIdx];
-    $("calibStepTitle").innerHTML = `<span class="emoji">🎯</span> 시선 보정 (${stepIdx + 1} / ${points.length} 단계 · ${pt.name})`;
-    $("calibStepDesc").innerHTML = `<strong>${pt.name}의 빨간 점을 먼저 눈으로 응시</strong>한 상태에서, 시선을 고정한 채 <strong>3번 클릭(또는 터치)</strong>해 주세요.`;
-
-    let taps = 0;
-    const dot = document.createElement("button");
-    dot.type = "button";
-    dot.className = "calib-dot";
-    dot.style.left = pt.xPct + "%";
-    dot.style.top = pt.yPct + "%";
-    dot.textContent = "0/3";
-
-    dot.onclick = () => {
-      taps++;
-      const rect = dot.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      if (gazeMode === "webcam" && typeof window.webgazer !== "undefined") {
-        try {
-          window.webgazer.recordScreenPosition(centerX, centerY, "click");
-        } catch (e) {}
-      }
-
-      if (taps < 3) {
-        dot.textContent = `${taps}/3`;
-      } else if (taps === 3) {
-        dot.classList.add("done");
-        dot.textContent = "✓";
-        setTimeout(() => {
-          stepIdx++;
-          renderStep();
-        }, 260);
-      }
-    };
-
-    ov.appendChild(dot);
-  }
-
-  ov.classList.add("show");
-  renderStep();
-}
-
-$("calibCancel").onclick = () => {
-  $("calibOverlay").querySelectorAll(".calib-dot").forEach(d => d.remove());
-  $("calibOverlay").classList.remove("show");
-};
-
-function resetGazeRing() {
-  dwellTarget = null;
-  const circle = $("gazeProgressCircle");
-  if (circle) circle.style.strokeDashoffset = String(CIRCUMFERENCE);
-}
-
-// 14px 이내 가장 가까운 [data-gaze] 타겟 자석 스냅 탐색
-function findMagneticTarget(x, y) {
-  const candidates = document.querySelectorAll("[data-gaze='true'], .gaze-target");
-  let bestEl = null;
-  let bestDist = Infinity;
-
-  candidates.forEach(el => {
-    if (el.disabled || el.offsetParent === null) return;
-    const r = el.getBoundingClientRect();
-    if (r.width === 0 || r.height === 0) return;
-
-    const dx = Math.max(r.left - x, 0, x - r.right);
-    const dy = Math.max(r.top - y, 0, y - r.bottom);
-    const dist = Math.hypot(dx, dy);
-
-    if (dist <= MAGNET_RADIUS_PX && dist < bestDist) {
-      bestDist = dist;
-      bestEl = el;
-    }
-  });
-
-  return bestEl;
-}
-
-function handleGazePoint(rawX, rawY) {
-  const clampedX = Math.max(0, Math.min(window.innerWidth, rawX));
-  const clampedY = Math.max(0, Math.min(window.innerHeight, rawY));
-
-  if (smoothX === null) {
-    smoothX = clampedX;
-    smoothY = clampedY;
-    stableX = clampedX;
-    stableY = clampedY;
-  } else {
-    // 지수이동평균(EMA: 0.80 * prev + 0.20 * raw)
-    smoothX = smoothX * 0.80 + clampedX * 0.20;
-    smoothY = smoothY * 0.80 + clampedY * 0.20;
-
-    // 6px 데드존: 미세 동공 떨림 무시
-    if (Math.hypot(smoothX - stableX, smoothY - stableY) >= DEADZONE_PX) {
-      stableX = smoothX;
-      stableY = smoothY;
-    }
-  }
-
-  let displayX = stableX;
-  let displayY = stableY;
-
-  const cur = $("gazeCursor");
-  const circle = $("gazeProgressCircle");
-
-  if ($("calibOverlay").classList.contains("show")) {
-    cur.style.left = displayX + "px";
-    cur.style.top = displayY + "px";
-    return;
-  }
-
-  const openModal = document.querySelector(".modal-backdrop.show");
-  let clickable = null;
-
-  if (openModal) {
-    const modalTargets = openModal.querySelectorAll("[data-gaze='true'], button");
-    let bestDist = Infinity;
-    modalTargets.forEach(el => {
-      if (el.disabled || el.offsetParent === null) return;
-      const r = el.getBoundingClientRect();
-      const dx = Math.max(r.left - displayX, 0, displayX - r.right);
-      const dy = Math.max(r.top - displayY, 0, displayY - r.bottom);
-      const dist = Math.hypot(dx, dy);
-      if (dist <= MAGNET_RADIUS_PX && dist < bestDist) {
-        bestDist = dist;
-        clickable = el;
-      }
-    });
-  } else {
-    clickable = findMagneticTarget(displayX, displayY);
-  }
-
-  if (clickable) {
-    const r = clickable.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    displayX = displayX * 0.45 + cx * 0.55;
-    displayY = displayY * 0.45 + cy * 0.55;
-  }
-
-  cur.style.left = displayX + "px";
-  cur.style.top = displayY + "px";
-
-  if (clickable && !clickable.disabled && !clickable.classList.contains("calib-dot")) {
-    if (dwellTarget !== clickable) {
-      dwellTarget = clickable;
-      dwellStart = performance.now();
-    } else {
-      const elapsed = performance.now() - dwellStart;
-      const ratio = Math.min(1, elapsed / DWELL_MS);
-      circle.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - ratio));
-      if (elapsed >= DWELL_MS) {
-        resetGazeRing();
-        clickable.click();
-      }
-    }
-  } else {
-    resetGazeRing();
-  }
-}
-
-// ---------- 초기 렌더링 실행 ----------
-applyLanguageUI();
-renderNursePresets();
-renderLogs();
-renderPainSvg();
-</script>
-</body>
-</html>
+      id: "b_hip", emoji: "🪑",
