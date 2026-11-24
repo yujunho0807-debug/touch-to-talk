@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>말 대신 터치로 (Touch-to-Talk) — 생성형 AI 기반 의사소통 취약 환자 보드</title>
-<!-- 고대비 한글 및 컬러 이모지 웹폰트 -->
+<title>말 대신 터치로 (Touch-to-Talk) — 생성형 AI 기반 환자 의사소통 보드</title>
+<!-- 고대비 한글 및 컬러 이모지 웹폰트 (OS별 이모지 깨짐 방지) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -56,11 +56,11 @@
   body.external-gaze-mode .sub-opt-btn {
     border-width: 3px !important;
     border-color: #0284c7 !important;
-    min-height: 64px;
+    min-height: 66px;
     box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.16);
   }
   body.external-gaze-mode .pic-card {
-    min-height: 142px;
+    min-height: 146px;
     padding: 18px 12px;
   }
   body.external-gaze-mode .cards-grid {
@@ -173,7 +173,7 @@
 
   /* 메인 컨테이너 */
   main {
-    max-width: 1220px;
+    max-width: 1240px;
     margin: 0 auto;
     padding: 16px;
   }
@@ -371,7 +371,7 @@
   .btn-primary { background: var(--teal); color: #fff; }
   .btn-primary:hover { background: #0a5858; }
   .btn-ghost { background: #e2e8f0; color: var(--text); }
-  .btn-ok { background: var(--ok); color: #fff; padding: 10px 22px; font-size: 1rem; }
+  .btn-ok { background: var(--ok); color: #fff; padding: 10px 20px; font-size: 0.98rem; }
   .btn-danger { background: var(--danger); color: #fff; }
 
   /* 생성 문장 후보 확인 패널 */
@@ -434,6 +434,12 @@
     font-weight: 700;
   }
 
+  .cand-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
   /* 카테고리 + 그림 보드 레이아웃 */
   .board-layout {
     display: grid;
@@ -451,14 +457,14 @@
     background: var(--card);
     border: 2px solid var(--border);
     border-radius: 14px;
-    padding: 14px 12px;
+    padding: 13px 12px;
     text-align: left;
     font-size: 0.96rem;
     font-weight: 800;
     color: var(--text);
     cursor: pointer;
     transition: all 0.12s;
-    min-height: 54px;
+    min-height: 52px;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -624,7 +630,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    max-height: 220px;
+    max-height: 230px;
     overflow-y: auto;
     padding: 2px;
   }
@@ -753,19 +759,16 @@
   .b-nr { background: #e2e8f0; color: var(--navy); }
   .b-ur { background: var(--danger); color: #fff; }
 
-  .canvas-wrap {
+  .svg-chart-wrap {
     width: 100%;
-    height: 150px;
+    height: 160px;
     background: #f8fafc;
     border-radius: 12px;
     border: 1px solid var(--border);
     overflow: hidden;
-  }
-
-  #painCanvas {
-    display: block;
-    width: 100%;
-    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .dar-box {
@@ -936,7 +939,7 @@
   .big-text { font-size: 2.25rem; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
   .big-sub { font-size: 1.45rem; color: #7dd3fc; margin-bottom: 24px; }
 
-  /* 시선 추적(Eye-Tracking) 오버레이 & 1.5초 원형 응시 프로그레스 */
+  /* 시선 추적 오버레이 & 1.5초 원형 응시 프로그레스 */
   #gazeCursor {
     display: none;
     position: fixed;
@@ -1063,7 +1066,7 @@
   </div>
   <div class="top-actions">
     <button id="gazeBtn" class="pill-btn gaze-target" data-gaze="true" type="button"><span class="emoji">👁️</span> 시선 추적</button>
-    <button id="recalibBtn" class="pill-btn gaze-target" data-gaze="true" type="button" style="display:none;"><span class="emoji">🎯</span> 시선 재보정</button>
+    <button id="recalibBtn" class="pill-btn gaze-target" data-gaze="true" type="button" style="display:none;"><span class="emoji">🎯</span> 재보정</button>
     <button id="aiState" class="pill-btn gaze-target" data-gaze="true" type="button">기본 문장 모드 · AI 연결하기</button>
     <nav class="nav-tabs" aria-label="화면 전환">
       <button class="tab-btn gaze-target active" data-gaze="true" data-tab="ptView" type="button">환자</button>
@@ -1102,7 +1105,7 @@
     <div class="tray-box">
       <div class="tray-head">
         <span id="trayGuide">그림을 누르거나(최대 8개) 아래에 직접 적어 주세요.</span>
-        <span id="selCount">0 / 8개 선택됨</span>
+        <span id="selCount">0 / 8 선택됨</span>
       </div>
       <div id="chipsWrap" class="chips-wrap">
         <span style="color:#94a3b8;font-size:0.88rem;">아래에서 그림 카드를 눌러 주세요</span>
@@ -1117,8 +1120,8 @@
     <!-- 생성 문장 후보 확인 패널 -->
     <div id="candSection">
       <div class="cand-title">
-        <span id="candTitleText"><span class="emoji">💬</span> 이 말이 맞나요? 맞으면 [✓ OK]를 눌러 간호사에게 전달하세요.</span>
-        <button id="retryBtn" class="btn btn-ghost gaze-target" data-gaze="true" style="padding:6px 12px;min-height:36px;font-size:0.84rem;" type="button">다시 선택</button>
+        <span id="candTitleText"><span class="emoji">💬</span> 이 말이 맞나요? 맞으면 [✓ OK (맞아요)]를 눌러 간호사에게 전달하세요.</span>
+        <button id="retryBtn" class="btn btn-ghost gaze-target" data-gaze="true" style="padding:6px 12px;min-height:36px;font-size:0.84rem;" type="button"><span class="emoji">🔄</span> 재선택</button>
       </div>
       <div id="candList"></div>
     </div>
@@ -1136,7 +1139,7 @@
     <div id="nrIncomingBox" class="incoming-box">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
         <strong style="color:var(--navy);font-size:0.95rem;"><span class="emoji">📥</span> 최근 환자 수신 메시지</strong>
-        <span id="nrIncomingTime" style="font-size:0.8rem;color:var(--muted);font-weight:700;">대기 중</span>
+        <span id="nrIncomingTime" style="font-size:0.8rem;color:var(--muted);font-weight:700;">10:05 수신</span>
       </div>
       <div id="nrIncomingKo" style="font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:4px;">수술 부위가 욱신거리고 아파요. 통증 점수는 10점 중 6점이에요.</div>
       <div id="nrIncomingPt" style="font-size:0.88rem;color:var(--teal);font-weight:700;margin-bottom:8px;"></div>
@@ -1148,6 +1151,7 @@
         <h2><span class="emoji">🩺</span> 환자에게 할 말 입력</h2>
         <textarea id="nrInput" class="nurse-in" placeholder="표준 임상 문구를 누르거나 직접 입력하세요 (예: 안녕하세요, 주사 부위를 확인하겠습니다)"></textarea>
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <button id="nrVoiceBtn" class="btn btn-ghost" type="button"><span class="emoji">🎤</span> 말로 입력</button>
           <select id="nrLang" style="padding:10px 12px;border-radius:12px;border:1.5px solid var(--border);font-weight:700;font-size:0.9rem;">
             <option value="ko">한국어 (쉬운 말)</option>
             <option value="en">English (영어)</option>
@@ -1156,7 +1160,7 @@
             <option value="ru">Русский (러시아어)</option>
             <option value="ja">日本語 (일본어)</option>
           </select>
-          <button id="nrConvBtn" class="btn btn-primary" type="button">쉽게 바꾸기 · 번역</button>
+          <button id="nrConvBtn" class="btn btn-primary" type="button">쉽게 바꾸기</button>
         </div>
 
         <div style="font-size:0.82rem;font-weight:800;color:var(--navy);margin-top:14px;">
@@ -1181,7 +1185,7 @@
             <div id="nrOutTrans" class="out-trans" style="display:none;"></div>
             <div id="nrOutBack" class="out-back"></div>
             <div id="nrOfflineWarn" class="offline-warn-box">
-              ⚠️ 오프라인 기본 모드에서는 등록된 임상 문구만 번역됩니다. 자유 문장 번역은 상단 [AI 연결하기]를 켜거나 아래 표준 임상 문구를 선택해 주세요.
+              ⚠️ <strong>임상 번역 안전 안내:</strong> 현재 오프라인 기본 모드에서는 검증된 40종 표준 임상 문구만 번역됩니다. 자유 문장 번역은 상단 <strong>[AI 연결하기]</strong>에서 Gemini API를 연결하거나, 왼쪽의 <strong>표준 임상 문구 칩</strong>을 선택해 주세요.
             </div>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -1221,9 +1225,12 @@
   <section id="logView" class="view">
     <div class="log-grid">
       <div class="panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap;">
           <h2 style="margin:0;"><span class="emoji">📋</span> 의사소통 기록 (시간순)</h2>
-          <button id="clearLogBtn" class="btn btn-ghost" style="padding:6px 12px;min-height:36px;font-size:0.82rem;" type="button">기록 초기화</button>
+          <div style="display:flex;gap:6px;">
+            <button id="resetSampleLogBtn" class="btn btn-ghost" style="padding:6px 12px;min-height:36px;font-size:0.82rem;" type="button">예시 복원</button>
+            <button id="clearLogBtn" class="btn btn-ghost" style="padding:6px 12px;min-height:36px;font-size:0.82rem;" type="button">전체 비우기</button>
+          </div>
         </div>
         <div id="logList"></div>
       </div>
@@ -1231,17 +1238,18 @@
       <div>
         <div class="panel" style="margin-bottom:16px;">
           <h2><span class="emoji">📈</span> 통증 점수 변화 (0–10)</h2>
-          <div id="painCanvasWrap" class="canvas-wrap">
-            <canvas id="painCanvas"></canvas>
-          </div>
+          <div id="painSvgWrap" class="svg-chart-wrap"></div>
         </div>
 
         <div class="panel">
           <h2><span class="emoji">📝</span> 간호기록 초안 (Focus DAR)</h2>
-          <textarea id="darOut" class="dar-box" placeholder="‘초안 만들기’를 누르면 왼쪽 의사소통 기록을 바탕으로 Focus DAR 간호기록 초안을 생성합니다. 반드시 간호사가 검토·수정한 뒤 사용하세요."></textarea>
+          <p style="font-size:0.8rem;color:var(--muted);margin:0 0 8px 0;">
+            ※ 생성된 초안은 기록된 의사소통 내용만을 근거로 작성되며, <strong>반드시 담당 간호사가 원자료와 대조·검토한 뒤 수정하여 사용</strong>해야 합니다.
+          </p>
+          <textarea id="darOut" class="dar-box" placeholder="‘초안 만들기’를 누르면 왼쪽 의사소통 기록을 바탕으로 Focus DAR 간호기록 초안을 생성합니다."></textarea>
           <div style="display:flex;gap:8px;">
             <button id="makeDarBtn" class="btn btn-primary" type="button">초안 만들기</button>
-            <button id="copyDarBtn" class="btn btn-ghost" type="button">복사하기</button>
+            <button id="copyDarBtn" class="btn btn-ghost" type="button">복사</button>
           </div>
         </div>
       </div>
@@ -1258,23 +1266,23 @@
     </p>
 
     <button id="modeWebcamBtn" class="gaze-mode-card" type="button">
-      <span class="gaze-mode-title"><span class="emoji">📷</span> 1. 웹캠 시선 추적 시작 및 5점 보정 (WebGazer.js)</span>
+      <span class="gaze-mode-title"><span class="emoji">📷</span> 1. 웹캠 시선 추적 (순차 5점 보정)</span>
       <span class="gaze-mode-desc">
-        전면 카메라로 눈동자를 추적합니다. 각 빨간 점을 <strong>먼저 응시한 상태에서 3번씩 클릭</strong>하면 보정 후 마우스 간섭이 자동 잠금 해제되며, EMA 안정화 필터와 1.5초 응시 게이지로 작동합니다.
+        전면 카메라로 눈동자를 추적합니다. 순차적으로 나타나는 5개의 빨간 점을 <strong>먼저 응시한 상태에서 3번씩 클릭(0/3 → 3/3)</strong>하면 보정 후 마우스 학습 리스너가 자동 해제되며, EMA 안정화 필터와 1.5초 응시 게이지로 작동합니다.
       </span>
     </button>
 
     <button id="modeSimBtn" class="gaze-mode-card" type="button">
-      <span class="gaze-mode-title"><span class="emoji">🖱️</span> 2. 마우스 응시 시뮬레이션 (웹캠 없는 데스크톱 시연용)</span>
+      <span class="gaze-mode-title"><span class="emoji">🖱️</span> 2. 마우스 응시 시뮬레이션 (발표·시연용)</span>
       <span class="gaze-mode-desc">
-        웹캠 없이도 발표 및 테스트 시 5점 보정 절차와 버튼 위 1.5초 응시 원형 게이지 자동 클릭 기능을 동일하게 시연합니다.
+        웹캠 없이도 데스크톱 발표 및 테스트 시 1.5초 응시 원형 게이지와 14px 자석 스냅 자동 클릭 기능을 동일하게 시연합니다.
       </span>
     </button>
 
     <button id="modeExtBtn" class="gaze-mode-card" type="button">
-      <span class="gaze-mode-title"><span class="emoji">♿</span> 3. 외부 시선 추적 / OS 눈 추적 연동 모드 (iPadOS · Windows · Tobii)</span>
+      <span class="gaze-mode-title"><span class="emoji">♿</span> 3. 외부 시선 추적 / OS 눈 추적 연동 모드</span>
       <span class="gaze-mode-desc">
-        기기에 내장된 고성능 OS 눈 추적이나 전용 아이트래커(Tobii 등)와 충돌하지 않도록 웹캠 점유를 끄고, 화면 전체 버튼을 고대비·대형 응시 타겟으로 전환합니다.
+        iPadOS 18+ 눈 추적, Windows 11 눈 제어, Tobii 전용 아이트래커와 충돌하지 않도록 웹캠 점유를 끄고, 화면 전체 버튼을 고대비·대형 응시 타겟으로 확장합니다.
       </span>
     </button>
 
@@ -1368,6 +1376,46 @@
 <script>
 const $ = id => document.getElementById(id);
 
+// ---------- Web Audio API 효과음 (외부 사운드 URL 미사용) ----------
+function playToneChime(urgent = false) {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const now = ctx.currentTime;
+
+    if (urgent) {
+      // 긴급 호출 2연음 경고 벨
+      [880, 1174.66, 880, 1174.66].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, now + i * 0.14);
+        gain.gain.setValueAtTime(0.16, now + i * 0.14);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.14 + 0.13);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.14);
+        osc.stop(now + i * 0.14 + 0.13);
+      });
+    } else {
+      // 일반 전달 확인 부드러운 벨
+      [523.25, 659.25].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now + i * 0.11);
+        gain.gain.setValueAtTime(0.11, now + i * 0.11);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.18);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.11);
+        osc.stop(now + i * 0.11 + 0.18);
+      });
+    }
+  } catch (e) {}
+}
+
 // ---------- 6개국어 UI 및 빠른 응답 사전 ----------
 const LANGS = {
   ko: { name: "한국어", tts: "ko-KR" },
@@ -1387,10 +1435,11 @@ const UI_I18N = {
   },
   cats: {
     pain:  { ko: "아픔·불편", en: "Pain / Discomfort", zh: "疼痛·不适", vi: "Đau / Khó chịu", ru: "Боль / Дискомфорт", ja: "痛み・不快感" },
-    care:  { ko: "해 주세요", en: "Requests / Care", zh: "请帮我", vi: "Yêu cầu chăm sóc", ru: "Просьбы / Уход", ja: "してほしいこと" },
     body:  { ko: "몸 부위", en: "Body Parts", zh: "身体部位", vi: "Bộ phận cơ thể", ru: "Части тела", ja: "体の部位" },
+    care:  { ko: "해 주세요", en: "Requests / Care", zh: "请帮我", vi: "Yêu cầu chăm sóc", ru: "Просьбы / Уход", ja: "してほしいこと" },
+    mood:  { ko: "마음", en: "Feelings / Mood", zh: "心情·情绪", vi: "Tâm trạng", ru: "Эмоции", ja: "気持ち" },
     ask:   { ko: "사람·질문", en: "People / Questions", zh: "人员·提问", vi: "Người / Câu hỏi", ru: "Люди / Вопросы", ja: "人・質問" },
-    scale: { ko: "상태·강도", en: "Severity / Scale", zh: "程度·评分", vi: "Mức độ / Thang điểm", ru: "Степень / Шкала", ja: "状態・強さ" }
+    scale: { ko: "통증 점수", en: "Pain Score (0-10)", zh: "疼痛评分", vi: "Điểm đau (0-10)", ru: "Шкала боли", ja: "痛みスコア" }
   },
   trayGuide: {
     ko: "그림을 누르거나(최대 8개) 아래에 직접 적어 주세요.",
@@ -1401,12 +1450,12 @@ const UI_I18N = {
     ja: "絵カードを押すか（最大8個）、下に直接入力してください。"
   },
   selCount: {
-    ko: n => `${n} / 8개 선택됨`,
+    ko: n => `${n} / 8 선택됨`,
     en: n => `${n} / 8 selected`,
-    zh: n => `已选 ${n} / 8 项`,
+    zh: n => `已选 ${n} / 8`,
     vi: n => `Đã chọn ${n} / 8`,
     ru: n => `Выбрано: ${n} / 8`,
-    ja: n => `${n} / 8個 選択中`
+    ja: n => `${n} / 8 選択中`
   },
   trayEmpty: {
     ko: "아래에서 그림 카드를 눌러 주세요",
@@ -1427,14 +1476,16 @@ const UI_I18N = {
   clearBtn: { ko: "지우기", en: "Clear", zh: "清除", vi: "Xóa", ru: "Очистить", ja: "消去" },
   makeBtn:  { ko: "문장 만들기", en: "Create Sentence", zh: "生成句子", vi: "Tạo câu", ru: "Составить фразу", ja: "文章を作成" },
   candTitle: {
-    ko: "이 말이 맞나요? 맞으면 [✓ OK]를 눌러 간호사에게 전달하세요.",
+    ko: "이 말이 맞나요? 맞으면 [✓ OK (맞아요)]를 눌러 간호사에게 전달하세요.",
     en: "Is this what you mean? Tap [✓ OK] to send to the nurse.",
     zh: "您是这个意思吗？确认请按 [✓ OK] 发送给护士。",
     vi: "Có đúng ý bạn không? Nhấn [✓ OK] để gửi cho điều dưỡng.",
     ru: "Вы это имеете в виду? Нажмите [✓ OK], чтобы отправить медсестре.",
     ja: "この内容で合っていますか？[✓ OK] を押して看護師に伝えてください。"
   },
-  retryBtn: { ko: "다시 선택", en: "Re-select", zh: "重新选择", vi: "Chọn lại", ru: "Выбрать заново", ja: "選び直す" },
+  readBtn:  { ko: "읽기", en: "Listen", zh: "朗读", vi: "Nghe", ru: "Озвучить", ja: "読み上げ" },
+  okBtn:    { ko: "✓ OK (맞아요)", en: "✓ OK (Confirm)", zh: "✓ OK (正确)", vi: "✓ OK (Đúng)", ru: "✓ OK (Верно)", ja: "✓ OK (はい)" },
+  retryBtn: { ko: "재선택", en: "Re-select", zh: "重新选择", vi: "Chọn lại", ru: "Выбрать заново", ja: "選び直す" },
   nrLabel: {
     ko: "간호사 전달 한국어:",
     en: "Korean for Nurse:",
@@ -1757,7 +1808,7 @@ const NURSE_PHRASES = [
       ru: "Обязательно сообщите нам, когда отойдут газы или вы помочитесь.",
       ja: "ガス（おなら）が出たり尿が出たら必ず教えてください。"
     },
-    back: { en: "가스 배출이나 배뇨 시 꼭 알려주세요.", zh: "방귀가 나오거나 소변을 보시면 꼭 알려주세요.", vi: "가스 배출이나 소변을 보시면 알려주세요.", ru: "가스 배출이나 배뇨 시 반드시 알려주세요.", ja: "ガスや尿が出たら必ず教えてください。" }
+    back: { en: "가스 배출이나 배뇨 시 꼭 알려주세요.", zh: "방귀가 나오거나 소변을 보시면 꼭 알려주세요.", vi: "가스 배출이나 소변을 보시면 알려주세요.", ru: "가스 배출이나 배뇨 시 반드시 알려주세요.", ja: "가스や尿が出たら必ず教えてください。" }
   },
 
   // 3. 처치·주사·기도 (proc) - 10개
@@ -2021,16 +2072,24 @@ const NURSE_PHRASES = [
       ru: "Не вставайте самостоятельно, обязательно позовите нас, если захотите в туалет.",
       ja: "一人で起き上がらず、トイレに行くときは必ず呼んでください。"
     },
-    back: { en: "혼자 일어나지 마시고 화장실 가실 때 꼭 불러주세요.", zh: "혼자 일어나지 마시고 화장실 갈 때 꼭 불러주세요.", vi: "혼자 일어나지 마시고 화장실 가실 때 불러주세요.", ru: "혼자 일어나지 마시고 화장실 갈 때 꼭 불러주세요.", ja: "혼자 일어나지 마시고 화장실 갈 때는 반드시 불러주세요." }
+    back: { en: "혼자 일어나지 마시고 화장실 가실 때 꼭 불러주세요.", zh: "혼자 일어나지 마시고 화장실 갈 때 꼭 불러주세요.", vi: "혼자 일어나지 마시고 화장실 갈 때 불러주세요.", ru: "혼자 일어나지 마시고 화장실 갈 때 불러주세요.", ja: "혼자 일어나지 마시고 화장실 갈 때는 반드시 불러주세요." }
   }
 ];
 
-// ---------- 5개 카테고리 × 총 62개 임상 그림 카드 (6개국어 완전 번역 + 2단계 세부 분기) ----------
+// ---------- 6개 카테고리 임상 그림 카드 & 2단계 세부 분기 (6개국어 완전 번역) ----------
 const DATA = {
+  // 1. 아픔·불편 (18 cards)
   pain: [
     {
       id: "p_pain", emoji: "😣",
-      labels: { ko: "아파요", en: "Pain / Hurts", zh: "疼 / 痛", vi: "Đau", ru: "Болит", ja: "痛いです" }
+      labels: { ko: "아파요", en: "Pain / Hurts", zh: "疼 / 痛", vi: "Đau", ru: "Болит", ja: "痛いです" },
+      subs: [
+        { labels: { ko: "욱신거려요", en: "Throbbing pain", zh: "一跳一跳地疼", vi: "Đau nhức nhối", ru: "Пульсирующая боль", ja: "ズキズキ痛みます" } },
+        { labels: { ko: "찌르듯이 아파요", en: "Sharp stabbing pain", zh: "刺痛 / 像针扎一样", vi: "Đau nhói như đâm", ru: "Острая колющая боль", ja: "チクチク刺すように痛みます" } },
+        { labels: { ko: "묵직하고 조여요", en: "Heavy squeezing pain", zh: "沉重 / 紧缩痛", vi: "Đau nặng nề, bóp nghẹt", ru: "Тяжелая сжимающая боль", ja: "重苦しく締め付けられます" } },
+        { labels: { ko: "뻐근해요", en: "Stiff and sore", zh: "酸痛发紧", vi: "Đau mỏi, căng cứng", ru: "Ноющая боль и скованность", ja: "重だるく張っています" } },
+        { labels: { ko: "쓰라리고 화끈거려요", en: "Burning and stinging pain", zh: "火辣辣地刺痛", vi: "Đau rát, nóng bỏng", ru: "Жгучая и саднющая боль", ja: "ヒリヒリして熱っぽく痛みます" } }
+      ]
     },
     {
       id: "p_dyspnea", emoji: "😮‍💨", urgent: true,
@@ -2041,390 +2100,39 @@ const DATA = {
       labels: { ko: "답답해요", en: "Chest / throat tightness", zh: "胸闷 / 憋闷", vi: "Tức ngực / Ngột ngạt", ru: "Стеснение в груди / горле", ja: "胸や喉が苦しいです" }
     },
     {
-      id: "p_iv", emoji: "💉",
-      labels: { ko: "주사 부위가 불편해요", en: "IV / Injection site issue", zh: "输液 / 针口部位不适", vi: "Khó chịu chỗ tiêm truyền", ru: "Дискомфорт в месте укола", ja: "点滴・注射部位が不快です" },
-      subs: [
-        {
-          labels: {
-            ko: "붓고 딱딱해졌어요 (침윤 의심)",
-            en: "Swollen and hard around IV (Infiltration)",
-            zh: "针口周围肿胀发硬（疑似渗液）",
-            vi: "Sưng và cứng quanh kim truyền (Nghi thoát mạch)",
-            ru: "Отек и уплотнение у катетера (инфильтрация)",
-            ja: "腫れて硬くなっています（漏れ・浸潤の疑い）"
-          }
-        },
-        {
-          labels: {
-            ko: "바늘 부위가 찌르듯 아파요",
-            en: "Sharp stinging pain at needle site",
-            zh: "针头部位有刺痛感",
-            vi: "Đau nhói như kim châm tại chỗ tiêm",
-            ru: "Острая колющая боль в месте иглы",
-            ja: "針の刺さっている所がチクチク痛みます"
-          }
-        },
-        {
-          labels: {
-            ko: "빨갛고 열감이 있어요 (정맥염 의심)",
-            en: "Red and warm around IV (Phlebitis)",
-            zh: "针口发红发热（疑似静脉炎）",
-            vi: "Đỏ và nóng quanh chỗ truyền (Nghi viêm tĩnh mạch)",
-            ru: "Покраснение и жар у вены (флебит)",
-            ja: "赤くなって熱を持っています（静脈炎の疑い）"
-          }
-        },
-        {
-          labels: {
-            ko: "수액이 안 들어가고 피가 역류해요",
-            en: "IV stopped dripping / blood backing up",
-            zh: "输液不滴且管内有回血",
-            vi: "Dịch truyền không chảy và máu trào ngược",
-            ru: "Капельница не капает, кровь идет в трубку",
-            ja: "点滴が落ちずチューブに血が逆流しています"
-          }
-        },
-        {
-          labels: {
-            ko: "테이프가 떨어졌거나 가려워요",
-            en: "IV tape is loose or itchy",
-            zh: "固定胶布脱落或发痒",
-            vi: "Băng dính bị bong hoặc ngứa",
-            ru: "Пластырь отклеился или чешется",
-            ja: "固定テープが剥がれたか、かゆいです"
-          }
-        }
-      ]
-    },
-    {
-      id: "p_elim", emoji: "🚻",
-      labels: { ko: "배설·대소변", en: "Elimination / Bathroom", zh: "大小便 / 排泄", vi: "Đi vệ sinh / Bài tiết", ru: "Туалет / Выделения", ja: "排泄・トイレ" },
-      subs: [
-        {
-          labels: {
-            ko: "소변이 마려워요",
-            en: "I need to urinate",
-            zh: "我想小便",
-            vi: "Tôi buồn đi tiểu",
-            ru: "Хочу помочиться",
-            ja: "おしっこがしたいです"
-          }
-        },
-        {
-          labels: {
-            ko: "대변이 마려워요",
-            en: "I need to have a bowel movement",
-            zh: "我想大便",
-            vi: "Tôi buồn đi đại tiện",
-            ru: "Хочу в туалет по-большому",
-            ja: "便がしたいです"
-          }
-        },
-        {
-          labels: {
-            ko: "방금 소변을 봤어요 (배뇨 완료)",
-            en: "I just urinated (Check output)",
-            zh: "刚解完小便（请检查尿量）",
-            vi: "Tôi vừa đi tiểu xong (Cần kiểm tra)",
-            ru: "Я только что помочился (проверьте)",
-            ja: "先ほど尿が出ました（排尿完了）"
-          }
-        },
-        {
-          labels: {
-            ko: "방금 대변을 봤어요 (배변 완료)",
-            en: "I just had a bowel movement (Need cleaning)",
-            zh: "刚解完大便（需要清理/更换）",
-            vi: "Tôi vừa đi đại tiện xong (Cần thay tã/vệ sinh)",
-            ru: "Был стул (нужно поменять пеленку/подгузник)",
-            ja: "先ほど便が出ました（おむつ・パッド交換）"
-          }
-        },
-        {
-          urgent: true,
-          labels: {
-            ko: "소변줄(도뇨관) 주변이 아프거나 새요",
-            en: "Urinary catheter hurts or is leaking",
-            zh: "导尿管周围疼痛或漏尿",
-            vi: "Ống thông tiểu bị đau hoặc rò rỉ",
-            ru: "Мочевой катетер болит или подтекает",
-            ja: "尿道カテーテルの周りが痛むか漏れています"
-          }
-        },
-        {
-          labels: {
-            ko: "가스가 나왔어요 (방귀)",
-            en: "I passed gas",
-            zh: "排气了（放屁了）",
-            vi: "Tôi đã xì hơi (trung tiện)",
-            ru: "Отошли газы",
-            ja: "ガス（おなら）が出ました"
-          }
-        }
-      ]
-    },
-    {
       id: "p_sputum", emoji: "🫁",
       labels: { ko: "가래가 있어요", en: "Phlegm / Sputum", zh: "有痰", vi: "Có đờm", ru: "Мокрота", ja: "痰があります" },
       subs: [
-        {
-          labels: {
-            ko: "가래가 목에 걸려 답답해요",
-            en: "Phlegm is stuck in my throat",
-            zh: "痰卡在喉咙里很难受",
-            vi: "Đờm vướng ở cổ rất khó chịu",
-            ru: "Мокрота застряла в горле",
-            ja: "痰が喉に絡んで苦しいです"
-          }
-        },
-        {
-          labels: {
-            ko: "가래를 뱉고 싶어요 (흡인 필요)",
-            en: "Need sputum suctioning",
-            zh: "想吐痰（需要吸痰）",
-            vi: "Muốn khạc đờm (Cần hút đờm)",
-            ru: "Нужно отсосать мокроту",
-            ja: "痰を出したいです（吸引が必要）"
-          }
-        },
-        {
-          urgent: true,
-          labels: {
-            ko: "가래에 피가 섞여 나와요 (객혈)",
-            en: "Blood in my sputum (Hemoptysis)",
-            zh: "痰中带血（咯血）",
-            vi: "Đờm có lẫn máu (Ho ra máu)",
-            ru: "Кровь в мокроте (кровохарканье)",
-            ja: "痰に血が混じっています（喀血）"
-          }
-        },
-        {
-          labels: {
-            ko: "누렇고 끈적한 가래가 나와요",
-            en: "Thick yellow sputum",
-            zh: "咳出又黄又粘的痰",
-            vi: "Có đờm đặc màu vàng",
-            ru: "Густая желтая мокрота",
-            ja: "黄色くて粘り気のある痰が出ます"
-          }
-        }
+        { labels: { ko: "목에 걸려 안 뱉어져요", en: "Stuck in throat, can't spit out", zh: "卡在喉咙里咳不出来", vi: "Vướng ở cổ không khạc ra được", ru: "Застряла в горле, не откашливается", ja: "喉に絡んで出せません" } },
+        { labels: { ko: "양이 많고 끈적해요", en: "Thick and excessive phlegm", zh: "痰多且粘稠", vi: "Đờm nhiều và đặc quánh", ru: "Много густой мокроты", ja: "量が多くて粘り気があります" } },
+        { urgent: true, labels: { ko: "피가 섞여 나와요(객혈)", en: "Blood in sputum (Hemoptysis)", zh: "痰中带血（咯血）", vi: "Đờm có lẫn máu (Ho ra máu)", ru: "Кровь в мокроте (кровохарканье)", ja: "痰に血が混じっています（喀血）" } },
+        { labels: { ko: "노랗고 진해요", en: "Thick yellow phlegm", zh: "痰液发黄浓稠", vi: "Đờm đặc màu vàng", ru: "Густая желтая мокрота", ja: "黄色くて濃いです" } }
       ]
     },
     {
-      id: "p_opsite", emoji: "🩹",
-      labels: { ko: "수술 부위 이상", en: "Surgery site issue", zh: "手术部位异常", vi: "Bất thường vết mổ", ru: "Проблема в области шва", ja: "手術部位の異常" },
+      id: "p_tube", emoji: "🩺", urgent: true,
+      labels: { ko: "튜브·배액관이 불편해요", en: "Tube / Drain discomfort", zh: "插管 / 引流管不适", vi: "Khó chịu ống thở / dẫn lưu", ru: "Дискомфорт от трубки / дренажа", ja: "チューブ・排液管が不快です" },
       subs: [
-        {
-          urgent: true,
-          labels: {
-            ko: "거즈가 젖었거나 피가 배어 나와요",
-            en: "Gauze is wet or blood is oozing",
-            zh: "纱布湿了或有血渗出",
-            vi: "Gạc bị ướt hoặc thấm máu",
-            ru: "Повязка промокла или сочится кровь",
-            ja: "ガーゼが濡れているか血が滲んでいます"
-          }
-        },
-        {
-          labels: {
-            ko: "수술 부위가 욱신거리고 아파요",
-            en: "Surgery site is throbbing and painful",
-            zh: "手术部位一跳一跳地疼",
-            vi: "Vết mổ đau nhức nhối",
-            ru: "Пульсирующая боль в области шва",
-            ja: "手術部位がズキズキ痛みます"
-          }
-        },
-        {
-          labels: {
-            ko: "수술 부위가 당기고 뻐근해요",
-            en: "Surgery site feels tight and stiff",
-            zh: "手术部位发紧酸痛",
-            vi: "Vết mổ căng tức và mỏi",
-            ru: "Тянущая боль и напряжение в шве",
-            ja: "手術部位が突っ張って重だるいです"
-          }
-        },
-        {
-          labels: {
-            ko: "수술 부위가 가렵거나 열감이 있어요",
-            en: "Surgery site feels itchy or warm",
-            zh: "手术部位发痒或发热",
-            vi: "Vết mổ bị ngứa hoặc nóng",
-            ru: "Зуд или жар в области шва",
-            ja: "手術部位がかゆいか熱を持っています"
-          }
-        }
+        { urgent: true, labels: { ko: "목 기관 튜브가 불편해요", en: "Tracheal / airway tube is uncomfortable", zh: "气管插管很不舒服", vi: "Ống nội khí quản ở cổ rất khó chịu", ru: "Трубка в горле доставляет дискомфорт", ja: "喉の気管チューブが不快です" } },
+        { labels: { ko: "코줄(L-tube)이 아파요", en: "Nasal feeding tube (L-tube) hurts", zh: "鼻胃管疼痛", vi: "Ống thông mũi dạ dày (L-tube) bị đau", ru: "Назогастральный зонд причиняет боль", ja: "鼻の管（胃管）が痛いです" } },
+        { labels: { ko: "피주머니(JP/배액관)가 당겨요", en: "Surgical drain (JP) tube is pulling", zh: "引流管(JP)被拉扯", vi: "Ống dẫn lưu (JP) bị căng kéo", ru: "Дренажная трубка (JP) тянет", ja: "排液管（JPドレーン）が引っ張られます" } },
+        { labels: { ko: "산소줄이 빠지거나 불편해요", en: "Oxygen tube slipped off or uncomfortable", zh: "氧气管脱落或不舒服", vi: "Dây oxy bị tuột hoặc khó chịu", ru: "Кислородная трубка слетела или мешает", ja: "酸素チューブが外れたか不快です" } }
       ]
     },
     {
-      id: "p_tube", emoji: "🩺",
-      labels: { ko: "튜브·배액관 불편", en: "Tube / Drain discomfort", zh: "插管 / 引流管不适", vi: "Khó chịu ống thở / dẫn lưu", ru: "Дискомфорт от трубки / дренажа", ja: "チューブ・排液管の不快感" },
+      id: "p_iv", emoji: "💉",
+      labels: { ko: "주사 부위가 불편해요", en: "IV / Injection site issue", zh: "输液 / 针口部位不适", vi: "Khó chịu chỗ tiêm truyền", ru: "Дискомфорт в месте укола", ja: "点滴・注射部位が不快です" },
       subs: [
-        {
-          urgent: true,
-          labels: {
-            ko: "목(기관) 튜브가 불편하거나 빠질 것 같아요",
-            en: "Airway tube feels loose or displaced",
-            zh: "气管插管不适或感觉要脱落",
-            vi: "Ống nội khí quản khó chịu hoặc sắp tuột",
-            ru: "Трахеостомическая/интубационная трубка сместилась",
-            ja: "気管チューブが不快、または抜けそうです"
-          }
-        },
-        {
-          labels: {
-            ko: "코줄(비위관)이 목을 찌르고 아파요",
-            en: "Nasal tube is poking and hurting my throat",
-            zh: "鼻胃管刺痛喉咙",
-            vi: "Ống thông mũi dạ dày chọc đau họng",
-            ru: "Назогастральный зонд колет и царапает горло",
-            ja: "鼻の管（胃管）が喉に当たって痛いです"
-          }
-        },
-        {
-          labels: {
-            ko: "피주머니(배액관) 줄이 당기거나 가득 찼어요",
-            en: "Surgical drain tube is pulling or full",
-            zh: "引流管被拉扯或引流袋已满",
-            vi: "Dây dẫn lưu bị căng hoặc túi đã đầy",
-            ru: "Дренажная трубка тянет или емкость полна",
-            ja: "排液管（ドレーン）が引っ張られるか一杯です"
-          }
-        },
-        {
-          labels: {
-            ko: "산소줄이 빠졌거나 건조해요",
-            en: "Oxygen tube slipped off or feels dry",
-            zh: "氧气管脱落或感觉干燥",
-            vi: "Dây oxy bị tuột hoặc làm khô mũi",
-            ru: "Кислородная трубка слетела или сушит",
-            ja: "酸素チューブが外れたか乾燥して痛いです"
-          }
-        }
-      ]
-    },
-    {
-      id: "p_nausea", emoji: "🤢",
-      labels: { ko: "메스꺼워요", en: "Nauseous", zh: "恶心", vi: "Buồn nôn", ru: "Тошнит", ja: "吐き気がします（ムカムカ）" }
-    },
-    {
-      id: "p_vomit", emoji: "🤮",
-      labels: { ko: "토할 것 같아요", en: "Feel like vomiting", zh: "快要吐了", vi: "Sắp nôn", ru: "Сейчас вырвет", ja: "吐きそうです" }
-    },
-    {
-      id: "p_dizzy", emoji: "💫",
-      labels: { ko: "어지러워요", en: "Dizzy / Lightheaded", zh: "头晕", vi: "Chóng mặt", ru: "Кружится голова", ja: "めまいがします" },
-      subs: [
-        {
-          labels: {
-            ko: "누워 있어도 빙빙 돌아요",
-            en: "Room is spinning even while lying down",
-            zh: "躺着也觉得天旋地转",
-            vi: "Nằm yên vẫn thấy quay cuồng",
-            ru: "Все кружится даже лежа",
-            ja: "横になっていてもグルグル回ります"
-          }
-        },
-        {
-          labels: {
-            ko: "일어날 때 눈앞이 캄캄해요",
-            en: "Vision blacks out when sitting/standing up",
-            zh: "起身时眼前发黑",
-            vi: "Tối sầm mắt khi ngồi dậy",
-            ru: "Темнеет в глазах при подъеме",
-            ja: "起き上がると目の前が真っ暗になります"
-          }
-        },
-        {
-          labels: {
-            ko: "식은땀이 나고 기운이 없어요",
-            en: "Cold sweat and feeling weak",
-            zh: "冒冷汗且浑身无力",
-            vi: "Vã mồ hôi lạnh và mệt lả",
-            ru: "Холодный пот и сильная слабость",
-            ja: "冷や汗が出て力が入りません"
-          }
-        }
-      ]
-    },
-    {
-      id: "p_numb", emoji: "⚡",
-      labels: { ko: "저리고 감각이 이상해요", en: "Numbness / Tingling", zh: "发麻 / 感觉异常", vi: "Tê bì / Mất cảm giác", ru: "Онемение / Покалывание", ja: "しびれ・感覚の異常" },
-      subs: [
-        {
-          labels: {
-            ko: "입 주변이나 손끝이 저려요 (저칼슘혈증 의심)",
-            en: "Tingling around lips or fingertips",
-            zh: "嘴周或指尖发麻（疑似低钙血症）",
-            vi: "Tê quanh môi hoặc đầu ngón tay",
-            ru: "Покалывание вокруг губ или в кончиках пальцев",
-            ja: "口の周りや指先がしびれます（低カルシウムの疑い）"
-          }
-        },
-        {
-          urgent: true,
-          labels: {
-            ko: "팔다리에 힘이 빠지고 감각이 둔해요",
-            en: "Weakness and numbness in arms/legs",
-            zh: "手脚无力且感觉迟钝",
-            vi: "Yếu tay chân và giảm cảm giác",
-            ru: "Слабость и онемение в руках или ногах",
-            ja: "手足に力が入らず感覚が鈍いです"
-          }
-        },
-        {
-          labels: {
-            ko: "한 자세로 누워 저려요",
-            en: "Numb from lying in one position",
-            zh: "保持同一姿势躺着发麻",
-            vi: "Tê mỏi do nằm lâu một tư thế",
-            ru: "Затекло тело от долгого лежания",
-            ja: "同じ姿勢で寝ていてしびれています"
-          }
-        }
-      ]
-    },
-    {
-      id: "p_swell", emoji: "🎈",
-      labels: { ko: "부었어요", en: "Swelling", zh: "肿胀", vi: "Bị sưng", ru: "Отек / Опухлость", ja: "腫れています" },
-      subs: [
-        {
-          urgent: true,
-          labels: {
-            ko: "목이나 얼굴이 갑자기 부었어요",
-            en: "Sudden swelling in neck or face",
-            zh: "脖子或脸部突然肿胀",
-            vi: "Cổ hoặc mặt đột ngột sưng to",
-            ru: "Внезапный отек шеи или лица",
-            ja: "首や顔が急に腫れてきました"
-          }
-        },
-        {
-          labels: {
-            ko: "주사 맞은 팔·손등이 부었어요",
-            en: "Arm or hand with IV is swollen",
-            zh: "输液的手臂或手背肿了",
-            vi: "Cánh tay hoặc mu bàn tay tiêm truyền bị sưng",
-            ru: "Опухла рука или кисть с катетером",
-            ja: "点滴をしている腕や手の甲が腫れています"
-          }
-        },
-        {
-          labels: {
-            ko: "다리나 발이 부었어요",
-            en: "Legs or feet are swollen",
-            zh: "腿或脚肿了",
-            vi: "Chân hoặc bàn chân bị sưng",
-            ru: "Отекли ноги или ступни",
-            ja: "脚や足がむくんで腫れています"
-          }
-        }
+        { labels: { ko: "주사 부위가 붓고 딱딱해요(침윤 의심)", en: "IV site is swollen and hard (Infiltration)", zh: "针口部位肿胀发硬（疑似渗液）", vi: "Chỗ tiêm sưng và cứng (Nghi thoát mạch)", ru: "Место укола опухло и затвердело (инфильтрация)", ja: "点滴部位が腫れて硬いです（漏れ・浸潤の疑い）" } },
+        { labels: { ko: "바늘 부위가 찌르듯이 아파요", en: "Sharp stinging pain at needle site", zh: "针头部位有刺痛感", vi: "Đau nhói như kim châm tại chỗ tiêm", ru: "Острая колющая боль в месте иглы", ja: "針の刺さっている所がチクチク痛みます" } },
+        { labels: { ko: "빨갛고 열감이 있어요(정맥염 의심)", en: "Red and warm around IV (Phlebitis)", zh: "针口发红发热（疑似静脉炎）", vi: "Đỏ và nóng quanh chỗ truyền (Nghi viêm tĩnh mạch)", ru: "Покраснение и жар у вены (флебит)", ja: "赤くなって熱を持っています（静脈炎の疑い）" } },
+        { labels: { ko: "수액이 안 들어가고 피가 역류해요", en: "IV stopped dripping / blood backing up", zh: "输液不滴且管内有回血", vi: "Dịch truyền không chảy và máu trào ngược", ru: "Капельница не капает, кровь идет в трубку", ja: "点滴が落ちずチューブに血が逆流しています" } },
+        { labels: { ko: "고정 테이프가 떨어지거나 가려워요", en: "IV tape is loose or itchy", zh: "固定胶布脱落或发痒", vi: "Băng dính cố định bị bong hoặc ngứa", ru: "Пластырь отклеился или чешется", ja: "固定テープが剥がれたか、かゆいです" } }
       ]
     },
     {
       id: "p_thirsty", emoji: "👄",
-      labels: { ko: "목이 말라요", en: "Thirsty / Dry mouth", zh: "口渴 / 口干", vi: "Khát nước / Khô miệng", ru: "Жажда / Сухость во рту", ja: "喉が渇きました" }
+      labels: { ko: "입·목이 말라요", en: "Dry mouth / Thirsty", zh: "口干 / 喉咙干", vi: "Khô miệng / Khát nước", ru: "Сухость во рту / Жажда", ja: "口や喉が渇きます" }
     },
     {
       id: "p_cold", emoji: "🥶",
@@ -2435,340 +2143,82 @@ const DATA = {
       labels: { ko: "더워요", en: "Hot / Feverish", zh: "热 / 发热", vi: "Nóng / Sốt", ru: "Жарко / Жар", ja: "暑いです" }
     },
     {
+      id: "p_nausea", emoji: "🤢",
+      labels: { ko: "속이 메스꺼워요", en: "Nauseous", zh: "恶心 / 想吐", vi: "Buồn nôn / Nôn nao", ru: "Тошнит", ja: "吐き気がします（ムカムカ）" }
+    },
+    {
+      id: "p_dizzy", emoji: "💫", urgent: true,
+      labels: { ko: "어지러워요", en: "Dizzy / Lightheaded", zh: "头晕", vi: "Chóng mặt", ru: "Кружится голова", ja: "めまいがします" }
+    },
+    {
+      id: "p_numb", emoji: "⚡",
+      labels: { ko: "저리고 감각이 이상해요", en: "Numbness / Tingling", zh: "发麻 / 感觉异常", vi: "Tê bì / Cảm giác bất thường", ru: "Онемение / Покалывание", ja: "しびれ・感覚の異常" },
+      subs: [
+        { labels: { ko: "입 주변·손끝이 저려요", en: "Tingling around lips or fingertips", zh: "嘴周或指尖发麻", vi: "Tê quanh môi hoặc đầu ngón tay", ru: "Покалывание вокруг губ или в кончиках пальцев", ja: "口の周りや指先がしびれます" } },
+        { urgent: true, labels: { ko: "팔·다리에 힘이 안 들어가요", en: "Weakness in arms or legs", zh: "手脚使不上力气", vi: "Tay chân yếu, không có sức", ru: "Слабость в руках или ногах", ja: "手足に力が入りません" } },
+        { labels: { ko: "수술 부위 감각이 먹먹해요", en: "Surgery area feels numb / dull", zh: "手术部位感觉麻木迟钝", vi: "Vùng mổ bị tê bì, mất cảm giác", ru: "Онемение в области операции", ja: "手術部位の感覚が鈍いです" } }
+      ]
+    },
+    {
+      id: "p_swell", emoji: "🎈",
+      labels: { ko: "부었어요", en: "Swelling", zh: "肿胀", vi: "Bị sưng", ru: "Отек / Опухлость", ja: "腫れています" },
+      subs: [
+        { urgent: true, labels: { ko: "목·얼굴이 갑자기 부었어요", en: "Sudden swelling in neck or face", zh: "脖子或脸部突然肿胀", vi: "Cổ hoặc mặt đột ngột sưng to", ru: "Внезапный отек шеи или лица", ja: "首や顔が急に腫れました" } },
+        { labels: { ko: "주사 맞은 팔·손등이 부었어요", en: "Arm or hand with IV is swollen", zh: "输液的手臂或手背肿了", vi: "Cánh tay hoặc mu bàn tay tiêm truyền bị sưng", ru: "Опухла рука или кисть с катетером", ja: "点滴をしている腕や手の甲が腫れています" } },
+        { labels: { ko: "다리·발이 부었어요", en: "Legs or feet are swollen", zh: "腿或脚肿了", vi: "Chân hoặc bàn chân bị sưng", ru: "Отекли ноги или ступни", ja: "脚や足がむくんで腫れています" } }
+      ]
+    },
+    {
       id: "p_bloat", emoji: "🫃",
-      labels: { ko: "배가 더부룩해요", en: "Bloated / Gas", zh: "腹胀 / 胀气", vi: "Đầy bụng / Chướng hơi", ru: "Вздутие живота / Газы", ja: "お腹が張って苦しいです" }
+      labels: { ko: "배가 더부룩해요", en: "Bloated / Gas", zh: "腹胀 / 胀气", vi: "Đầy bụng / Chướng hơi", ru: "Вздутие живота", ja: "お腹が張って苦しいです" }
     },
     {
-      id: "p_insomnia", emoji: "😴",
-      labels: { ko: "잠을 못 자요", en: "Can't sleep", zh: "睡不着", vi: "Không ngủ được", ru: "Не могу уснуть", ja: "眠れません" }
-    }
-  ],
-
-  care: [
-    {
-      id: "c_iv", emoji: "💧",
-      labels: { ko: "주사·수액 확인", en: "Check IV / Fluids", zh: "检查输液", vi: "Kiểm tra dịch truyền", ru: "Проверить капельницу", ja: "点滴・輸液の確認" },
-      subs: [
-        {
-          labels: {
-            ko: "수액이 다 들어갔어요 (펌프 알람)",
-            en: "IV bag is empty (Pump alarm beeping)",
-            zh: "输液已滴完（输液泵报警）",
-            vi: "Dịch truyền đã hết (Máy báo động)",
-            ru: "Капельница закончилась (пищит насос)",
-            ja: "点滴が終わりました（ポンプのアラーム）"
-          }
-        },
-        {
-          labels: {
-            ko: "주사 부위와 속도를 확인해 주세요",
-            en: "Please check IV site and drip rate",
-            zh: "请检查针口和输液速度",
-            vi: "Vui lòng kiểm tra vị trí kim và tốc độ truyền",
-            ru: "Проверьте место укола и скорость капельницы",
-            ja: "点滴の刺入部と落ちる速度を確認してください"
-          }
-        },
-        {
-          labels: {
-            ko: "수액 줄이 꼬였거나 당겨요",
-            en: "IV tubing is kinked or pulling",
-            zh: "输液管打折或被拉扯",
-            vi: "Dây truyền bị gập hoặc căng",
-            ru: "Трубка капельницы перегнулась или тянет",
-            ja: "点滴のチューブが折れているか引っ張られます"
-          }
-        },
-        {
-          labels: {
-            ko: "화장실 가게 수액 걸대를 정리해 주세요",
-            en: "Arrange IV pole so I can go to bathroom",
-            zh: "请整理输液架，我要去洗手间",
-            vi: "Sắp xếp cây truyền dịch để tôi đi vệ sinh",
-            ru: "Подготовьте стойку капельницы для похода в туалет",
-            ja: "トイレに行けるよう点滴スタンドを整えてください"
-          }
-        }
-      ]
-    },
-    {
-      id: "c_suction", emoji: "🫧",
-      labels: { ko: "가래 빼 주세요(흡인)", en: "Suction phlegm", zh: "请帮我吸痰", vi: "Hút đờm giúp tôi", ru: "Отсосите мокроту", ja: "痰を取ってください（吸引）" }
-    },
-    {
-      id: "c_analgesic", emoji: "💊",
-      labels: { ko: "진통제 주세요", en: "Pain medication", zh: "请给我止痛药", vi: "Cho tôi thuốc giảm đau", ru: "Дайте обезболивающее", ja: "痛み止めをください" },
-      subs: [
-        {
-          labels: {
-            ko: "진통제를 맞고 싶어요",
-            en: "I would like pain medication",
-            zh: "我想打止痛针 / 吃止痛药",
-            vi: "Tôi muốn dùng thuốc giảm đau",
-            ru: "Мне нужно обезболивающее",
-            ja: "痛み止めを使いたいです"
-          }
-        },
-        {
-          labels: {
-            ko: "무통주사(PCA) 버튼을 눌러주세요",
-            en: "Please press my PCA pain pump button",
-            zh: "请帮我按一下自控镇痛泵(PCA)按钮",
-            vi: "Vui lòng bấm nút giảm đau tự động (PCA)",
-            ru: "Нажмите кнопку обезболивающей помпы (PCA)",
-            ja: "痛み止めポンプ（PCA）のボタンを押してください"
-          }
-        },
-        {
-          labels: {
-            ko: "진통제를 맞았는데도 계속 아파요",
-            en: "Still in pain even after pain medication",
-            zh: "用了止痛药后还是很疼",
-            vi: "Đã dùng thuốc giảm đau nhưng vẫn đau",
-            ru: "Боль не проходит даже после обезболивающего",
-            ja: "痛み止めを使った後もまだ痛いです"
-          }
-        }
-      ]
-    },
-    {
-      id: "c_reposition", emoji: "🛏️",
-      labels: { ko: "자세 바꿔 주세요", en: "Reposition me", zh: "请帮我换个姿势", vi: "Đổi tư thế giúp tôi", ru: "Помогите сменить позу", ja: "体位を変えてください" },
-      subs: [
-        {
-          labels: {
-            ko: "침대 머리를 올려주세요",
-            en: "Please raise the head of the bed",
-            zh: "请把床头摇高",
-            vi: "Vui lòng nâng cao đầu giường",
-            ru: "Поднимите изголовье кровати",
-            ja: "ベッドの頭側を上げてください"
-          }
-        },
-        {
-          labels: {
-            ko: "침대 머리를 내려주세요",
-            en: "Please lower the head of the bed",
-            zh: "请把床头摇低",
-            vi: "Vui lòng hạ thấp đầu giường",
-            ru: "Опустите изголовье кровати",
-            ja: "ベッドの頭側を下げてください"
-          }
-        },
-        {
-          labels: {
-            ko: "왼쪽/오른쪽으로 돌아눕고 싶어요",
-            en: "Turn me onto my left/right side",
-            zh: "我想向左侧或右侧翻身",
-            vi: "Tôi muốn nằm nghiêng sang trái/phải",
-            ru: "Поверните меня на бок",
-            ja: "左向き・右向きに横になりたいです"
-          }
-        },
-        {
-          labels: {
-            ko: "베개 위치를 고쳐주세요",
-            en: "Please adjust my pillow position",
-            zh: "请帮我调整一下枕头位置",
-            vi: "Vui lòng chỉnh lại vị trí gối",
-            ru: "Поправьте подушку",
-            ja: "枕の位置を直してください"
-          }
-        }
-      ]
-    },
-    {
-      id: "c_water", emoji: "🥤",
-      labels: { ko: "물·입 헹굼", en: "Water / Mouth rinse", zh: "喝水 / 漱口", vi: "Uống nước / Súc miệng", ru: "Вода / Полоскание рта", ja: "水・うがい" },
-      subs: [
-        {
-          labels: {
-            ko: "물 한 모금 마시고 싶어요",
-            en: "I want a sip of water",
-            zh: "我想喝一口水",
-            vi: "Tôi muốn uống một ngụm nước",
-            ru: "Хочу сделать глоток воды",
-            ja: "水を一口飲みたいです"
-          }
-        },
-        {
-          labels: {
-            ko: "젖은 거즈로 입술·입안을 적셔주세요",
-            en: "Moisten my lips/mouth with wet gauze",
-            zh: "请用湿纱布润湿我的嘴唇和口腔",
-            vi: "Làm ẩm môi và miệng bằng gạc ướt giúp tôi",
-            ru: "Смочите губы и рот влажной марлей",
-            ja: "濡れたガーゼで唇や口の中を湿らせてください"
-          }
-        },
-        {
-          labels: {
-            ko: "가글로 입을 헹구고 싶어요",
-            en: "I want to rinse my mouth with mouthwash",
-            zh: "我想用漱口水漱口",
-            vi: "Tôi muốn súc miệng",
-            ru: "Хочу прополоскать рот",
-            ja: "うがい薬で口をすすぎたいです"
-          }
-        }
-      ]
-    },
-    {
-      id: "c_restraint", emoji: "🧤",
-      labels: { ko: "억제대·장갑 확인", en: "Check restraints / mitts", zh: "检查约束带 / 手套", vi: "Kiểm tra dây cố định / găng tay", ru: "Проверить фиксаторы / варежки", ja: "抑制帯・ミトンの確認" },
-      subs: [
-        {
-          labels: {
-            ko: "손목 억제대가 너무 조이고 아파요",
-            en: "Wrist restraints are too tight and painful",
-            zh: "手腕约束带太紧了，很疼",
-            vi: "Dây cố định cổ tay quá chặt và đau",
-            ru: "Фиксаторы на запястьях слишком тугие и болят",
-            ja: "手首の抑制帯がきつすぎて痛いです"
-          }
-        },
-        {
-          labels: {
-            ko: "잠깐만 한쪽 손을 풀어주세요",
-            en: "Please loosen one hand briefly",
-            zh: "请暂时松开一只手",
-            vi: "Vui lòng mở lỏng một bên tay một lát",
-            ru: "Освободите одну руку ненадолго",
-            ja: "少しの間だけ片手を外してください"
-          }
-        },
-        {
-          labels: {
-            ko: "손이 답답하고 땀이 차요",
-            en: "Hands feel stuffy and sweaty",
-            zh: "手部闷热出汗",
-            vi: "Tay bị bí và ra mồ hôi",
-            ru: "Рукам жарко, они потеют",
-            ja: "手が蒸れて汗をかいています"
-          }
-        }
-      ]
-    },
-    {
-      id: "c_toilet", emoji: "🧻",
-      labels: { ko: "화장실·기저귀 도움", en: "Toilet / Pad help", zh: "如厕 / 更换护理垫", vi: "Hỗ trợ đi vệ sinh / thay tã", ru: "Помощь с туалетом / пеленкой", ja: "トイレ・おむつ交換" },
-      subs: [
-        {
-          labels: {
-            ko: "화장실에 가고 싶어요 (부축 필요)",
-            en: "Want to go to the bathroom (Need assistance)",
-            zh: "我想去洗手间（需要搀扶）",
-            vi: "Tôi muốn đi vệ sinh (Cần dìu đi)",
-            ru: "Хочу в туалет (нужна помощь дойти)",
-            ja: "トイレに行きたいです（付き添いが必要）"
-          }
-        },
-        {
-          labels: {
-            ko: "침상 변기를 대주세요",
-            en: "Please bring a bedpan / urinal",
-            zh: "请给我拿床上便盆 / 尿壶",
-            vi: "Vui lòng đưa bô tại giường",
-            ru: "Подайте судно / утку в кровать",
-            ja: "ベッド上の差し込み便器・尿器をお願いします"
-          }
-        },
-        {
-          labels: {
-            ko: "기저귀·패드를 갈아주세요",
-            en: "Please change my diaper / pad",
-            zh: "请帮我更换纸尿裤 / 护理垫",
-            vi: "Vui lòng thay tã / miếng lót giúp tôi",
-            ru: "Поменяйте подгузник / пеленку",
-            ja: "おむつ・パッドを交換してください"
-          }
-        }
-      ]
-    },
-    {
-      id: "c_itch", emoji: "🖐️",
+      id: "p_itch", emoji: "🖐️",
       labels: { ko: "가려워요", en: "Itchy", zh: "发痒", vi: "Ngứa", ru: "Чешется", ja: "かゆいです" }
     },
     {
-      id: "c_oxygen", emoji: "🌬️",
-      labels: { ko: "산소·호흡기 확인", en: "Check oxygen / ventilator", zh: "检查氧气 / 呼吸机", vi: "Kiểm tra oxy / máy thở", ru: "Проверить кислород / ИВЛ", ja: "酸素・人工呼吸器の確認" }
+      id: "p_insomnia", emoji: "😴",
+      labels: { ko: "잠이 안 와요", en: "Can't sleep", zh: "睡不着", vi: "Không ngủ được", ru: "Не могу уснуть", ja: "眠れません" }
     },
     {
-      id: "c_wipe", emoji: "🧽",
-      labels: { ko: "닦아 주세요", en: "Wipe face / body", zh: "请帮我擦擦脸/身体", vi: "Lau mặt / người giúp tôi", ru: "Оботрите лицо / тело", ja: "顔や体を拭いてください" }
+      id: "p_bleed", emoji: "🩸", urgent: true,
+      labels: { ko: "피가 나요", en: "Bleeding", zh: "出血了", vi: "Bị chảy máu", ru: "Кровотечение", ja: "血が出ています" }
     },
     {
-      id: "c_blanket", emoji: "🛌",
-      labels: { ko: "이불 덮어 주세요", en: "Cover with blanket", zh: "请帮我盖上被子", vi: "Đắp chăn giúp tôi", ru: "Укройте одеялом", ja: "布団をかけてください" }
-    },
-    {
-      id: "c_light", emoji: "🌙",
-      labels: { ko: "불 꺼 주세요", en: "Turn off lights", zh: "请关灯", vi: "Tắt đèn giúp tôi", ru: "Выключите свет", ja: "電気を消してください" }
+      id: "p_eyear", emoji: "👁️",
+      labels: { ko: "눈·귀가 불편해요", en: "Eye / Ear discomfort", zh: "眼睛 / 耳朵不舒服", vi: "Khó chịu ở mắt / tai", ru: "Дискомфорт в глазах / ушах", ja: "目や耳が不快です" }
     }
   ],
 
+  // 2. 몸 부위 (12 cards)
   body: [
     {
-      id: "b_iv", emoji: "💉",
-      labels: { ko: "주사 부위(팔·손등)", en: "IV site (Arm / Hand)", zh: "输液部位（手臂/手背）", vi: "Vị trí tiêm (Tay / Mu bàn tay)", ru: "Место катетера (рука/кисть)", ja: "点滴部位（腕・手の甲）" },
+      id: "b_neckop", emoji: "🩹",
+      labels: { ko: "목·수술 부위", en: "Neck / Surgery site", zh: "颈部 / 手术部位", vi: "Cổ / Vị trí phẫu thuật", ru: "Шея / Область операции", ja: "首・手術部位" },
       subs: [
-        {
-          labels: {
-            ko: "오른팔 주사 부위",
-            en: "Right arm IV site",
-            zh: "右臂输液部位",
-            vi: "Vị trí tiêm ở tay phải",
-            ru: "Место укола на правой руке",
-            ja: "右腕の点滴部位"
-          }
-        },
-        {
-          labels: {
-            ko: "왼팔 주사 부위",
-            en: "Left arm IV site",
-            zh: "左臂输液部位",
-            vi: "Vị trí tiêm ở tay trái",
-            ru: "Место укола на левой руке",
-            ja: "左腕の点滴部位"
-          }
-        },
-        {
-          labels: {
-            ko: "손등·손목 주사 부위",
-            en: "Back of hand or wrist IV site",
-            zh: "手背或手腕输液部位",
-            vi: "Vị trí tiêm ở mu bàn tay hoặc cổ tay",
-            ru: "Место укола на кисти или запястье",
-            ja: "手の甲・手首の点滴部位"
-          }
-        },
-        {
-          labels: {
-            ko: "목·쇄골 중심정맥관 부위",
-            en: "Neck / collarbone central line site",
-            zh: "颈部或锁骨中心静脉导管部位",
-            vi: "Vị trí ống truyền trung tâm ở cổ / xương đòn",
-            ru: "Центральный катетер на шее / ключице",
-            ja: "首・鎖骨の中心静脈カテーテル部位"
-          }
-        }
+        { labels: { ko: "수술 부위가 욱신거리고 아파요", en: "Surgery site is throbbing and painful", zh: "手术部位一跳一跳地疼", vi: "Vết mổ đau nhức nhối", ru: "Пульсирующая боль в области шва", ja: "手術部位がズキズキ痛みます" } },
+        { urgent: true, labels: { ko: "거즈가 젖었거나 피가 배어 나와요", en: "Gauze is wet or blood is oozing", zh: "纱布湿了或有血渗出", vi: "Gạc bị ướt hoặc thấm máu", ru: "Повязка промокла или сочится кровь", ja: "ガーゼが濡れているか血が滲んでいます" } },
+        { labels: { ko: "목을 움직이기 힘들어요", en: "Hard to move my neck", zh: "脖子很难转动", vi: "Rất khó cử động cổ", ru: "Трудно двигать шеей", ja: "首を動かすのがつらいです" } },
+        { labels: { ko: "삼킬 때 너무 아파요", en: "Hurts very much when swallowing", zh: "吞咽时非常疼", vi: "Rất đau khi nuốt", ru: "Очень больно глотать", ja: "飲み込むときにとても痛みます" } }
       ]
-    },
-    {
-      id: "b_opsite", emoji: "🩹",
-      labels: { ko: "수술 부위", en: "Surgery site", zh: "手术部位", vi: "Vị trí phẫu thuật", ru: "Область операции", ja: "手術部位" }
-    },
-    {
-      id: "b_neck", emoji: "🧣",
-      labels: { ko: "목·인후", en: "Throat / Neck", zh: "脖子 / 喉咙", vi: "Cổ / Họng", ru: "Шея / Горло", ja: "首・喉" }
     },
     {
       id: "b_chest", emoji: "🫀",
       labels: { ko: "가슴", en: "Chest", zh: "胸部 / 胸口", vi: "Ngực", ru: "Грудь", ja: "胸" }
     },
     {
+      id: "b_iv", emoji: "💉",
+      labels: { ko: "주사 부위(팔·손등)", en: "IV site (Arm / Hand)", zh: "输液部位（手臂/手背）", vi: "Vị trí tiêm (Tay / Mu bàn tay)", ru: "Место катетера (рука/кисть)", ja: "点滴部位（腕・手の甲）" },
+      subs: [
+        { labels: { ko: "오른팔 주사 부위", en: "Right arm IV site", zh: "右臂输液部位", vi: "Vị trí tiêm ở tay phải", ru: "Место укола на правой руке", ja: "右腕の点滴部位" } },
+        { labels: { ko: "왼팔 주사 부위", en: "Left arm IV site", zh: "左臂输液部位", vi: "Vị trí tiêm ở tay trái", ru: "Место укола на левой руке", ja: "左腕の点滴部位" } },
+        { labels: { ko: "손등·손목 주사 부위", en: "Back of hand or wrist IV site", zh: "手背或手腕输液部位", vi: "Vị trí tiêm ở mu bàn tay hoặc cổ tay", ru: "Место укола на кисти или запястье", ja: "手の甲・手首の点滴部位" } },
+        { labels: { ko: "목·쇄골 중심정맥관 부위", en: "Neck / collarbone central line site", zh: "颈部或锁骨中心静脉导管部位", vi: "Vị trí ống truyền trung tâm ở cổ / xương đòn", ru: "Центральный катетер на шее / ключице", ja: "首・鎖骨の中心静脈カテーテル部位" } }
+      ]
+    },
+    {
       id: "b_abdomen", emoji: "🤰",
-      labels: { ko: "배·복부", en: "Abdomen", zh: "肚子 / 腹部", vi: "Bụng", ru: "Живот", ja: "お腹・腹部" }
+      labels: { ko: "배", en: "Abdomen / Stomach", zh: "肚子 / 腹部", vi: "Bụng", ru: "Живот", ja: "お腹" }
     },
     {
       id: "b_head", emoji: "🧠",
@@ -2776,15 +2226,27 @@ const DATA = {
     },
     {
       id: "b_back", emoji: "🔙",
-      labels: { ko: "허리·등", en: "Back / Waist", zh: "腰 / 背部", vi: "Lưng / Eo", ru: "Спина / Поясница", ja: "腰・背中" }
+      labels: { ko: "등·허리", en: "Back / Waist", zh: "背 / 腰部", vi: "Lưng / Thắt lưng", ru: "Спина / Поясница", ja: "背中・腰" }
+    },
+    {
+      id: "b_shoulder", emoji: "🤷",
+      labels: { ko: "어깨", en: "Shoulder", zh: "肩膀", vi: "Vai", ru: "Плечо", ja: "肩" }
     },
     {
       id: "b_arm", emoji: "💪",
-      labels: { ko: "팔·어깨", en: "Arm / Shoulder", zh: "手臂 / 肩膀", vi: "Cánh tay / Vai", ru: "Рука / Плечо", ja: "腕・肩" }
+      labels: { ko: "팔", en: "Arm", zh: "手臂", vi: "Cánh tay", ru: "Рука", ja: "腕" }
     },
     {
       id: "b_leg", emoji: "🦵",
-      labels: { ko: "다리·발", en: "Leg / Foot", zh: "腿 / 脚", vi: "Chân / Bàn chân", ru: "Нога / Ступня", ja: "脚・足" }
+      labels: { ko: "다리", en: "Leg", zh: "腿 / 脚", vi: "Chân", ru: "Нога", ja: "脚" }
+    },
+    {
+      id: "b_mouth", emoji: "🗣️",
+      labels: { ko: "입·목안", en: "Mouth / Inside throat", zh: "口腔 / 喉咙里面", vi: "Miệng / Trong họng", ru: "Рот / Внутри горла", ja: "口・喉の奥" }
+    },
+    {
+      id: "b_perineal", emoji: "🚻",
+      labels: { ko: "소변·배설 부위", en: "Urinary / Perineal area", zh: "排尿 / 会阴部位", vi: "Vùng tiểu tiện / bài tiết", ru: "Область мочеиспускания", ja: "排尿・排泄の部位" }
     },
     {
       id: "b_whole", emoji: "🧍",
@@ -2792,98 +2254,198 @@ const DATA = {
     }
   ],
 
+  // 3. 해 주세요 (14 cards)
+  care: [
+    {
+      id: "c_elim", emoji: "🚻",
+      labels: { ko: "대소변·배설", en: "Elimination / Bathroom", zh: "大小便 / 排泄", vi: "Đi vệ sinh / Bài tiết", ru: "Туалет / Выделения", ja: "排泄・トイレ" },
+      subs: [
+        { labels: { ko: "소변 보고 싶어요", en: "I want to urinate", zh: "我想小便", vi: "Tôi muốn đi tiểu", ru: "Хочу помочиться", ja: "おしっこがしたいです" } },
+        { labels: { ko: "대변 보고 싶어요", en: "I want to have a bowel movement", zh: "我想大便", vi: "Tôi muốn đi đại tiện", ru: "Хочу в туалет по-большому", ja: "便がしたいです" } },
+        { labels: { ko: "방금 소변을 봤어요(I/O 확인)", en: "I just urinated (Check I/O output)", zh: "刚解完小便（请核对尿量）", vi: "Tôi vừa đi tiểu xong (Kiểm tra I/O)", ru: "Я только что помочился (учет диуреза)", ja: "先ほど尿が出ました（尿量確認）" } },
+        { labels: { ko: "방금 대변을 봤어요(패드 교체)", en: "I just had a bowel movement (Change pad)", zh: "刚解完大便（请更换护理垫）", vi: "Tôi vừa đi đại tiện xong (Thay miếng lót)", ru: "Был стул (замена пеленки)", ja: "先ほど便が出ました（パッド交換）" } },
+        { urgent: true, labels: { ko: "소변줄(도뇨관) 주변이 아프거나 새요", en: "Urinary catheter hurts or is leaking", zh: "导尿管周围疼痛或漏尿", vi: "Ống thông tiểu bị đau hoặc rò rỉ", ru: "Мочевой катетер болит или подтекает", ja: "尿道カテーテルの周りが痛むか漏れています" } },
+        { labels: { ko: "방귀(가스)가 나왔어요", en: "I passed gas", zh: "排气（放屁）了", vi: "Tôi đã xì hơi (trung tiện)", ru: "Отошли газы", ja: "ガス（おなら）が出ました" } }
+      ]
+    },
+    {
+      id: "c_suction", emoji: "🫧",
+      labels: { ko: "가래 흡인(석션)", en: "Suction phlegm", zh: "请帮我吸痰", vi: "Hút đờm giúp tôi", ru: "Отсосите мокроту", ja: "痰の吸引（サクション）" }
+    },
+    {
+      id: "c_pca", emoji: "💊",
+      labels: { ko: "진통제·PCA 버튼", en: "Pain med / PCA button", zh: "止痛药 / PCA镇痛泵按钮", vi: "Thuốc giảm đau / Nút PCA", ru: "Обезболивающее / Кнопка PCA", ja: "痛み止め・PCAボタン" }
+    },
+    {
+      id: "c_iv", emoji: "💧",
+      labels: { ko: "주사·수액 확인", en: "Check IV / Fluids", zh: "检查输液", vi: "Kiểm tra dịch truyền", ru: "Проверить капельницу", ja: "点滴・輸液の確認" },
+      subs: [
+        { labels: { ko: "수액이 다 떨어졌어요/알람이 울려요", en: "IV bag is empty / alarm is beeping", zh: "输液已滴完 / 报警器响了", vi: "Dịch truyền đã hết / máy báo động kêu", ru: "Капельница закончилась / пищит сигнал", ja: "点滴がなくなりました・アラームが鳴っています" } },
+        { labels: { ko: "주사 부위와 속도를 확인해 주세요", en: "Please check IV site and drip rate", zh: "请检查针口部位和滴注速度", vi: "Vui lòng kiểm tra chỗ tiêm và tốc độ chảy", ru: "Проверьте место укола и скорость капельницы", ja: "点滴の部位と落ちる速度を確認してください" } },
+        { labels: { ko: "수액 줄이 꼬이거나 당겨져요", en: "IV tubing is kinked or pulling", zh: "输液管打折或被拉扯", vi: "Dây truyền bị xoắn hoặc căng", ru: "Трубка капельницы перекрутилась или тянет", ja: "点滴のチューブがねじれているか引っ張られます" } },
+        { labels: { ko: "화장실 가게 수액 걸대를 정리해 주세요", en: "Arrange IV pole so I can go to bathroom", zh: "请整理输液架，我要去洗手间", vi: "Sắp xếp cây truyền dịch để tôi đi vệ sinh", ru: "Подготовьте стойку капельницы для похода в туалет", ja: "トイレに行けるよう点滴スタンドを整えてください" } }
+      ]
+    },
+    {
+      id: "c_water", emoji: "🥤",
+      labels: { ko: "물·입 헹굼", en: "Water / Mouth rinse", zh: "喝水 / 漱口", vi: "Uống nước / Súc miệng", ru: "Вода / Полоскание рта", ja: "水・うがい" },
+      subs: [
+        { labels: { ko: "물 조금 마시고 싶어요(금식 확인)", en: "Want a sip of water (Check NPO)", zh: "想喝一点水（请确认是否禁食）", vi: "Muốn uống một chút nước (Kiểm tra nhịn ăn)", ru: "Хочу глоток воды (проверьте диету)", ja: "少し水を飲みたいです（絶食確認）" } },
+        { labels: { ko: "젖은 거즈로 입술을 적셔 주세요", en: "Moisten my lips with wet gauze", zh: "请用湿纱布润湿嘴唇", vi: "Làm ẩm môi bằng gạc ướt giúp tôi", ru: "Смочите губы влажной марлей", ja: "濡れたガーゼで唇を湿らせてください" } },
+        { labels: { ko: "물로 입안만 헹구고 싶어요", en: "Just want to rinse mouth with water", zh: "只想用水漱一下口", vi: "Chỉ muốn súc miệng bằng nước", ru: "Хочу просто прополоскать рот водой", ja: "水で口の中だけすすぎたいです" } }
+      ]
+    },
+    {
+      id: "c_reposition", emoji: "🛏️",
+      labels: { ko: "자세 변경", en: "Change position", zh: "调整姿势 / 翻身", vi: "Đổi tư thế nằm", ru: "Сменить позу", ja: "体位変換" },
+      subs: [
+        { labels: { ko: "침대 머리를 올려 주세요", en: "Please raise the head of the bed", zh: "请把床头摇高", vi: "Vui lòng nâng cao đầu giường", ru: "Поднимите изголовье кровати", ja: "ベッドの頭側を上げてください" } },
+        { labels: { ko: "침대 머리를 내려 주세요", en: "Please lower the head of the bed", zh: "请把床头摇低", vi: "Vui lòng hạ thấp đầu giường", ru: "Опустите изголовье кровати", ja: "ベッドの頭側を下げてください" } },
+        { labels: { ko: "옆으로 돌아눕고 싶어요", en: "I want to turn onto my side", zh: "我想向侧边翻身", vi: "Tôi muốn nằm nghiêng sang một bên", ru: "Хочу повернуться на бок", ja: "横向きに寝返りを打ちたいです" } },
+        { labels: { ko: "베개 위치를 고쳐 주세요", en: "Please adjust my pillow position", zh: "请帮我调整一下枕头位置", vi: "Vui lòng chỉnh lại vị trí gối", ru: "Поправьте подушку", ja: "枕の位置を直してください" } }
+      ]
+    },
+    {
+      id: "c_restraint", emoji: "🧤",
+      labels: { ko: "억제대·장갑 확인", en: "Check restraints / mitts", zh: "检查约束带 / 保护手套", vi: "Kiểm tra dây cố định / găng tay", ru: "Проверить фиксаторы / варежки", ja: "抑制帯・保護ミトンの確認" },
+      subs: [
+        { labels: { ko: "손 보호 장갑(억제대)이 너무 꽉 조여요", en: "Hand mitts / restraints are too tight", zh: "手部保护套（约束带）系得太紧了", vi: "Găng tay bảo vệ (dây cố định) buộc quá chặt", ru: "Фиксаторы на руках затянуты слишком туго", ja: "手の保護ミトン（抑制帯）がきつすぎます" } },
+        { labels: { ko: "잠깐만 풀어 주세요(간호사 입회하)", en: "Please loosen briefly (with nurse present)", zh: "请暂时松开一下（护士在旁时）", vi: "Vui lòng mở lỏng một lát (khi có điều dưỡng)", ru: "Ослабьте ненадолго (в присутствии медсестры)", ja: "少しだけ緩めてください（看護師立ち会い下）" } }
+      ]
+    },
+    {
+      id: "c_temp", emoji: "🌡️",
+      labels: { ko: "온도·이불 조절", en: "Blanket / Room temp", zh: "调节温度 / 被子", vi: "Điều chỉnh chăn / nhiệt độ", ru: "Одеяло / Температура", ja: "温度・布団の調節" },
+      subs: [
+        { labels: { ko: "이불을 덮어 주세요", en: "Please cover me with a blanket", zh: "请帮我盖上被子", vi: "Vui lòng đắp chăn cho tôi", ru: "Укройте меня одеялом", ja: "布団をかけてください" } },
+        { labels: { ko: "이불을 걷어 주세요", en: "Please take off the blanket", zh: "请帮我掀开被子", vi: "Vui lòng bỏ bớt chăn ra", ru: "Снимите одеяло", ja: "布団を外してください" } },
+        { labels: { ko: "에어컨·히터 온도를 조절해 주세요", en: "Please adjust AC / heater temperature", zh: "请调节空调或暖气温度", vi: "Vui lòng chỉnh nhiệt độ điều hòa / máy sưởi", ru: "Отрегулируйте кондиционер / обогрев", ja: "エアコン・暖房の温度を調節してください" } }
+      ]
+    },
+    {
+      id: "c_items", emoji: "🔔",
+      labels: { ko: "호출벨·물건 위치", en: "Call bell / Items reach", zh: "呼叫铃 / 物品位置", vi: "Chuông gọi / Đồ dùng", ru: "Кнопка вызова / Вещи", ja: "ナースコール・物の位置" },
+      subs: [
+        { labels: { ko: "호출벨을 손에 닿는 곳에 놔 주세요", en: "Put the call bell within my reach", zh: "请把呼叫铃放在我手能碰到的地方", vi: "Đặt chuông gọi trong tầm tay giúp tôi", ru: "Положите кнопку вызова под руку", ja: "ナースコールを手の届く所に置いてください" } },
+        { labels: { ko: "안경·휴대폰을 건네 주세요", en: "Please hand me my glasses / phone", zh: "请把眼镜或手机递给我", vi: "Vui lòng đưa kính / điện thoại cho tôi", ru: "Подайте мне очки / телефон", ja: "メガネ・携帯電話を渡してください" } },
+        { labels: { ko: "조명을 어둡게 해 주세요", en: "Please dim the lights", zh: "请把灯光调暗一些", vi: "Vui lòng giảm bớt ánh sáng đèn", ru: "Приглушите свет", ja: "照明を暗くしてください" } }
+      ]
+    },
+    {
+      id: "c_enema", emoji: "🚽",
+      labels: { ko: "관장·변비 해결", en: "Constipation / Enema help", zh: "通便 / 解决便秘", vi: "Hỗ trợ táo bón / thụt tháo", ru: "Помощь при запоре", ja: "浣腸・便秘の処置" }
+    },
+    {
+      id: "c_dressing", emoji: "🩹",
+      labels: { ko: "상처·거즈 소독", en: "Wound / Gauze dressing", zh: "伤口 / 纱布消毒更换", vi: "Sát trùng vết thương / thay gạc", ru: "Обработка раны / смена повязки", ja: "傷口・ガーゼの消毒" }
+    },
+    {
+      id: "c_oxygen", emoji: "🌬️",
+      labels: { ko: "산소량 조절", en: "Adjust oxygen flow", zh: "调节氧气流量", vi: "Điều chỉnh lượng oxy", ru: "Отрегулировать подачу кислорода", ja: "酸素量の調節" }
+    },
+    {
+      id: "c_nebulizer", emoji: "🌫️",
+      labels: { ko: "가습·네뷸라이저", en: "Humidifier / Nebulizer", zh: "加湿 / 雾化吸入", vi: "Tạo ẩm / Khí dung", ru: "Увлажнитель / Небулайзер", ja: "加湿・ネブライザー" }
+    },
+    {
+      id: "c_rest", emoji: "🤫",
+      labels: { ko: "잠시 쉬고 싶어요", en: "Want to rest quietly", zh: "想安静地休息一会儿", vi: "Tôi muốn nghỉ ngơi một lát", ru: "Хочу немного отдохнуть", ja: "少し休みたいです" }
+    }
+  ],
+
+  // 4. 마음 (8 cards)
+  mood: [
+    {
+      id: "m_anxious", emoji: "😰",
+      labels: { ko: "불안해요", en: "Anxious", zh: "感到不安 / 焦虑", vi: "Lo lắng / Bất an", ru: "Тревожно", ja: "不安です" }
+    },
+    {
+      id: "m_scared", emoji: "😨",
+      labels: { ko: "무서워요", en: "Scared / Afraid", zh: "害怕", vi: "Sợ hãi", ru: "Страшно", ja: "怖いです" }
+    },
+    {
+      id: "m_tired", emoji: "😩",
+      labels: { ko: "답답하고 지쳐요", en: "Frustrated & exhausted", zh: "憋闷又疲惫", vi: "Bí bách và mệt mỏi", ru: "Подавлен и устал", ja: "もどかしくて疲れています" }
+    },
+    {
+      id: "m_lonely", emoji: "🥺",
+      labels: { ko: "외로워요", en: "Lonely", zh: "感到孤单", vi: "Cô đơn", ru: "Одиноко", ja: "寂しいです" }
+    },
+    {
+      id: "m_thanks", emoji: "🙏",
+      labels: { ko: "고마워요", en: "Thank you", zh: "谢谢你们", vi: "Cảm ơn rất nhiều", ru: "Спасибо вам", ja: "ありがとうございます" }
+    },
+    {
+      id: "m_sorry", emoji: "🙇",
+      labels: { ko: "미안해요", en: "I'm sorry", zh: "不好意思 / 抱歉", vi: "Xin lỗi", ru: "Извините", ja: "すみません" }
+    },
+    {
+      id: "m_better", emoji: "😌",
+      labels: { ko: "괜찮아졌어요", en: "Feeling better now", zh: "好多了 / 没事了", vi: "Tôi thấy đỡ hơn rồi", ru: "Мне стало лучше", ja: "大丈夫になりました" }
+    },
+    {
+      id: "m_home", emoji: "🏠",
+      labels: { ko: "집에 가고 싶어요", en: "Want to go home", zh: "我想回家", vi: "Tôi muốn về nhà", ru: "Хочу домой", ja: "家に帰りたいです" }
+    }
+  ],
+
+  // 5. 사람·질문 (10 cards)
   ask: [
     {
-      id: "a_nurse", emoji: "👩‍⚕️",
-      labels: { ko: "간호사 불러 주세요", en: "Call nurse", zh: "请叫护士", vi: "Gọi điều dưỡng giúp tôi", ru: "Позовите медсестру", ja: "看護師を呼んでください" }
+      id: "a_family", emoji: "👨‍👩‍👧",
+      labels: { ko: "보호자 불러 주세요", en: "Call my family", zh: "请叫我的家属", vi: "Gọi người nhà giúp tôi", ru: "Позовите родственников", ja: "家族を呼んでください" }
     },
     {
       id: "a_doctor", emoji: "👨‍⚕️",
-      labels: { ko: "의사 선생님 뵙고 싶어요", en: "Want to see doctor", zh: "我想见医生", vi: "Tôi muốn gặp bác sĩ", ru: "Хочу поговорить с врачом", ja: "医師の先生に会いたいです" }
-    },
-    {
-      id: "a_family", emoji: "👨‍👩‍👧",
-      labels: { ko: "보호자 연락해 주세요", en: "Contact family", zh: "请联系家属", vi: "Liên hệ người nhà giúp tôi", ru: "Свяжитесь с родственниками", ja: "家族に連絡してください" }
-    },
-    {
-      id: "a_time", emoji: "⏰",
-      labels: { ko: "지금 몇 시예요?", en: "What time is it?", zh: "现在几点了？", vi: "Bây giờ là mấy giờ?", ru: "Который сейчас час?", ja: "今何時ですか？" }
+      labels: { ko: "의사 선생님 면담", en: "Speak with doctor", zh: "想和医生面谈", vi: "Muốn gặp bác sĩ", ru: "Поговорить с врачом", ja: "医師の先生と面談したいです" }
     },
     {
       id: "a_water", emoji: "💧",
       labels: { ko: "언제 물 마실 수 있어요?", en: "When can I drink water?", zh: "什么时候可以喝水？", vi: "Khi nào tôi được uống nước?", ru: "Когда мне можно пить воду?", ja: "いつ水を飲めますか？" }
     },
     {
-      id: "a_eat", emoji: "🍚",
-      labels: { ko: "언제 식사할 수 있어요?", en: "When can I eat?", zh: "什么时候可以吃饭？", vi: "Khi nào tôi được ăn?", ru: "Когда мне можно есть?", ja: "いつ食事ができますか？" }
-    },
-    {
       id: "a_tubeout", emoji: "🩺",
       labels: { ko: "언제 튜브·줄 뺄 수 있어요?", en: "When can tubes/lines be removed?", zh: "什么时候可以拔管？", vi: "Khi nào có thể rút ống?", ru: "Когда снимут трубки / катетеры?", ja: "いつチューブや管を抜けますか？" }
     },
     {
-      id: "a_test", emoji: "📋",
-      labels: { ko: "검사 결과가 궁금해요", en: "Ask about test results", zh: "想了解检查结果", vi: "Tôi muốn biết kết quả xét nghiệm", ru: "Хочу узнать результаты анализов", ja: "検査結果が知りたいです" }
+      id: "a_result", emoji: "📋",
+      labels: { ko: "수술·검사 결과 궁금해요", en: "Ask about surgery / test results", zh: "想了解手术和检查结果", vi: "Muốn biết kết quả phẫu thuật / xét nghiệm", ru: "Хочу узнать результаты операции / анализов", ja: "手術・検査の結果が知りたいです" }
     },
     {
-      id: "a_med", emoji: "💊",
-      labels: { ko: "무슨 약인가요?", en: "What medication is this?", zh: "这是什么药？", vi: "Đây là thuốc gì vậy?", ru: "Что это за лекарство?", ja: "何の薬ですか？" }
+      id: "a_sidefx", emoji: "💊",
+      labels: { ko: "약 부작용인지 궁금해요", en: "Could this be a drug side effect?", zh: "想知道这是不是药物副作用", vi: "Có phải tác dụng phụ của thuốc không?", ru: "Не побочный ли это эффект лекарства?", ja: "薬の副作用かどうか知りたいです" }
+    },
+    {
+      id: "a_time", emoji: "⏰",
+      labels: { ko: "지금 몇 시예요?", en: "What time is it?", zh: "现在几点了？", vi: "Bây giờ là mấy giờ?", ru: "Который сейчас час?", ja: "今何時ですか？" }
     },
     {
       id: "a_discharge", emoji: "🏥",
-      labels: { ko: "언제 퇴원·전실하나요?", en: "When is discharge / transfer?", zh: "什么时候出院 / 转病房？", vi: "Khi nào tôi được xuất viện / chuyển phòng?", ru: "Когда выписка или перевод в палату?", ja: "いつ退院・転室になりますか？" }
+      labels: { ko: "오늘 퇴원·전실 언제예요?", en: "When is discharge / room transfer?", zh: "今天什么时候出院 / 转病房？", vi: "Hôm nay mấy giờ xuất viện / chuyển phòng?", ru: "Когда сегодня выписка или перевод?", ja: "今日の退院・転室は何時ですか？" }
     },
     {
       id: "a_interp", emoji: "🌐",
-      labels: { ko: "통역이 필요해요", en: "Need interpreter", zh: "需要翻译", vi: "Tôi cần phiên dịch", ru: "Нужен переводчик", ja: "通訳が必要です" }
+      labels: { ko: "통역이 필요해요", en: "Need an interpreter", zh: "需要翻译", vi: "Tôi cần phiên dịch", ru: "Нужен переводчик", ja: "通訳が必要です" }
     },
     {
-      id: "a_pen", emoji: "📝",
-      labels: { ko: "필기도구·메모장 주세요", en: "Pen & notepad please", zh: "请给我纸和笔", vi: "Cho tôi xin giấy và bút", ru: "Дайте ручку и блокнот", ja: "筆記用具・メモ帳をください" }
+      id: "a_repeat", emoji: "🔁",
+      labels: { ko: "설명 다시 해 주세요", en: "Please explain again", zh: "请再解释一遍", vi: "Vui lòng giải thích lại", ru: "Объясните, пожалуйста, еще раз", ja: "もう一度説明してください" }
     }
   ],
 
+  // 6. 통증 점수 (11 cards: 0점 ~ 10점)
   scale: [
-    {
-      id: "s_1_3", emoji: "🙂", pain: 2,
-      labels: { ko: "통증 1~3점(약함)", en: "Pain 1-3 (Mild)", zh: "疼痛 1~3分（轻度）", vi: "Đau 1~3 điểm (Nhẹ)", ru: "Боль 1–3 балла (слабая)", ja: "痛み 1〜3点（弱い）" }
-    },
-    {
-      id: "s_4_6", emoji: "😕", pain: 5,
-      labels: { ko: "통증 4~6점(중간)", en: "Pain 4-6 (Moderate)", zh: "疼痛 4~6分（中度）", vi: "Đau 4~6 điểm (Trung bình)", ru: "Боль 4–6 баллов (умеренная)", ja: "痛み 4〜6点（中くらい）" }
-    },
-    {
-      id: "s_7", emoji: "😣", pain: 7,
-      labels: { ko: "통증 7점(심함)", en: "Pain 7 (Severe)", zh: "疼痛 7分（重度）", vi: "Đau 7 điểm (Nặng)", ru: "Боль 7 баллов (сильная)", ja: "痛み 7点（強い）" }
-    },
-    {
-      id: "s_8", emoji: "😫", pain: 8, urgent: true,
-      labels: { ko: "통증 8점(매우 심함)", en: "Pain 8 (Very Severe)", zh: "疼痛 8分（非常严重）", vi: "Đau 8 điểm (Rất nặng)", ru: "Боль 8 баллов (очень сильная)", ja: "痛み 8点（非常に強い）" }
-    },
-    {
-      id: "s_9_10", emoji: "😭", pain: 9, urgent: true,
-      labels: { ko: "통증 9~10점(극심함)", en: "Pain 9-10 (Worst)", zh: "疼痛 9~10分（剧痛）", vi: "Đau 9~10 điểm (Dữ dội)", ru: "Боль 9–10 баллов (нестерпимая)", ja: "痛み 9〜10点（耐えられない）" }
-    },
-    {
-      id: "s_throb", emoji: "💓",
-      labels: { ko: "욱신거려요", en: "Throbbing", zh: "一跳一跳地疼", vi: "Đau nhức nhối", ru: "Пульсирующая боль", ja: "ズキズキ痛みます" }
-    },
-    {
-      id: "s_sharp", emoji: "📌",
-      labels: { ko: "찌르듯 아파요", en: "Sharp / Stabbing", zh: "刺痛 / 像针扎一样", vi: "Đau nhói như dao đâm", ru: "Острая / колющая боль", ja: "チクチク刺すように痛みます" }
-    },
-    {
-      id: "s_heavy", emoji: "🪨",
-      labels: { ko: "묵직하고 조여요", en: "Heavy / Squeezing", zh: "沉重 / 紧缩感", vi: "Nặng nề / Bóp nghẹt", ru: "Тяжесть / сдавливание", ja: "重苦しく締め付けられます" }
-    },
-    {
-      id: "s_better", emoji: "👍",
-      labels: { ko: "조금 나아졌어요", en: "A little better", zh: "好一点了", vi: "Đỡ hơn một chút rồi", ru: "Стало немного лучше", ja: "少し良くなりました" }
-    },
-    {
-      id: "s_worse", emoji: "📉",
-      labels: { ko: "아까보다 더 심해졌어요", en: "Getting worse", zh: "比刚才更严重了", vi: "Nặng hơn lúc nãy rồi", ru: "Стало хуже, чем раньше", ja: "さっきよりひどくなりました" }
-    }
+    { id: "sc_0", emoji: "😊", pain: 0, labels: { ko: "0점 (통증 없음)", en: "0 (No pain)", zh: "0分（无痛）", vi: "0 điểm (Không đau)", ru: "0 баллов (Нет боли)", ja: "0点（痛みなし）" } },
+    { id: "sc_1", emoji: "🙂", pain: 1, labels: { ko: "1점 (아주 약함)", en: "1 (Very mild)", zh: "1分（极轻微）", vi: "1 điểm (Rất nhẹ)", ru: "1 балл (Очень слабая)", ja: "1点（ごく弱い）" } },
+    { id: "sc_2", emoji: "🙂", pain: 2, labels: { ko: "2점 (약함)", en: "2 (Mild)", zh: "2分（轻微）", vi: "2 điểm (Nhẹ)", ru: "2 балла (Слабая)", ja: "2点（弱い）" } },
+    { id: "sc_3", emoji: "😐", pain: 3, labels: { ko: "3점 (조금 아픔)", en: "3 (Mild-moderate)", zh: "3分（有点疼）", vi: "3 điểm (Hơi đau)", ru: "3 балла (Терпимая)", ja: "3点（少し痛い）" } },
+    { id: "sc_4", emoji: "😕", pain: 4, labels: { ko: "4점 (중간)", en: "4 (Moderate)", zh: "4分（中度）", vi: "4 điểm (Trung bình)", ru: "4 балла (Умеренная)", ja: "4点（中くらい）" } },
+    { id: "sc_5", emoji: "🙁", pain: 5, labels: { ko: "5점 (상당히 아픔)", en: "5 (Moderate-strong)", zh: "5分（比较疼）", vi: "5 điểm (Đau vừa)", ru: "5 баллов (Заметная боль)", ja: "5点（かなり痛い）" } },
+    { id: "sc_6", emoji: "😣", pain: 6, labels: { ko: "6점 (많이 아픔)", en: "6 (Distressing)", zh: "6分（很疼）", vi: "6 điểm (Đau nhiều)", ru: "6 баллов (Сильная)", ja: "6点（だいぶ痛い）" } },
+    { id: "sc_7", emoji: "😖", pain: 7, labels: { ko: "7점 (심함)", en: "7 (Severe)", zh: "7分（重度疼痛）", vi: "7 điểm (Đau nặng)", ru: "7 баллов (Очень сильная)", ja: "7点（強い痛み）" } },
+    { id: "sc_8", emoji: "😫", pain: 8, urgent: true, labels: { ko: "8점 (매우 심함)", en: "8 (Very severe)", zh: "8分（非常严重）", vi: "8 điểm (Rất nặng)", ru: "8 баллов (Тяжелая боль)", ja: "8点（非常に強い）" } },
+    { id: "sc_9", emoji: "😭", pain: 9, urgent: true, labels: { ko: "9점 (참기 힘듦)", en: "9 (Excruciating)", zh: "9分（难以忍受）", vi: "9 điểm (Khó chịu đựng)", ru: "9 баллов (Невыносимая)", ja: "9点（耐え難い）" } },
+    { id: "sc_10", emoji: "🆘", pain: 10, urgent: true, labels: { ko: "10점 (극심한 통증)", en: "10 (Worst possible pain)", zh: "10分（剧痛无比）", vi: "10 điểm (Đau dữ dội nhất)", ru: "10 баллов (Нестерпимая боль)", ja: "10点（極度の痛み）" } }
   ]
 };
 
@@ -2894,13 +2456,15 @@ let sel = [];          // 선택된 카드 객체 배열 (최대 8개)
 let subSel = {};       // { cardId: subOptionObj }
 let painSel = null;    // 선택된 통증 점수
 let activeSubCard = null;
-let logs = [
-  { time: "09:12", who: "환자", text: "가래가 끈적해서 뱉기 힘들어요.", urgent: false, pain: null },
-  { time: "09:15", who: "간호사", text: "가래를 뽑겠습니다(석션). 잠시 불편할 수 있습니다.", urgent: false, pain: null },
-  { time: "10:05", who: "환자", text: "수술 부위가 욱신거리고 아파요. 통증 점수는 10점 중 6점이에요.", urgent: false, pain: 6 }
-];
 
-// ---------- 비긴급 연속 호출 간격 및 횟수 제한기 (백그라운드 작동, UI 배지 미표시) ----------
+const INITIAL_LOGS = [
+  { time: "09:12", who: "환자", text: "가래가 양이 많고 끈적해요.", urgent: false, pain: null },
+  { time: "09:15", who: "간호사", text: "가래를 뽑겠습니다(석션). 잠시 불편할 수 있습니다.", urgent: false, pain: null },
+  { time: "10:05", who: "환자", text: "수술 부위가 욱신거리고 아파요. 통증은 10점 중 6점이에요.", urgent: false, pain: 6 }
+];
+let logs = JSON.parse(JSON.stringify(INITIAL_LOGS));
+
+// ---------- 비긴급 연속 호출 간격 및 횟수 제한기 (백그라운드 작동, 환자 화면 배지 미표시) ----------
 const rateConfig = {
   cooldownSec: 15,
   maxCount: 3,
@@ -2950,10 +2514,10 @@ function recordNonUrgentCall() {
 }
 
 function formatSec(sec) {
-  if (sec < 60) return `${sec}s`;
+  if (sec < 60) return `${sec}초`;
   const m = Math.floor(sec / 60);
   const s = sec % 60;
-  return s > 0 ? `${m}m ${s}s` : `${m}m`;
+  return s > 0 ? `${m}분 ${s}초` : `${m}분`;
 }
 
 $("cfgInterval").onchange = e => {
@@ -3009,6 +2573,10 @@ function josa(word, a, b) {
   return (c - 0xac00) % 28 > 0 ? a : b;
 }
 
+function cleanParens(str) {
+  return (str || "").replace(/\s*\([^)]*\)/g, "").trim();
+}
+
 // ---------- 탭 전환 ----------
 document.querySelectorAll(".tab-btn").forEach(btn => {
   btn.onclick = () => {
@@ -3018,7 +2586,7 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
     $(btn.dataset.tab).classList.add("active");
     if (btn.dataset.tab === "logView") {
       renderLogs();
-      setTimeout(renderPainCanvas, 50);
+      renderPainSvg();
     }
   };
 });
@@ -3035,7 +2603,7 @@ function applyLanguageUI() {
   $("clearBtn").textContent = UI_I18N.clearBtn[curLang];
   $("makeBtn").innerHTML = `<span class="emoji">✨</span> ${UI_I18N.makeBtn[curLang]}`;
   $("candTitleText").innerHTML = `<span class="emoji">💬</span> ${UI_I18N.candTitle[curLang]}`;
-  $("retryBtn").textContent = UI_I18N.retryBtn[curLang];
+  $("retryBtn").innerHTML = `<span class="emoji">🔄</span> ${UI_I18N.retryBtn[curLang]}`;
 
   renderCats();
   renderCards();
@@ -3077,6 +2645,7 @@ document.querySelectorAll(".quick-btn").forEach(btn => {
       recordNonUrgentCall();
     }
 
+    playToneChime(isUrgent);
     speak(koText, "ko-KR");
     addLog("환자", koText, isUrgent, null, curLang !== "ko" ? ptText : "");
     if (isUrgent) {
@@ -3092,7 +2661,7 @@ function showUrgent(msg) {
 }
 $("urgentClose").onclick = () => $("urgentBanner").classList.remove("show");
 
-// ---------- 좌측 5개 카테고리 렌더링 (6개국어 지원) ----------
+// ---------- 좌측 6개 카테고리 렌더링 (6개국어 지원) ----------
 function renderCats() {
   const box = $("catList");
   box.innerHTML = "";
@@ -3116,7 +2685,7 @@ function renderCats() {
   });
 }
 
-// ---------- 62개 그림 카드 렌더링 (6개국어 지원 + 한국어 보조 표기) ----------
+// ---------- 73개 임상 그림 카드 렌더링 (6개국어 지원 + 한국어 보조 표기) ----------
 function renderCards() {
   const grid = $("cardsGrid");
   grid.innerHTML = "";
@@ -3271,7 +2840,7 @@ $("clearBtn").onclick = () => {
   renderCards();
 };
 
-// ---------- 규칙 기반 문장 생성기 (6개국어 동시 합성 + 오프라인 안전 모드) ----------
+// ---------- 규칙 기반 문장 생성기 (상위 카테고리 중복 제거 + 6개국어 동시 합성) ----------
 function localSentence() {
   const free = $("ptFreeIn").value.trim();
   const koParts = [];
@@ -3282,6 +2851,12 @@ function localSentence() {
   const plainBody = bodyCards.filter(b => !subSel[b.id]);
   const subBody = bodyCards.filter(b => subSel[b.id]);
   const hasPainCard = sel.some(s => s.id === "p_pain");
+  const hasChest = bodyCards.some(b => b.id === "b_chest");
+  const hasTightness = sel.some(s => s.id === "p_stuffy");
+
+  if (hasChest && (hasPainCard || hasTightness)) {
+    urgent = true;
+  }
 
   const painTemplates = {
     ko: w => `${w}${josa(w, "이", "가")} 아파요`,
@@ -3297,49 +2872,69 @@ function localSentence() {
     const itemUrgent = sub && typeof sub.urgent === "boolean" ? sub.urgent : !!item.urgent;
     if (itemUrgent) urgent = true;
 
+    // '아파요' + 몸 부위 결합 시 자연스러운 한국어 조사 처리 및 중복 방지
     if (item.id === "p_pain") {
       if (plainBody.length) {
-        const koNames = plainBody.map(b => getLabel(b, "ko")).join(", ");
-        const lastKo = plainBody[plainBody.length - 1].labels.ko;
-        const ptNames = plainBody.map(b => getLabel(b, curLang)).join(", ");
-        koParts.push(`${koNames}${josa(lastKo, "이", "가")} 아파요`);
-        ptParts.push(painTemplates[curLang](ptNames));
-        if (plainBody.some(b => b.id === "b_chest")) urgent = true;
+        const koNames = plainBody.map(b => cleanParens(getLabel(b, "ko"))).join(", ");
+        const lastKo = koNames.split(", ").pop();
+        const ptNames = plainBody.map(b => cleanParens(getLabel(b, curLang))).join(", ");
+
+        if (sub && sub.labels.ko) {
+          const mannerKo = cleanParens(getLabel(sub, "ko"));
+          const mannerPt = cleanParens(getLabel(sub, curLang));
+          koParts.push(`${koNames}${josa(lastKo, "이", "가")} ${mannerKo}`);
+          ptParts.push(`${ptNames}: ${mannerPt}`);
+        } else {
+          koParts.push(`${koNames}${josa(lastKo, "이", "가")} 아파요`);
+          ptParts.push(painTemplates[curLang](ptNames));
+        }
         return;
       }
+
       if (subBody.length) {
-        const koSubNames = subBody.map(b => getLabel(subSel[b.id], "ko")).join(", ");
-        const lastKo = koSubNames.split(", ").pop();
-        const ptSubNames = subBody.map(b => getLabel(subSel[b.id], curLang)).join(", ");
-        koParts.push(`${koSubNames}${josa(lastKo, "이", "가")} 아파요`);
-        ptParts.push(painTemplates[curLang](ptSubNames));
+        subBody.forEach(sb => {
+          const sbTextKo = cleanParens(getLabel(subSel[sb.id], "ko"));
+          const sbTextPt = cleanParens(getLabel(subSel[sb.id], curLang));
+          if (/아파요|통증|hurts|pain|疼|đau|болит|痛/i.test(sbTextKo)) {
+            koParts.push(sbTextKo);
+            ptParts.push(sbTextPt);
+          } else {
+            koParts.push(`${sbTextKo}${josa(sbTextKo, "이", "가")} 아파요`);
+            ptParts.push(painTemplates[curLang](sbTextPt));
+          }
+        });
         return;
       }
     }
 
+    // '아파요'와 함께 처리된 몸 부위 카드는 중복 출력하지 않음
     if (hasPainCard && bodyCards.some(b => b.id === item.id)) return;
 
+    // 2단계 세부 옵션이 선택된 경우 상위 카테고리명을 중복 나열하지 않고 세부 상태만 깔끔히 출력
     if (sub) {
-      koParts.push(getLabel(sub, "ko"));
-      ptParts.push(getLabel(sub, curLang));
+      koParts.push(cleanParens(getLabel(sub, "ko")));
+      ptParts.push(cleanParens(getLabel(sub, curLang)));
       return;
     }
 
+    // 통증 점수 카드 처리
     if (item.pain !== undefined) {
-      koParts.push(getLabel(item, "ko"));
+      koParts.push(`통증은 10점 중 ${item.pain}점이에요`);
       ptParts.push(getLabel(item, curLang));
       if (item.pain >= 8) urgent = true;
       return;
     }
 
-    koParts.push(getLabel(item, "ko"));
-    ptParts.push(getLabel(item, curLang));
+    koParts.push(cleanParens(getLabel(item, "ko")));
+    ptParts.push(cleanParens(getLabel(item, curLang)));
   });
 
   if (free) {
     koParts.push(free);
     ptParts.push(free);
-    if (/숨|가슴|흉통|튜브|피|출혈|어지|실신|두드러기|붓고|breath|chest|bleed|blood|tube|dizzy/i.test(free)) urgent = true;
+    if (/숨|가슴|흉통|튜브|피|출혈|어지|실신|두드러기|붓고|breath|chest|bleed|blood|tube|dizzy/i.test(free)) {
+      urgent = true;
+    }
   }
 
   let koSent = koParts.join(". ").replace(/\.\./g, ".");
@@ -3579,7 +3174,7 @@ $("makeBtn").onclick = async () => {
 2. 세부 옵션이 있는 경우 상위 카테고리명을 중복 나열하지 말고 구체적 세부 상태 중심으로 자연스러운 1~2개의 해요체 한국어 문장(ko)을 만든다.
 3. 환자 확인용 문장(pt)은 ${LANGS[curLang].name}로 임상 문맥과 동음이의어를 정확히 의역한다.
 4. 해석이 모호하면 문장 후보를 최대 3개 제시한다.
-5. 호흡곤란, 가슴 통증·두근거림, 튜브 불편·이탈, 객혈(피 섞인 가래), 수술 부위·코·입 출혈, 소변줄 통증/누출, 사지 힘 빠짐·급성 안면/목 부종, 통증 8점 이상이면 urgent를 true로 표시한다.
+5. 호흡곤란, 가슴 통증·답답함, 튜브 불편·이탈, 객혈(피 섞인 가래), 수술 부위·코·입 출혈, 소변줄 통증/누출, 어지러움, 사지 힘 빠짐·급성 안면/목 부종, 통증 8점 이상이면 urgent를 true로 표시한다.
 6. 반드시 JSON만 출력한다: {"candidates":[{"ko":"한국어 문장","pt":"환자 언어 문장"}],"urgent":false}`;
 
     try {
@@ -3609,15 +3204,22 @@ function renderCandidates(res) {
   (res.candidates || []).forEach(c => {
     const card = document.createElement("div");
     card.className = "cand-card" + (isUrgent ? " urgent-cand" : "");
+    const ptText = c.pt || c.ko;
     card.innerHTML = `
       <div class="cand-texts">
-        <div class="cand-pt">${isUrgent ? '<span class="emoji">🚨</span> ' : ""}${c.pt || c.ko}</div>
+        <div class="cand-pt">${isUrgent ? '<span class="emoji">🚨</span> ' : ""}${ptText}</div>
         ${curLang !== "ko" ? `<div class="cand-ko">${UI_I18N.nrLabel[curLang]} ${c.ko}</div>` : ""}
       </div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-ok gaze-target" data-gaze="true" type="button">✓ OK</button>
+      <div class="cand-actions">
+        <button class="btn btn-ghost btn-read gaze-target" data-gaze="true" type="button"><span class="emoji">🔊</span> ${UI_I18N.readBtn[curLang]}</button>
+        <button class="btn btn-ok gaze-target" data-gaze="true" type="button">${UI_I18N.okBtn[curLang]}</button>
       </div>
     `;
+
+    card.querySelector(".btn-read").onclick = () => {
+      speak(ptText, LANGS[curLang].tts);
+    };
+
     card.querySelector(".btn-ok").onclick = () => {
       if (!isUrgent) {
         const st = checkNonUrgentStatus();
@@ -3632,8 +3234,9 @@ function renderCandidates(res) {
         recordNonUrgentCall();
       }
 
+      playToneChime(isUrgent);
       speak(c.ko, "ko-KR");
-      addLog("환자", c.ko, isUrgent, painSel, curLang !== "ko" ? (c.pt || "") : "");
+      addLog("환자", c.ko, isUrgent, painSel, curLang !== "ko" ? ptText : "");
       if (isUrgent) {
         showUrgent(`🚨 긴급 환자 호소: "${c.ko}" (제한 우회 즉시 전달됨)`);
       }
@@ -3654,8 +3257,40 @@ function renderCandidates(res) {
 
 $("retryBtn").onclick = () => $("candSection").classList.remove("show");
 
-// ---------- 간호사 모드: 40종 표준 임상 문구 렌더링 및 정확한 매칭/AI 번역 ----------
+// ---------- 간호사 모드: 음성 입력(Web Speech API), 40종 표준 임상 문구 & 안전 번역 ----------
 let curNrCat = "all";
+
+$("nrVoiceBtn").onclick = () => {
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) {
+    toast("현재 브라우저에서는 음성 인식이 지원되지 않습니다. 텍스트로 직접 입력하거나 아래 표준 문구를 선택해 주세요.");
+    return;
+  }
+  try {
+    const rec = new SpeechRec();
+    rec.lang = "ko-KR";
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    $("nrVoiceBtn").innerHTML = '<span class="emoji">🎙️</span> 듣는 중…';
+    rec.onresult = e => {
+      const transcript = e.results?.[0]?.[0]?.transcript || "";
+      if (transcript) {
+        $("nrInput").value = transcript;
+        toast(`음성 인식 완료: "${transcript}"`);
+      }
+    };
+    rec.onerror = () => {
+      toast("음성 인식에 실패했습니다. 마이크 권한을 확인하거나 직접 입력해 주세요.");
+    };
+    rec.onend = () => {
+      $("nrVoiceBtn").innerHTML = '<span class="emoji">🎤</span> 말로 입력';
+    };
+    rec.start();
+  } catch (e) {
+    $("nrVoiceBtn").innerHTML = '<span class="emoji">🎤</span> 말로 입력';
+    toast("음성 입력을 시작할 수 없습니다.");
+  }
+};
 
 function renderNursePresets() {
   const wrap = $("nrPresetChips");
@@ -3757,7 +3392,7 @@ $("nrConvBtn").onclick = async () => {
         back: "한국어 원문 그대로 환자에게 크게 표시됩니다."
       };
     } else {
-      // 절대 가짜 문장을 지어내지 않고 임상 안전 안내 표시
+      // 절대 임의의 가짜 문장을 출력하지 않고 임상 안전 안내 표시
       unverifiedOffline = true;
       out = {
         simple: raw,
@@ -3769,7 +3404,7 @@ $("nrConvBtn").onclick = async () => {
   }
 
   $("nrConvBtn").disabled = false;
-  $("nrConvBtn").textContent = "쉽게 바꾸기 · 번역";
+  $("nrConvBtn").textContent = "쉽게 바꾸기";
 
   $("nrOutEmoji").textContent = (out.emoji || ["💬"]).join(" ");
   $("nrOutSimple").textContent = out.simple;
@@ -3812,7 +3447,7 @@ $("nrBigBtn").onclick = () => {
 $("bigClose").onclick = () => $("bigDlg").classList.remove("show");
 $("bigSpeak").onclick = () => $("nrSpeakBtn").click();
 
-// ---------- 기록, HTML5 Canvas 통증 그래프 및 Focus DAR 초안 ----------
+// ---------- 기록, SVG 통증 점수 변화 그래프 및 Focus DAR 초안 ----------
 function addLog(who, text, urgent = false, pain = null, ptOriginal = "") {
   const t = nowTime();
   logs.push({ time: t, who, text, urgent, pain, ptOriginal });
@@ -3827,13 +3462,17 @@ function addLog(who, text, urgent = false, pain = null, ptOriginal = "") {
 
   if ($("logView").classList.contains("active")) {
     renderLogs();
-    renderPainCanvas();
+    renderPainSvg();
   }
 }
 
 function renderLogs() {
   const list = $("logList");
   list.innerHTML = "";
+  if (!logs.length) {
+    list.innerHTML = `<div style="color:#64748b;font-size:0.9rem;padding:24px;text-align:center;">기록된 의사소통 내역이 없습니다.</div>`;
+    return;
+  }
   logs.forEach(item => {
     const div = document.createElement("div");
     div.className = "log-item" + (item.who === "간호사" ? " nurse" : "") + (item.urgent ? " urgent" : "");
@@ -3842,6 +3481,7 @@ function renderLogs() {
         <span>${item.time}</span>
         <span class="badge ${item.who === "간호사" ? "b-nr" : "b-pt"}">${item.who}</span>
         ${item.urgent ? '<span class="badge b-ur">긴급</span>' : ""}
+        ${typeof item.pain === "number" ? `<span class="badge" style="background:#fef3c7;color:#92400e;">통증 ${item.pain}점</span>` : ""}
       </div>
       <div style="font-weight:700;font-size:0.94rem;">${item.text}</div>
     `;
@@ -3849,48 +3489,28 @@ function renderLogs() {
   });
 }
 
-function renderPainCanvas() {
-  const wrap = $("painCanvasWrap");
-  const canvas = $("painCanvas");
-  if (!wrap || !canvas) return;
-  const dpr = window.devicePixelRatio || 1;
-  const rect = wrap.getBoundingClientRect();
-  const w = Math.max(260, rect.width || 360);
-  const h = Math.max(120, rect.height || 150);
-
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  const ctx = canvas.getContext("2d");
-  ctx.scale(dpr, dpr);
-  ctx.clearRect(0, 0, w, h);
+function renderPainSvg() {
+  const wrap = $("painSvgWrap");
+  if (!wrap) return;
 
   const pts = logs.filter(l => typeof l.pain === "number");
   if (!pts.length) {
-    ctx.fillStyle = "#64748b";
-    ctx.font = "600 13px 'Noto Sans KR', sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("기록된 통증 점수가 없습니다", w / 2, h / 2 + 4);
+    wrap.innerHTML = `<span style="color:#64748b;font-size:0.86rem;font-weight:600;">기록된 통증 점수가 없습니다 (통증 점수 선택 후 확인 시 자동 표시)</span>`;
     return;
   }
 
-  const padL = 32, padR = 24, padT = 24, padB = 26;
+  const w = 440, h = 155;
+  const padL = 34, padR = 28, padT = 26, padB = 28;
   const plotW = w - padL - padR;
   const plotH = h - padT - padB;
 
-  [0, 5, 10].forEach(val => {
-    const y = padT + plotH - (val / 10) * plotH;
-    ctx.strokeStyle = "#e2e8f0";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(padL, y);
-    ctx.lineTo(w - padR, y);
-    ctx.stroke();
-
-    ctx.fillStyle = "#64748b";
-    ctx.font = "600 10px 'Noto Sans KR', sans-serif";
-    ctx.textAlign = "right";
-    ctx.fillText(String(val), padL - 6, y + 3);
-  });
+  const gridLines = [0, 5, 10].map(val => {
+    const y = (padT + plotH - (val / 10) * plotH).toFixed(1);
+    return `
+      <line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="#e2e8f0" stroke-width="1" />
+      <text x="${padL - 7}" y="${Number(y) + 3.5}" fill="#64748b" font-size="10" font-weight="600" text-anchor="end">${val}</text>
+    `;
+  }).join("");
 
   const coords = pts.map((p, i) => {
     const x = pts.length === 1 ? padL + plotW / 2 : padL + (i * plotW) / (pts.length - 1);
@@ -3898,42 +3518,42 @@ function renderPainCanvas() {
     return { x, y, v: p.pain, t: p.time };
   });
 
-  ctx.strokeStyle = "#0d6e6e";
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  coords.forEach((c, idx) => {
-    if (idx === 0) ctx.moveTo(c.x, c.y);
-    else ctx.lineTo(c.x, c.y);
-  });
-  ctx.stroke();
+  const polylinePts = coords.map(c => `${c.x.toFixed(1)},${c.y.toFixed(1)}`).join(" ");
+  const polyHtml = coords.length > 1
+    ? `<polyline fill="none" stroke="#0d6e6e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${polylinePts}" />`
+    : "";
 
-  coords.forEach(c => {
-    ctx.fillStyle = c.v >= 8 ? "#dc2626" : "#0d6e6e";
-    ctx.beginPath();
-    ctx.arc(c.x, c.y, 5, 0, Math.PI * 2);
-    ctx.fill();
+  const nodesHtml = coords.map(c => {
+    const color = c.v >= 8 ? "#dc2626" : "#0d6e6e";
+    return `
+      <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="5.5" fill="${color}" stroke="#ffffff" stroke-width="1.5" />
+      <text x="${c.x.toFixed(1)}" y="${(c.y - 9).toFixed(1)}" fill="#0f172a" font-size="11" font-weight="800" text-anchor="middle">${c.v}점</text>
+      <text x="${c.x.toFixed(1)}" y="${h - 8}" fill="#64748b" font-size="10" font-weight="600" text-anchor="middle">${c.t}</text>
+    `;
+  }).join("");
 
-    ctx.fillStyle = "#0f172a";
-    ctx.font = "700 11px 'Noto Sans KR', sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(`${c.v}점`, c.x, c.y - 9);
-
-    ctx.fillStyle = "#64748b";
-    ctx.font = "600 10px 'Noto Sans KR', sans-serif";
-    ctx.fillText(c.t, c.x, h - 8);
-  });
+  wrap.innerHTML = `
+    <svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="통증 점수 변화 그래프">
+      ${gridLines}
+      ${polyHtml}
+      ${nodesHtml}
+    </svg>
+  `;
 }
-
-window.addEventListener("resize", () => {
-  if ($("logView").classList.contains("active")) renderPainCanvas();
-});
 
 $("clearLogBtn").onclick = () => {
   logs = [];
   $("darOut").value = "";
   renderLogs();
-  renderPainCanvas();
+  renderPainSvg();
   toast("의사소통 기록이 초기화되었습니다.");
+};
+
+$("resetSampleLogBtn").onclick = () => {
+  logs = JSON.parse(JSON.stringify(INITIAL_LOGS));
+  renderLogs();
+  renderPainSvg();
+  toast("가상 사례 기본 기록이 복원되었습니다.");
 };
 
 $("makeDarBtn").onclick = async () => {
@@ -3966,10 +3586,10 @@ ${summary}
   if (!dar) {
     const ptLines = logs.filter(l => l.who === "환자").map(l => `- (${l.time}) "${l.text}"`).join("\n") || "- 특이 표현 없음";
     const nrLines = logs.filter(l => l.who === "간호사").map(l => `- (${l.time}) ${l.text}`).join("\n") || "- [간호사 확인 필요]";
-    dar = `[Focus]: 의사소통 제한 환자의 증상 호소 및 요구 사정\n` +
+    dar = `[Focus]: 구어 의사소통 제한 환자의 증상 호소 및 간호 요구 사정\n` +
           `[Data]: 환자가 의사소통 보드를 통해 다음과 같이 표현함.\n${ptLines}\n` +
-          `[Action]: 환자 요구 확인 및 의사소통 보드 기반 안내 시행.\n${nrLines}\n` +
-          `[Response]: 환자 의사 전달 완료 및 안심 반응 관찰됨. 추가 증상 변화 [간호사 확인 필요].`;
+          `[Action]: 환자 요구 확인 및 의사소통 보드 기반 설명·처치 시행.\n${nrLines}\n` +
+          `[Response]: 환자 의사 전달 완료 및 안심 반응 관찰됨. 추가 증상 및 통증 변화 [간호사 확인 필요].`;
   }
 
   $("darOut").value = dar;
@@ -3986,7 +3606,7 @@ $("copyDarBtn").onclick = () => {
   toast("간호기록 초안이 클립보드에 복사되었습니다.");
 };
 
-// ---------- 시선 추적 업그레이드 (순차 5점 응시 보정 + 마우스 리스너 해제 + EMA/데드존/자석 스냅 + 외부 눈 추적 연동) ----------
+// ---------- 3모드 시선 추적 허브 (WebGazer.js 순차 5점 보정 + 마우스 리스너 해제 + EMA/데드존/자석 스냅) ----------
 let gazeMode = "off"; // "off" | "webcam" | "sim" | "external"
 let dwellTarget = null;
 let dwellStart = 0;
@@ -4000,27 +3620,34 @@ const DEADZONE_PX = 6;
 const MAGNET_RADIUS_PX = 14;
 
 function loadWebGazerScript() {
+  const urls = [
+    "https://webgazer.cs.brown.edu/webgazer.js",
+    "https://cdn.jsdelivr.net/npm/webgazer@3.1.0/dist/webgazer.min.js"
+  ];
+
   return new Promise((resolve, reject) => {
     if (typeof window.webgazer !== "undefined") {
       resolve(window.webgazer);
       return;
     }
-    const existing = document.getElementById("wgScript");
-    if (existing) {
-      existing.addEventListener("load", () => resolve(window.webgazer));
-      existing.addEventListener("error", () => reject(new Error("WebGazer 스크립트 로드 실패")));
-      return;
+
+    let idx = 0;
+    function tryNext() {
+      if (idx >= urls.length) {
+        reject(new Error("WebGazer 스크립트를 불러오지 못했습니다."));
+        return;
+      }
+      const s = document.createElement("script");
+      s.src = urls[idx++];
+      s.async = true;
+      s.onload = () => {
+        if (typeof window.webgazer !== "undefined") resolve(window.webgazer);
+        else tryNext();
+      };
+      s.onerror = () => tryNext();
+      document.head.appendChild(s);
     }
-    const s = document.createElement("script");
-    s.id = "wgScript";
-    s.src = "https://cdn.jsdelivr.net/npm/webgazer@3.1.0/dist/webgazer.min.js";
-    s.async = true;
-    s.onload = () => {
-      if (typeof window.webgazer !== "undefined") resolve(window.webgazer);
-      else reject(new Error("WebGazer 초기화 객체를 찾을 수 없습니다."));
-    };
-    s.onerror = () => reject(new Error("WebGazer CDN 연결 실패"));
-    document.head.appendChild(s);
+    tryNext();
   });
 }
 
@@ -4033,15 +3660,15 @@ function updateGazeHeaderUI() {
   if (gazeMode === "off") {
     btn.innerHTML = '<span class="emoji">👁️</span> 시선 추적';
   } else if (gazeMode === "webcam") {
-    btn.innerHTML = '<span class="emoji">👁️</span> 웹캠 시선 추적 ON (종료)';
+    btn.innerHTML = '<span class="emoji">👁️</span> 웹캠 시선 추적 ON';
     btn.classList.add("gaze-on");
     recal.style.display = "inline-flex";
   } else if (gazeMode === "sim") {
-    btn.innerHTML = '<span class="emoji">🖱️</span> 시선 시뮬레이션 ON (종료)';
+    btn.innerHTML = '<span class="emoji">🖱️</span> 응시 시뮬레이션 ON';
     btn.classList.add("gaze-on");
     recal.style.display = "inline-flex";
   } else if (gazeMode === "external") {
-    btn.innerHTML = '<span class="emoji">♿</span> 외부 눈 추적 모드 ON (종료)';
+    btn.innerHTML = '<span class="emoji">♿</span> 외부 눈 추적 연동 ON';
     btn.classList.add("gaze-on");
   }
 }
@@ -4073,7 +3700,7 @@ $("modeExtBtn").onclick = () => {
   document.body.classList.add("external-gaze-mode");
   updateGazeHeaderUI();
   $("extGuideSection").style.display = "block";
-  toast("외부 시선 추적 / OS 눈 추적 연동 모드가 활성화되었습니다. 모든 버튼이 대형 응시 타겟으로 전환됩니다.");
+  toast("외부 시선 추적 / OS 눈 추적 연동 모드가 켜졌습니다. 모든 버튼이 대형 응시 타겟으로 확장됩니다.");
 };
 
 $("recalibBtn").onclick = () => {
@@ -4091,7 +3718,7 @@ function startMouseSimulation() {
   stableY = null;
   updateGazeHeaderUI();
   $("gazeCursor").classList.add("show");
-  startSequentialCalibration();
+  toast("마우스 응시 시뮬레이션 활성화 — 버튼 위에 1.5초간 머무르면 자동 클릭됩니다.");
 }
 
 window.addEventListener("mousemove", e => {
@@ -4108,7 +3735,7 @@ async function startWebcamGaze() {
 
   $("gazeBtn").innerHTML = '<span class="emoji">👁️</span> 카메라 연결 중…';
 
-  // 1) 카메라 장치 권한 프로브 후 즉시 모든 트랙을 stop()하여 하드웨어 잠금 해제
+  // 1) 카메라 권한 프로브 후 즉시 모든 트랙을 stop()하여 하드웨어 점유 충돌 방지
   let probeStream = null;
   try {
     try {
@@ -4146,7 +3773,6 @@ async function startWebcamGaze() {
       });
 
     await wg.begin();
-    // 보정 전/중 마우스 이동 자동 학습 방지
     if (typeof wg.removeMouseEventListeners === "function") {
       wg.removeMouseEventListeners();
     }
@@ -4208,7 +3834,7 @@ function startSequentialCalibration() {
   function renderStep() {
     ov.querySelectorAll(".calib-dot").forEach(d => d.remove());
     if (stepIdx >= points.length) {
-      // 보정 완료: 일반 버튼 터치/클릭이 시선 모델을 오염시키지 않도록 마우스 리스너 즉시 제거
+      // 보정 완료: 이후 일반 버튼 터치/클릭이 시선 좌표를 오염시키지 않도록 마우스 학습 리스너 제거
       if (gazeMode === "webcam" && typeof window.webgazer !== "undefined") {
         try {
           if (typeof window.webgazer.removeMouseEventListeners === "function") {
@@ -4313,11 +3939,11 @@ function handleGazePoint(rawX, rawY) {
     stableX = clampedX;
     stableY = clampedY;
   } else {
-    // 강한 지수이동평균(EMA: 이전 0.80 + 신규 0.20)
+    // 지수이동평균(EMA: 0.80 * prev + 0.20 * raw)
     smoothX = smoothX * 0.80 + clampedX * 0.20;
     smoothY = smoothY * 0.80 + clampedY * 0.20;
 
-    // 6px 데드존: 미세 떨림 무시
+    // 6px 데드존: 미세 동공 떨림 무시
     if (Math.hypot(smoothX - stableX, smoothY - stableY) >= DEADZONE_PX) {
       stableX = smoothX;
       stableY = smoothY;
@@ -4358,7 +3984,7 @@ function handleGazePoint(rawX, rawY) {
     clickable = findMagneticTarget(displayX, displayY);
   }
 
-  // 자석 스냅: 타겟 경계 14px 이내에 시선이 머무르면 포인터를 부드럽게 타겟 중심으로 흡착
+  // 14px 자석 스냅: 타겟 경계 이내 응시 시 부드럽게 타겟 중심으로 흡착
   if (clickable) {
     const r = clickable.getBoundingClientRect();
     const cx = r.left + r.width / 2;
@@ -4392,7 +4018,7 @@ function handleGazePoint(rawX, rawY) {
 applyLanguageUI();
 renderNursePresets();
 renderLogs();
-renderPainCanvas();
+renderPainSvg();
 </script>
 </body>
 </html>
