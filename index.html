@@ -1127,7 +1127,7 @@
       <div id="candList"></div>
     </div>
 
-    <!-- 하단 6개 카테고리 탭 및 73개 그림 단어 카드 그리드 -->
+    <!-- 하단 6개 카테고리 탭 및 74개 그림 단어 카드 그리드 -->
     <div class="board-layout">
       <aside id="catList" class="cat-list"></aside>
       <div>
@@ -2204,7 +2204,7 @@ const NURSE_PHRASES = [
   }
 ];
 
-// ---------- 6개 카테고리, 73개 임상 그림 카드 & 2단계 세부 분기 (6개국어 완전 번역) ----------
+// ---------- 6개 카테고리, 74개 임상 그림 카드 & 2단계 세부 분기 (6개국어 완전 번역) ----------
 const DATA = {
   // 1. 아픔·불편 (18 cards)
   pain: [
@@ -2331,20 +2331,28 @@ const DATA = {
     }
   ],
 
-  // 2. 몸 부위 (12 cards)
+  // 2. 몸 부위 (13 cards — '목'과 '수술 부위' 분리 반영)
   body: [
     {
       id: "b_head", emoji: "🧠",
       labels: { ko: "머리", en: "Head", zh: "头 / 头部", vi: "Đầu", ru: "Голова", ja: "頭" }
     },
     {
-      id: "b_neckop", emoji: "🩹",
-      labels: { ko: "목·수술 부위", en: "Neck / Surgery site", zh: "颈部 / 手术部位", vi: "Cổ / Vị trí phẫu thuật", ru: "Шея / Область операции", ja: "首・手術部位" },
+      id: "b_neck", emoji: "🧣",
+      labels: { ko: "목", en: "Neck", zh: "颈部 / 脖子", vi: "Cổ", ru: "Шея", ja: "首" },
+      subs: [
+        { labels: { ko: "목을 움직이기 힘들어요", en: "Hard to move my neck", zh: "脖子很难转动", vi: "Rất khó cử động cổ", ru: "Трудно двигать шеей", ja: "首を動かすのがつらいです" } },
+        { labels: { ko: "삼킬 때 너무 아파요", en: "Hurts very much when swallowing", zh: "吞咽时非常疼", vi: "Rất đau khi nuốt", ru: "Очень больно глотать", ja: "飲み込むときにとても痛みます" } },
+        { urgent: true, labels: { ko: "목이 붓고 조이는 느낌이 들어요", en: "Neck feels swollen and tight", zh: "脖子肿胀并有紧绷感", vi: "Cổ bị sưng và có cảm giác bó chặt", ru: "Шея опухла и есть чувство сдавливания", ja: "首が腫れて締め付けられる感じがします" } }
+      ]
+    },
+    {
+      id: "b_opsite", emoji: "🩹",
+      labels: { ko: "수술 부위", en: "Surgery site", zh: "手术部位", vi: "Vị trí phẫu thuật", ru: "Область операции", ja: "手術部位" },
       subs: [
         { labels: { ko: "수술 부위가 욱신거리고 아파요", en: "Surgery site is throbbing and painful", zh: "手术部位一跳一跳地疼", vi: "Vết mổ đau nhức nhối", ru: "Пульсирующая боль в области шва", ja: "手術部位がズキズキ痛みます" } },
         { urgent: true, labels: { ko: "거즈가 젖었거나 피가 배어 나와요", en: "Gauze is wet or blood is oozing", zh: "纱布湿了或有血渗出", vi: "Gạc bị ướt hoặc thấm máu", ru: "Повязка промокла или сочится кровь", ja: "ガーゼが濡れているか血が滲んでいます" } },
-        { labels: { ko: "목을 움직이기 힘들어요", en: "Hard to move my neck", zh: "脖子很难转动", vi: "Rất khó cử động cổ", ru: "Трудно двигать шеей", ja: "首を動かすのがつらいです" } },
-        { labels: { ko: "삼킬 때 너무 아파요", en: "Hurts very much when swallowing", zh: "吞咽时非常疼", vi: "Rất đau khi nuốt", ru: "Очень больно глотать", ja: "飲み込むときにとても痛みます" } }
+        { labels: { ko: "수술 부위가 당기고 뻐근해요", en: "Surgery site feels tight and sore", zh: "手术部位发紧酸痛", vi: "Vết mổ bị căng tức và đau mỏi", ru: "Область операции тянет и ноет", ja: "手術部位が突っ張って重だるいです" } }
       ]
     },
     {
@@ -2653,7 +2661,7 @@ function renderCats() {
   });
 }
 
-// ---------- 73개 임상 그림 카드 렌더링 ----------
+// ---------- 74개 임상 그림 카드 렌더링 ----------
 function renderCards() {
   const grid = $("cardsGrid");
   if (!grid) return;
