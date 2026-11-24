@@ -1067,6 +1067,7 @@
   <div class="top-actions">
     <button id="gazeBtn" class="pill-btn gaze-target" data-gaze="true" type="button"><span class="emoji">👁️</span> 시선 추적</button>
     <button id="recalibBtn" class="pill-btn gaze-target" data-gaze="true" type="button" style="display:none;"><span class="emoji">🎯</span> 재보정</button>
+    <button id="gazeStopBtn" class="pill-btn gaze-target" data-gaze="true" type="button" style="display:none;border-color:#fca5a5;color:#fecaca;"><span class="emoji">⏹️</span> 끄기</button>
     <button id="aiState" class="pill-btn gaze-target" data-gaze="true" type="button">기본 문장 모드 · AI 연결하기</button>
     <nav class="nav-tabs" aria-label="화면 전환">
       <button class="tab-btn gaze-target active" data-gaze="true" data-tab="ptView" type="button">환자</button>
@@ -1262,29 +1263,29 @@
   <div class="modal-card">
     <h3><span class="emoji">👁️</span> 시선 추적 및 무접촉 입력 설정</h3>
     <p style="font-size:0.86rem;color:var(--muted);margin:0 0 14px 0;">
-      환자의 상지 움직임이 제한된 경우 아래 3가지 방식 중 기기 환경에 맞는 시선 입력 모드를 선택하세요.
+<!-- 시선 추적 2가지 모드 허브 모달 -->
+<div id="gazeHubDlg" class="modal-backdrop">
+  <div class="modal-card">
+    <h3><span class="emoji">👁️</span> 시선 추적 및 무접촉 입력 설정</h3>
+    <p style="font-size:0.86rem;color:var(--muted);margin:0 0 14px 0;">
+      환자의 상지 움직임이 제한된 경우 기기 환경에 맞는 시선 입력 모드를 선택하세요.
     </p>
 
     <button id="modeWebcamBtn" class="gaze-mode-card" type="button">
-      <span class="gaze-mode-title"><span class="emoji">📷</span> 1. 웹캠 시선 추적 (순차 5점 보정)</span>
+      <span class="gaze-mode-title"><span class="emoji">📷</span> (A) 웹캠 시선 추적 시작 (WebGazer.js)</span>
       <span class="gaze-mode-desc">
-        전면 카메라로 눈동자를 추적합니다. 순차적으로 나타나는 5개의 빨간 점을 <strong>먼저 응시한 상태에서 3번씩 클릭(0/3 → 3/3)</strong>하면 보정 후 마우스 학습 리스너가 자동 해제되며, EMA 안정화 필터와 1.5초 응시 게이지로 작동합니다.
-      </span>
-    </button>
-
-    <button id="modeSimBtn" class="gaze-mode-card" type="button">
-      <span class="gaze-mode-title"><span class="emoji">🖱️</span> 2. 마우스 응시 시뮬레이션 (발표·시연용)</span>
-      <span class="gaze-mode-desc">
-        웹캠 없이도 데스크톱 발표 및 테스트 시 1.5초 응시 원형 게이지와 14px 자석 스냅 자동 클릭 기능을 동일하게 시연합니다.
+        전면/외장 웹캠으로 눈동자를 추적합니다. 순차적으로 나타나는 5개의 빨간 점을 <strong>먼저 응시한 상태에서 3번씩 클릭(0/3 → 3/3)</strong>하면 보정 후 마우스 학습 리스너가 자동 해제되며, EMA 안정화 필터(0.80)와 1.5초 응시 게이지로 작동합니다.
       </span>
     </button>
 
     <button id="modeExtBtn" class="gaze-mode-card" type="button">
-      <span class="gaze-mode-title"><span class="emoji">♿</span> 3. 외부 시선 추적 / OS 눈 추적 연동 모드</span>
+      <span class="gaze-mode-title"><span class="emoji">📱</span> (B) 외부 기기 OS 눈 추적 연동 (iPadOS 18+ · Windows 11 · Tobii)</span>
       <span class="gaze-mode-desc">
         iPadOS 18+ 눈 추적, Windows 11 눈 제어, Tobii 전용 아이트래커와 충돌하지 않도록 웹캠 점유를 끄고, 화면 전체 버튼을 고대비·대형 응시 타겟으로 확장합니다.
       </span>
     </button>
+
+    <div id="webcamHardwareWarn" class="offline-warn-box" style="display:none;margin-top:10px;"></div>
 
     <div id="extGuideSection" class="os-guide-box" style="display:none;">
       <strong><span class="emoji">📘</span> 외부 / OS 기본 눈 추적기 연동 안내:</strong><br/>
@@ -2406,211 +2407,211 @@ const DATA = {
     {
       id: "a_tubeout", emoji: "🩺",
       labels: { ko: "언제 튜브·줄 뺄 수 있어요?", en: "When can tubes/lines be removed?", zh: "什么时候可以拔管？", vi: "Khi nào có thể rút ống?", ru: "Когда снимут трубки / катетеры?", ja: "いつチューブや管を抜けますか？" }
-    },
-    {
-      id: "a_result", emoji: "📋",
-      labels: { ko: "수술·검사 결과 궁금해요", en: "Ask about surgery / test results", zh: "想了解手术和检查结果", vi: "Muốn biết kết quả phẫu thuật / xét nghiệm", ru: "Хочу узнать результаты операции / анализов", ja: "手術・検査の結果が知りたいです" }
-    },
-    {
-      id: "a_sidefx", emoji: "💊",
-      labels: { ko: "약 부작용인지 궁금해요", en: "Could this be a drug side effect?", zh: "想知道这是不是药物副作用", vi: "Có phải tác dụng phụ của thuốc không?", ru: "Не побочный ли это эффект лекарства?", ja: "薬の副作用かどうか知りたいです" }
-    },
-    {
-      id: "a_time", emoji: "⏰",
-      labels: { ko: "지금 몇 시예요?", en: "What time is it?", zh: "现在几点了？", vi: "Bây giờ là mấy giờ?", ru: "Который сейчас час?", ja: "今何時ですか？" }
-    },
-    {
-      id: "a_discharge", emoji: "🏥",
-      labels: { ko: "오늘 퇴원·전실 언제예요?", en: "When is discharge / room transfer?", zh: "今天什么时候出院 / 转病房？", vi: "Hôm nay mấy giờ xuất viện / chuyển phòng?", ru: "Когда сегодня выписка или перевод?", ja: "今日の退院・転室は何時ですか？" }
-    },
-    {
-      id: "a_interp", emoji: "🌐",
-      labels: { ko: "통역이 필요해요", en: "Need an interpreter", zh: "需要翻译", vi: "Tôi cần phiên dịch", ru: "Нужен переводчик", ja: "通訳が必要です" }
-    },
-    {
-      id: "a_repeat", emoji: "🔁",
-      labels: { ko: "설명 다시 해 주세요", en: "Please explain again", zh: "请再解释一遍", vi: "Vui lòng giải thích lại", ru: "Объясните, пожалуйста, еще раз", ja: "もう一度説明してください" }
+// ---------- 2모드 시선 추적 허브 (WebGazer.js 순차 5점 보정 + 마우스 리스너 해제 + EMA/데드존/자석 스냅) ----------
+let gazeMode = "off"; // "off" | "webcam" | "external"
+let dwellTarget = null;
+let dwellStart = 0;
+let smoothX = null;
+let smoothY = null;
+let stableX = null;
+let stableY = null;
+const DWELL_MS = 1500;
+const CIRCUMFERENCE = 131.95; // 2 * PI * 21
+const DEADZONE_PX = 6;
+const MAGNET_RADIUS_PX = 14;
+
+function loadWebGazerScript() {
+  const urls = [
+    "https://cdn.jsdelivr.net/npm/webgazer@3.1.0/dist/webgazer.min.js",
+    "https://webgazer.cs.brown.edu/webgazer.js"
+  ];
+
+  return new Promise((resolve, reject) => {
+    if (typeof window.webgazer !== "undefined") {
+      resolve(window.webgazer);
+      return;
     }
-  ],
 
-  // 6. 통증 점수 (11 cards: 0점 ~ 10점)
-  scale: [
-    { id: "sc_0", emoji: "😊", pain: 0, labels: { ko: "0점 (통증 없음)", en: "0 (No pain)", zh: "0分（无痛）", vi: "0 điểm (Không đau)", ru: "0 баллов (Нет боли)", ja: "0点（痛みなし）" } },
-    { id: "sc_1", emoji: "🙂", pain: 1, labels: { ko: "1점 (아주 약함)", en: "1 (Very mild)", zh: "1分（极轻微）", vi: "1 điểm (Rất nhẹ)", ru: "1 балл (Очень слабая)", ja: "1点（ごく弱い）" } },
-    { id: "sc_2", emoji: "🙂", pain: 2, labels: { ko: "2점 (약함)", en: "2 (Mild)", zh: "2分（轻微）", vi: "2 điểm (Nhẹ)", ru: "2 балла (Слабая)", ja: "2点（弱い）" } },
-    { id: "sc_3", emoji: "😐", pain: 3, labels: { ko: "3점 (조금 아픔)", en: "3 (Mild-moderate)", zh: "3分（有点疼）", vi: "3 điểm (Hơi đau)", ru: "3 балла (Терпимая)", ja: "3点（少し痛い）" } },
-    { id: "sc_4", emoji: "😕", pain: 4, labels: { ko: "4점 (중간)", en: "4 (Moderate)", zh: "4分（中度）", vi: "4 điểm (Trung bình)", ru: "4 балла (Умеренная)", ja: "4点（中くらい）" } },
-    { id: "sc_5", emoji: "🙁", pain: 5, labels: { ko: "5점 (상당히 아픔)", en: "5 (Moderate-strong)", zh: "5分（比较疼）", vi: "5 điểm (Đau vừa)", ru: "5 баллов (Заметная боль)", ja: "5点（かなり痛い）" } },
-    { id: "sc_6", emoji: "😣", pain: 6, labels: { ko: "6점 (많이 아픔)", en: "6 (Distressing)", zh: "6分（很疼）", vi: "6 điểm (Đau nhiều)", ru: "6 баллов (Сильная)", ja: "6点（だいぶ痛い）" } },
-    { id: "sc_7", emoji: "😖", pain: 7, labels: { ko: "7점 (심함)", en: "7 (Severe)", zh: "7分（重度疼痛）", vi: "7 điểm (Đau nặng)", ru: "7 баллов (Очень сильная)", ja: "7点（強い痛み）" } },
-    { id: "sc_8", emoji: "😫", pain: 8, urgent: true, labels: { ko: "8점 (매우 심함)", en: "8 (Very severe)", zh: "8分（非常严重）", vi: "8 điểm (Rất nặng)", ru: "8 баллов (Тяжелая боль)", ja: "8点（非常に強い）" } },
-    { id: "sc_9", emoji: "😭", pain: 9, urgent: true, labels: { ko: "9점 (참기 힘듦)", en: "9 (Excruciating)", zh: "9分（难以忍受）", vi: "9 điểm (Khó chịu đựng)", ru: "9 баллов (Невыносимая)", ja: "9点（耐え難い）" } },
-    { id: "sc_10", emoji: "🆘", pain: 10, urgent: true, labels: { ko: "10점 (극심한 통증)", en: "10 (Worst possible pain)", zh: "10分（剧痛无比）", vi: "10 điểm (Đau dữ dội nhất)", ru: "10 баллов (Нестерпимая боль)", ja: "10点（極度の痛み）" } }
-  ]
-};
-
-// ---------- 상태 변수 ----------
-let curLang = "ko";
-let curCat = "pain";
-let sel = [];          // 선택된 카드 객체 배열 (최대 8개)
-let subSel = {};       // { cardId: subOptionObj }
-let painSel = null;    // 선택된 통증 점수
-let activeSubCard = null;
-
-const INITIAL_LOGS = [
-  { time: "09:12", who: "환자", text: "가래가 양이 많고 끈적해요.", urgent: false, pain: null },
-  { time: "09:15", who: "간호사", text: "가래를 뽑겠습니다(석션). 잠시 불편할 수 있습니다.", urgent: false, pain: null },
-  { time: "10:05", who: "환자", text: "수술 부위가 욱신거리고 아파요. 통증은 10점 중 6점이에요.", urgent: false, pain: 6 }
-];
-let logs = JSON.parse(JSON.stringify(INITIAL_LOGS));
-
-// ---------- 비긴급 연속 호출 간격 및 횟수 제한기 (백그라운드 작동, 환자 화면 배지 미표시) ----------
-const rateConfig = {
-  cooldownSec: 15,
-  maxCount: 3,
-  windowMs: 5 * 60 * 1000
-};
-let nonUrgentTimestamps = [];
-let lastNonUrgentAt = 0;
-
-function pruneNonUrgent() {
-  const cutoff = Date.now() - rateConfig.windowMs;
-  nonUrgentTimestamps = nonUrgentTimestamps.filter(ts => ts > cutoff);
-}
-
-function checkNonUrgentStatus() {
-  const now = Date.now();
-  pruneNonUrgent();
-
-  if (lastNonUrgentAt > 0) {
-    const elapsedSec = Math.floor((now - lastNonUrgentAt) / 1000);
-    if (elapsedSec < rateConfig.cooldownSec) {
-      return {
-        allowed: false,
-        reason: "cooldown",
-        waitSec: rateConfig.cooldownSec - elapsedSec
+    let idx = 0;
+    function tryNext() {
+      if (idx >= urls.length) {
+        reject(new Error("WebGazer 스크립트를 불러오지 못했습니다."));
+        return;
+      }
+      const s = document.createElement("script");
+      s.src = urls[idx++];
+      s.async = true;
+      s.onload = () => {
+        if (typeof window.webgazer !== "undefined") resolve(window.webgazer);
+        else tryNext();
       };
+      s.onerror = () => tryNext();
+      document.head.appendChild(s);
     }
+    tryNext();
+  });
+}
+
+function updateGazeHeaderUI() {
+  const btn = $("gazeBtn");
+  const recal = $("recalibBtn");
+  const stopBtn = $("gazeStopBtn");
+  btn.classList.remove("gaze-on");
+  recal.style.display = "none";
+  stopBtn.style.display = "none";
+
+  if (gazeMode === "off") {
+    btn.innerHTML = '<span class="emoji">👁️</span> 시선 추적';
+  } else if (gazeMode === "webcam") {
+    btn.innerHTML = '<span class="emoji">👁️</span> 시선 추적 ON';
+    btn.classList.add("gaze-on");
+    recal.style.display = "inline-flex";
+    stopBtn.style.display = "inline-flex";
+  } else if (gazeMode === "external") {
+    btn.innerHTML = '<span class="emoji">📱</span> 외부 눈 추적 ON';
+    btn.classList.add("gaze-on");
+    stopBtn.style.display = "inline-flex";
+  }
+}
+
+$("gazeBtn").onclick = () => {
+  if (gazeMode !== "off") {
+    stopAllGazeModes();
+    return;
+  }
+  $("webcamHardwareWarn").style.display = "none";
+  $("extGuideSection").style.display = "none";
+  $("gazeHubDlg").classList.add("show");
+};
+
+$("gazeStopBtn").onclick = () => {
+  stopAllGazeModes();
+};
+
+$("gazeHubClose").onclick = () => $("gazeHubDlg").classList.remove("show");
+
+$("modeWebcamBtn").onclick = async () => {
+  $("gazeHubDlg").classList.remove("show");
+  await startWebcamGaze();
+};
+
+$("modeExtBtn").onclick = () => {
+  stopAllGazeModes(true);
+  gazeMode = "external";
+  document.body.classList.add("external-gaze-mode");
+  updateGazeHeaderUI();
+  $("extGuideSection").style.display = "block";
+  toast("외부 기기 OS 눈 추적 연동 모드가 켜졌습니다. 모든 버튼이 대형 응시 타겟으로 확장됩니다.");
+};
+
+$("recalibBtn").onclick = () => {
+  if (gazeMode === "webcam") {
+    startSequentialCalibration();
+  }
+};
+
+async function startWebcamGaze() {
+  const warnBox = $("webcamHardwareWarn");
+  warnBox.style.display = "none";
+  warnBox.innerHTML = "";
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    const msg = "현재 주소(file://) 또는 브라우저에서는 웹캠 접근이 제한됩니다. HTTPS 주소로 접속하거나 아래 (B) 외부 기기 OS 눈 추적 연동을 이용해 주세요.";
+    warnBox.innerHTML = `⚠️ <strong>카메라 접근 제한:</strong> ${msg}`;
+    warnBox.style.display = "block";
+    toast(msg);
+    $("gazeHubDlg").classList.add("show");
+    return;
   }
 
-  if (nonUrgentTimestamps.length >= rateConfig.maxCount) {
-    const oldest = nonUrgentTimestamps[0];
-    const waitSec = Math.max(1, Math.ceil((oldest + rateConfig.windowMs - now) / 1000));
-    return {
-      allowed: false,
-      reason: "cap",
-      waitSec
-    };
-  }
-
-  return { allowed: true };
-}
-
-function recordNonUrgentCall() {
-  const now = Date.now();
-  pruneNonUrgent();
-  nonUrgentTimestamps.push(now);
-  lastNonUrgentAt = now;
-}
-
-function formatSec(sec) {
-  if (sec < 60) return `${sec}초`;
-  const m = Math.floor(sec / 60);
-  const s = sec % 60;
-  return s > 0 ? `${m}분 ${s}초` : `${m}분`;
-}
-
-$("cfgInterval").onchange = e => {
-  rateConfig.cooldownSec = Number(e.target.value) || 15;
-  toast(`비긴급 호출 최소 간격이 ${rateConfig.cooldownSec}초로 설정되었습니다.`);
-};
-
-$("cfgMaxCount").onchange = e => {
-  rateConfig.maxCount = Number(e.target.value) || 3;
-  toast(`5분당 비긴급 최대 호출 횟수가 ${rateConfig.maxCount}회로 설정되었습니다.`);
-};
-
-$("cfgResetBtn").onclick = () => {
-  nonUrgentTimestamps = [];
-  lastNonUrgentAt = 0;
-  toast("비긴급 호출 제한 카운트와 대기 시간이 초기화되었습니다.");
-};
-
-// ---------- 유틸리티 ----------
-function getLabel(obj, lang = curLang) {
-  if (!obj || !obj.labels) return "";
-  return obj.labels[lang] || obj.labels.ko || "";
-}
-
-function toast(msg) {
-  const t = $("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove("show"), 3200);
-}
-
-function nowTime() {
-  const d = new Date();
-  return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
-}
-
-function speak(text, langCode = "ko-KR") {
-  if (!("speechSynthesis" in window) || !text) return;
+  // 1) 물리적 videoinput 장치 존재 여부 사전 확인 (enumerateDevices)
   try {
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = langCode;
-    u.rate = 0.95;
-    window.speechSynthesis.speak(u);
-  } catch (e) {}
-}
-
-function josa(word, a, b) {
-  if (!word) return a;
-  const c = word.charCodeAt(word.length - 1);
-  if (c < 0xac00 || c > 0xd7a3) return a;
-  return (c - 0xac00) % 28 > 0 ? a : b;
-}
-
-function cleanParens(str) {
-  return (str || "").replace(/\s*\([^)]*\)/g, "").trim();
-}
-
-// ---------- 탭 전환 ----------
-document.querySelectorAll(".tab-btn").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-    btn.classList.add("active");
-    $(btn.dataset.tab).classList.add("active");
-    if (btn.dataset.tab === "logView") {
-      renderLogs();
-      renderPainSvg();
+    if (typeof navigator.mediaDevices.enumerateDevices === "function") {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoInputs = devices.filter(d => d.kind === "videoinput");
+      if (videoInputs.length === 0) {
+        const msg = "이 PC/모니터에서 물리적 웹캠(카메라) 장치가 감지되지 않았습니다. 전면 카메라가 있는 태블릿·노트북을 사용하거나, 아래 (B) 외부 기기 OS 눈 추적 연동을 선택해 주세요.";
+        warnBox.innerHTML = `📷 <strong>연결된 웹캠 없음:</strong> ${msg}`;
+        warnBox.style.display = "block";
+        $("extGuideSection").style.display = "block";
+        toast("연결된 웹캠이 감지되지 않았습니다.");
+        $("gazeHubDlg").classList.add("show");
+        return;
+      }
     }
-  };
-});
+  } catch (enumErr) {
+    // enumerateDevices가 제한된 환경에서는 getUserMedia({ video: true })로 직접 확인 진행
+  }
 
-// ---------- 6개국어 전체 UI 즉시 로컬라이징 ----------
-function applyLanguageUI() {
-  $("qYes").textContent = UI_I18N.quick.yes[curLang];
-  $("qNo").textContent = UI_I18N.quick.no[curLang];
-  $("qWait").textContent = UI_I18N.quick.wait[curLang];
-  $("qHelp").innerHTML = `<span class="emoji">🚨</span> ${UI_I18N.quick.help[curLang]}`;
+  $("gazeBtn").innerHTML = '<span class="emoji">👁️</span> 카메라 연결 중…';
 
-  $("trayGuide").textContent = UI_I18N.trayGuide[curLang];
-  $("ptFreeIn").placeholder = UI_I18N.freePlaceholder[curLang];
-  $("clearBtn").textContent = UI_I18N.clearBtn[curLang];
-  $("makeBtn").innerHTML = `<span class="emoji">✨</span> ${UI_I18N.makeBtn[curLang]}`;
-  $("candTitleText").innerHTML = `<span class="emoji">💬</span> ${UI_I18N.candTitle[curLang]}`;
-  $("retryBtn").innerHTML = `<span class="emoji">🔄</span> ${UI_I18N.retryBtn[curLang]}`;
+  // 2) 범용 제약 조건({ video: true })으로 카메라 권한 프로브 후 즉시 모든 트랙을 stop()하여 점유 충돌 방지
+  let probeStream = null;
+  try {
+    probeStream = await navigator.mediaDevices.getUserMedia({ video: true });
+  } catch (err) {
+    updateGazeHeaderUI();
+    const name = err && err.name ? err.name : "";
+    let detailMsg = "";
+    if (name === "NotFoundError" || name === "DevicesNotFoundError") {
+      detailMsg = "연결된 웹캠(카메라)을 찾을 수 없습니다. USB 웹캠 연결 상태를 확인하거나, 카메라가 없는 PC에서는 아래 (B) 외부 기기 OS 눈 추적 연동을 사용해 주세요.";
+      $("extGuideSection").style.display = "block";
+    } else if (name === "NotAllowedError" || name === "PermissionDeniedError") {
+      detailMsg = "카메라 권한이 거부되었습니다. 브라우저 주소창 자물쇠 아이콘 및 OS 개인정보 설정에서 카메라를 '허용'으로 변경해 주세요.";
+    } else if (name === "NotReadableError" || name === "TrackStartError") {
+      detailMsg = "카메라가 다른 프로그램(Zoom, 카카오톡, 기본 카메라 앱 등)에서 이미 사용 중입니다. 해당 프로그램을 종료한 뒤 다시 시도해 주세요.";
+    } else {
+      detailMsg = `카메라 연결 실패 (${name || err.message}). 연결 상태와 권한을 확인해 주세요.`;
+    }
+    warnBox.innerHTML = `⚠️ <strong>웹캠 시작 불가:</strong> ${detailMsg}`;
+    warnBox.style.display = "block";
+    toast(detailMsg);
+    $("gazeHubDlg").classList.add("show");
+    return;
+  } finally {
+    if (probeStream) {
+      probeStream.getTracks().forEach(t => t.stop());
+    }
+  }
 
-  renderCats();
-  renderCards();
-  renderTray();
+  // 3) WebGazer 초기화 및 시작 (범용 비디오 제약 조건 강제 적용)
+  try {
+    const wg = await loadWebGazerScript();
+    wg.params = wg.params || {};
+    wg.params.camConstraints = { video: true };
+    if (typeof wg.setCameraConstraints === "function") {
+      wg.setCameraConstraints({ video: true });
+    }
 
-  if ($("subDlg").classList.contains("show") && activeSubCard) {
-    openSubModal(activeSubCard);
+    wg.saveDataAcrossSessions(false)
+      .showVideoPreview(false)
+      .showPredictionPoints(false)
+      .setGazeListener(data => {
+        if (!data || gazeMode !== "webcam") return;
+        handleGazePoint(data.x, data.y);
+      });
+
+    await wg.begin();
+    if (typeof wg.removeMouseEventListeners === "function") {
+      wg.removeMouseEventListeners();
+    }
+
+    gazeMode = "webcam";
+    smoothX = null;
+    smoothY = null;
+    stableX = null;
+    stableY = null;
+    updateGazeHeaderUI();
+    $("gazeCursor").classList.add("show");
+    startSequentialCalibration();
+  } catch (err) {
+    gazeMode = "off";
+    updateGazeHeaderUI();
+    const msg = `시선 추적 엔진 시작 실패: ${err.message || err}`;
+    warnBox.innerHTML = `⚠️ ${msg}`;
+    warnBox.style.display = "block";
+    toast(msg);
+    $("gazeHubDlg").classList.add("show");
   }
 }
 
@@ -3933,7 +3934,7 @@ function handleGazePoint(rawX, rawY) {
   const clampedX = Math.max(0, Math.min(window.innerWidth, rawX));
   const clampedY = Math.max(0, Math.min(window.innerHeight, rawY));
 
-  if (gazeMode === "sim" || smoothX === null) {
+  if (smoothX === null) {
     smoothX = clampedX;
     smoothY = clampedY;
     stableX = clampedX;
